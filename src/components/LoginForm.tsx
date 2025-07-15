@@ -6,8 +6,9 @@ import {
   registrationSchema,
   type RegistrationFormData,
 } from "../schemas/auth-schema";
+import { Link } from "react-router";
 
-const RegistrationForm: React.FC = () => {
+const LoginForm: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -32,21 +33,21 @@ const RegistrationForm: React.FC = () => {
 
   return (
     <div className="space-y-4">
-      <InputField
+      {/* <InputField
         label="First name"
         name="firstName"
         register={register}
         error={errors.firstName?.message}
         required
-      />
+      /> */}
 
-      <InputField
+      {/* <InputField
         label="Last name"
         name="lastName"
         register={register}
         error={errors.lastName?.message}
         required
-      />
+      /> */}
 
       <InputField
         label="Email"
@@ -65,15 +66,17 @@ const RegistrationForm: React.FC = () => {
         error={errors.password?.message}
         required
       />
-
-      <InputField
+      <Link to="/request-password-reset">
+        <h1 className="text-[#01589A]">Forgot your password?</h1>
+      </Link>
+      {/* <InputField
         label="Confirm password"
         name="confirmPassword"
         type="password"
         register={register}
         error={errors.confirmPassword?.message}
         required
-      />
+      /> */}
 
       <div className="pt-4">
         <Button
@@ -82,11 +85,11 @@ const RegistrationForm: React.FC = () => {
           className="mb-4 cursor-pointer"
           onClick={handleSubmit(onSubmit)}
         >
-          {isSubmitting ? "Signing up..." : "Sign up"}
+          {isSubmitting ? "Logging in..." : "Log in"}
         </Button>
       </div>
     </div>
   );
 };
 
-export default RegistrationForm;
+export default LoginForm;

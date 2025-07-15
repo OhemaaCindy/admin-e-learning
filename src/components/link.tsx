@@ -13,7 +13,7 @@ export const NavigateLink: React.FC<NavigateLinkProps> = ({
   return (
     <Link to={href} className="text-center">
       <p className="text-gray-600">
-        {text} <span>{page}</span>
+        {text} <span className="text-[#4D94CE] font-bold">{page}</span>
       </p>
     </Link>
   );

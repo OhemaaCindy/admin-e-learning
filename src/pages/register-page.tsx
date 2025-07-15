@@ -9,8 +9,8 @@ export const RegistrationPage: React.FC = () => {
           title="Admin Sign up"
           description="Create Your Account to Manage and Access the Dashboard Effortlessly."
           text="Already have an account?"
-          page="login"
-          href="/login"
+          page="Login"
+          href="/"
         >
           <RegistrationForm />
         </AuthFormWrapper>
