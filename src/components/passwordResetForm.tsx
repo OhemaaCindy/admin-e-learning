@@ -6,9 +6,8 @@ import {
   registrationSchema,
   type RegistrationFormData,
 } from "../schemas/auth-schema";
-import { RegisterAdmin } from "../services/auth-services";
 
-const RegistrationForm: React.FC = () => {
+const PasswordResetForm: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -21,7 +20,7 @@ const RegistrationForm: React.FC = () => {
   const onSubmit = async (data: RegistrationFormData) => {
     try {
       // Simulate API call
-      await RegisterAdmin({ payload: data });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log("Registration data:", data);
       alert("Registration successful!");
       reset();
@@ -34,57 +33,24 @@ const RegistrationForm: React.FC = () => {
   return (
     <div className="space-y-4">
       <InputField
-        label="First name"
-        name="firstName"
-        register={register}
-        error={errors.firstName?.message}
-        required
-      />
-
-      <InputField
-        label="Last name"
-        name="lastName"
-        register={register}
-        error={errors.lastName?.message}
-        required
-      />
-
-      <InputField
-        label="Email"
-        name="email"
-        type="email"
-        register={register}
-        error={errors.email?.message}
-        required
-      />
-
-      <InputField
-        label="Password"
-        name="password"
-        type="password"
+        label="New Password"
+        name="newPassword"
+        type="newPassword"
+        // placeholder="12345"
         register={register}
         error={errors.password?.message}
         required
       />
 
       <InputField
-        label="Confirm password"
+        label="Confirm Password"
         name="confirmPassword"
-        type="password"
+        type="confirmPassword"
+        // placeholder="12345"
         register={register}
-        error={errors.confirmPassword?.message}
+        error={errors.password?.message}
         required
       />
-
-      <InputField
-        label="Contact"
-        name="contact"
-        type="contact"
-        register={register}
-        error={errors.contact?.message}
-        required
-      />
-
       <div className="pt-4">
         <Button
           type="submit"
@@ -92,11 +58,11 @@ const RegistrationForm: React.FC = () => {
           className="mb-4 cursor-pointer"
           onClick={handleSubmit(onSubmit)}
         >
-          {isSubmitting ? "Signing up..." : "Sign up"}
+          {isSubmitting ? "Resetting password..." : "Reset password"}
         </Button>
       </div>
     </div>
   );
 };
 
-export default RegistrationForm;
+export default PasswordResetForm;

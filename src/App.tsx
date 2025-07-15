@@ -4,6 +4,7 @@ import { LoginPage } from "./pages/login-page";
 import { Otpverification } from "./pages/otp-verification";
 import { Requestpasswordreset } from "./pages/request-password-reset-form";
 import { ResetPassword } from "./pages/reset-password";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const router = createBrowserRouter([
@@ -29,7 +30,12 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <Toaster position="top-center" reverseOrder={false} />
+    </>
+  );
 }
 
 export default App;
