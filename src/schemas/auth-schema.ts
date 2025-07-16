@@ -14,7 +14,6 @@ export const registrationSchema = z
       .string()
       .min(1, "Email is required")
       .email("Invalid email address"),
-    contact: z.string().min(8, "Contact must be at least 10 characters"),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
@@ -22,7 +21,9 @@ export const registrationSchema = z
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
         "Password must contain at least one uppercase letter, one lowercase letter, and one number"
       ),
+    // password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
+    contact: z.string().min(8, "Contact must be at least 10 characters"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
