@@ -10,10 +10,7 @@ export const registrationSchema = z
       .string()
       .min(1, "Last name is required")
       .min(2, "Last name must be at least 2 characters"),
-    email: z
-      .string()
-      .min(1, "Email is required")
-      .email("Invalid email address"),
+    email: z.email("Invalid email address").min(1, "Email is required"),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")

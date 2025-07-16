@@ -6,11 +6,13 @@ import {
   registrationSchema,
   type RegistrationFormData,
 } from "../schemas/auth-schema";
-import { useMutation } from "@tanstack/react-query";
-import { RegisterAdmin } from "../services/auth-services";
+import { useRegisterAdmin } from "../hooks/register-admin.hook";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 const RegistrationForm: React.FC = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -18,31 +20,45 @@ const RegistrationForm: React.FC = () => {
     reset,
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
+    // defaultValues: {
+    //   firstName: "cindy",
+    //   lastName: "Essuman",
+    //   email: "cindyessuman05@gmail.com",
+    //   password: "Cindy@123",
+    //   confirmPassword: "Cindy@123",
+    //   contact: "+2330594809966",
+    // },
   });
 
-  const { mutate: AddUser, isPending } = useMutation({
-    mutationFn: RegisterAdmin,
-  });
+  const { mutate, isPending, error, isError, data } = useRegisterAdmin();
 
   const onSubmit = async (data: RegistrationFormData) => {
     console.log(data);
-
-    AddUser(
-      { payload: data },
-      {
-        onSuccess: () => {
-          toast.success("Admin  created successfully");
-          reset();
-        },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      }
-    );
+    mutate(data, {
+      onSuccess() {
+        reset();
+        toast.success("Admin  created successfully");
+        navigate("/");
+      },
+      onError() {
+        toast.error("Failed to create account");
+      },
+    });
   };
 
   return (
     <div className="space-y-4">
+      {isError && error && (
+        <ul className="text-rose-500 mt-2 bg-rose-100 border border-rose-500 rounded-lg px-8 py-2 list-disc">
+          {error.errors.map((err, index) => (
+            <li key={index}>{err.message}</li>
+          ))}
+        </ul>
+      )}
+
+      {data && data.success && (
+        <p className="text-green-600 mt-2">{data.message}</p>
+      )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
           label="First name"

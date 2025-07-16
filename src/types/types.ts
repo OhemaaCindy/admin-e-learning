@@ -29,3 +29,12 @@ export interface User {
   updatedAt: Date;
   __v: number;
 }
+
+export interface AuthErrorRes {
+  success: boolean;
+  errors: AuthError[];
+}
+
+export interface AuthError {
+  message: string;
+}
