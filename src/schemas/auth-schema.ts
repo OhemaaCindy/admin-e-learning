@@ -20,7 +20,7 @@ export const registrationSchema = z
       ),
     // password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
-    contact: z.string().min(8, "Contact must be at least 10 characters"),
+    contact: z.string().min(8, "Contact should contain +233"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -28,3 +28,16 @@ export const registrationSchema = z
   });
 
 export type RegistrationFormData = z.infer<typeof registrationSchema>;
+
+export const loginSchema = z.object({
+  email: z.email("Invalid email address").min(1, "Email is required"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    ),
+});
+
+export type LoginFormData = z.infer<typeof loginSchema>;

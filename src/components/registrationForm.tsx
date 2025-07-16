@@ -9,6 +9,7 @@ import {
 import { useRegisterAdmin } from "../hooks/register-admin.hook";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import Cookies from "js-cookie";
 
 const RegistrationForm: React.FC = () => {
   const navigate = useNavigate();
@@ -33,11 +34,12 @@ const RegistrationForm: React.FC = () => {
   const { mutate, isPending, error, isError, data } = useRegisterAdmin();
 
   const onSubmit = async (data: RegistrationFormData) => {
-    console.log(data);
     mutate(data, {
-      onSuccess() {
+      onSuccess(res) {
+        Cookies.set("token", res.token);
         reset();
         toast.success("Admin  created successfully");
+
         navigate("/");
       },
       onError() {

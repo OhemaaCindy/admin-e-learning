@@ -38,3 +38,31 @@ export interface AuthErrorRes {
 export interface AuthError {
   message: string;
 }
+
+export interface LoginPayloadType {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponseType {
+  success: boolean;
+  message: string;
+  token: string;
+  user: User;
+}
+
+export interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  contact: string;
+  isVerified: boolean;
+  verificationToken: string;
+  verificationTokenExpiresAt: Date;
+  lastLogin: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}

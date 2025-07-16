@@ -12,7 +12,6 @@ export const LoginPage = () => {
           page="Sign Up"
           href="/register"
         >
-          {/* {JSON.stringify(token, null, 2)} */}
           <LoginForm />
         </AuthFormWrapper>
       </div>
