@@ -3,55 +3,88 @@ import { Button } from "./button";
 import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  registrationSchema,
-  type RegistrationFormData,
+  otpVerifying,
+  // registrationSchema,
+  type OtpFormData,
+  // type RegistrationFormData,
 } from "../schemas/auth-schema";
+// import { useNavigate } from "react-router";
+import { useOtpVerifyAdmin } from "../hooks/register-admin.hook";
+import toast from "react-hot-toast";
 
 const OtpForm: React.FC = () => {
+  // const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<RegistrationFormData>({
-    resolver: zodResolver(registrationSchema),
+  } = useForm<OtpFormData>({
+    resolver: zodResolver(otpVerifying),
   });
 
-  const onSubmit = async (data: RegistrationFormData) => {
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Registration data:", data);
-      alert("Registration successful!");
-      reset();
-    } catch (error) {
-      console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
-    }
+  const {
+    mutate: sendOtp,
+    isPending,
+    error,
+    isError,
+    data,
+  } = useOtpVerifyAdmin();
+
+  const onSubmit = async (data: OtpFormData) => {
+    console.log(data);
+    sendOtp(
+      { token: data.code },
+      {
+        onSuccess() {
+          reset();
+          toast.success("Otp verified successfully");
+
+          // navigate("/otp-verification");
+        },
+        onError() {
+          toast.error("Failed to send otp.Please try again later");
+        },
+      }
+    );
   };
 
   return (
     <div className="space-y-4">
+      {isError && error && (
+        <ul className="text-rose-500 mt-2 bg-rose-100 border border-rose-500 rounded-lg px-8 py-2 list-disc">
+          {error.errors.map((err, index) => (
+            <li key={index}>{err.message}</li>
+          ))}
+        </ul>
+      )}
+
+      {data && data.success && (
+        <p className="text-green-600 mt-2">{data.message}</p>
+      )}
+      {/* <form onSubmit={handleSubmit(onSubmit)}> */}
       <InputField
         label="Code"
         name="code"
         type="code"
         placeholder="12345"
         register={register}
-        error={errors.password?.message}
+        error={errors.code?.message}
         required
       />
 
       <div className="pt-4">
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled={isSubmitting || isPending}
           className="mb-4 cursor-pointer"
           onClick={handleSubmit(onSubmit)}
         >
-          {isSubmitting ? "Verifying..." : "Verify"}
+          {isSubmitting || isPending ? "Verifying..." : "Verify"}
         </Button>
       </div>
+      {/* </form> */}
     </div>
   );
 };

@@ -3,8 +3,12 @@ import LoginForm from "../components/LoginForm";
 
 export const LoginPage = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[url('/images/form-bg.png')] bg-cover bg-center bg-no-repeat  bg-linear-to-r from-cyan-500 to-blue-500">
-      <div className="max-w-md w-full">
+    <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-500 to-blue-500">
+      <div className="absolute inset-0 bg-[url('/images/form-bg.png')] bg-cover bg-center bg-no-repeat"></div>
+
+      <div className="absolute inset-0 bg-white opacity-40"></div>
+
+      <div className="relative z-10 max-w-md w-full">
         <AuthFormWrapper
           title="Admin Login"
           description="Login to Manage and Access the Dashboard Effortlessly."
@@ -12,7 +16,6 @@ export const LoginPage = () => {
           page="Sign Up"
           href="/register"
         >
-          {/* {JSON.stringify(token, null, 2)} */}
           <LoginForm />
         </AuthFormWrapper>
       </div>
