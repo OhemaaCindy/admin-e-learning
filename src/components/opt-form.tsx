@@ -8,12 +8,12 @@ import {
   type OtpFormData,
   // type RegistrationFormData,
 } from "../schemas/auth-schema";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import { useOtpVerifyAdmin } from "../hooks/register-admin.hook";
 import toast from "react-hot-toast";
 
 const OtpForm: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const {
     register,

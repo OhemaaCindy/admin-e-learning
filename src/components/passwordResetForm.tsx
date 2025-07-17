@@ -6,9 +6,12 @@ import { resetSchema, type ResetFormData } from "../schemas/auth-schema";
 import toast from "react-hot-toast";
 // import { useMutation } from "@tanstack/react-query";
 import { useResetPasswordAdmin } from "../hooks/register-admin.hook";
+import { useNavigate } from "react-router";
 // import { useParams } from "react-router";
 
 const PasswordResetForm = ({ userId }: { userId: string | undefined }) => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -28,19 +31,19 @@ const PasswordResetForm = ({ userId }: { userId: string | undefined }) => {
 
   const onSubmit = async (data: ResetFormData) => {
     console.log(data);
-    // resetPassword(
-    //   { payload: data, id: userId as string },
-    //   {
-    //     onSuccess() {
-    //       reset();
-    //       toast.success("Forgot password request sent successfully");
-    //       // navigate("/reset-password");
-    //     },
-    //     onError() {
-    //       toast.error("Failed to send request.Please try again later");
-    //     },
-    //   }
-    // );
+    resetPassword(
+      { payload: data, id: userId as string },
+      {
+        onSuccess() {
+          reset();
+          toast.success("Forgot password request sent successfully");
+          navigate("/");
+        },
+        onError() {
+          toast.error("Failed to send request.Please try again later");
+        },
+      }
+    );
   };
 
   return (
@@ -54,7 +57,7 @@ const PasswordResetForm = ({ userId }: { userId: string | undefined }) => {
       )}
 
       {data && data.success && (
-        <p className="text-green-600 mt-2">{data.message}</p>
+        <p className="text-green-600 mt-2">{data.success}</p>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
