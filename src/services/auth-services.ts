@@ -11,6 +11,8 @@ import type {
   RegisterType,
   ResetPasswordPayloadType,
   ResetPasswordResponseype,
+  VerifyEmailPayloadType,
+  VerifyEmailResponseType,
 } from "../types/types";
 
 export const registerAdmin = async (
@@ -83,16 +85,45 @@ export const forgotPasswordAdmin = async (
   }
 };
 
-export const resetAdminPassword = async (
-  payload: ResetPasswordPayloadType
-): Promise<ResetPasswordResponseype> => {
+export interface ResetAdminPasswordProps {
+  id: string;
+  payload: ResetPasswordPayloadType;
+}
+
+export const resetAdminPassword = async ({
+  payload,
+  id,
+}: ResetAdminPasswordProps): Promise<ResetPasswordResponseype> => {
   try {
     const response = await axiosClient.post<ResetPasswordResponseype>(
-      apiEndpoints.AUTH.forgotPassword,
+      apiEndpoints.AUTH.resetPassword(id),
       payload
     );
     console.log("🚀 ~ response.data:", response.data);
     console.log(payload);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError(error) && error.response) {
+      // Cast and throw structured error for React Query
+      throw error.response.data as AuthErrorRes;
+    }
+    // Unknown error fallback
+    throw {
+      success: false,
+      errors: [{ message: "Something went wrong" }],
+    } as AuthErrorRes;
+  }
+};
+
+export const verifyEmailOtp = async (
+  payload: VerifyEmailPayloadType
+): Promise<VerifyEmailResponseType> => {
+  try {
+    const response = await axiosClient.post<VerifyEmailResponseType>(
+      apiEndpoints.AUTH.verifyEmail,
+      payload
+    );
     return response.data;
   } catch (error) {
     console.log(error);

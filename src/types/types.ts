@@ -90,3 +90,27 @@ export interface ResetPasswordResponseype {
 export interface Error {
   message: string;
 }
+
+export interface VerifyEmailPayloadType {
+  token: string;
+}
+
+export interface VerifyEmailResponseType {
+  success: boolean;
+  message: string;
+  user: User;
+}
+
+export interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  contact: string;
+  isVerified: boolean;
+  lastLogin: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+}

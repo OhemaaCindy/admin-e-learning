@@ -47,3 +47,20 @@ export const forgotPasswordSchema = z.object({
 });
 
 export type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+
+export const resetSchema = z.object({
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    ),
+  confirmPassword: z.string().min(1, "Please confirm your password"),
+});
+export type ResetFormData = z.infer<typeof resetSchema>;
+
+export const otpVerifying = z.object({
+  code: z.string().min(1, "Please enter a valid otp number"),
+});
+export type OtpFormData = z.infer<typeof otpVerifying>;

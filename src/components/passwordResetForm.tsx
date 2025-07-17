@@ -2,65 +2,93 @@ import { useForm } from "react-hook-form";
 import { Button } from "./button";
 import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  registrationSchema,
-  type RegistrationFormData,
-} from "../schemas/auth-schema";
+import { resetSchema, type ResetFormData } from "../schemas/auth-schema";
+import toast from "react-hot-toast";
+// import { useMutation } from "@tanstack/react-query";
+import { useResetPasswordAdmin } from "../hooks/register-admin.hook";
+// import { useParams } from "react-router";
 
-const PasswordResetForm: React.FC = () => {
+const PasswordResetForm = ({ userId }: { userId: string | undefined }) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<RegistrationFormData>({
-    resolver: zodResolver(registrationSchema),
+  } = useForm<ResetFormData>({
+    resolver: zodResolver(resetSchema),
   });
 
-  const onSubmit = async (data: RegistrationFormData) => {
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Registration data:", data);
-      alert("Registration successful!");
-      reset();
-    } catch (error) {
-      console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
-    }
+  const {
+    mutate: resetPassword,
+    isPending,
+    isError,
+    error,
+    data,
+  } = useResetPasswordAdmin();
+
+  const onSubmit = async (data: ResetFormData) => {
+    console.log(data);
+    // resetPassword(
+    //   { payload: data, id: userId as string },
+    //   {
+    //     onSuccess() {
+    //       reset();
+    //       toast.success("Forgot password request sent successfully");
+    //       // navigate("/reset-password");
+    //     },
+    //     onError() {
+    //       toast.error("Failed to send request.Please try again later");
+    //     },
+    //   }
+    // );
   };
 
   return (
     <div className="space-y-4">
-      <InputField
-        label="New Password"
-        name="newPassword"
-        type="newPassword"
-        // placeholder="12345"
-        register={register}
-        error={errors.password?.message}
-        required
-      />
+      {isError && error && (
+        <ul className="text-rose-500 mt-2 bg-rose-100 border border-rose-500 rounded-lg px-8 py-2 list-disc">
+          {error.errors.map((err, index) => (
+            <li key={index}>{err.message}</li>
+          ))}
+        </ul>
+      )}
 
-      <InputField
-        label="Confirm Password"
-        name="confirmPassword"
-        type="confirmPassword"
-        // placeholder="12345"
-        register={register}
-        error={errors.password?.message}
-        required
-      />
-      <div className="pt-4">
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="mb-4 cursor-pointer"
-          onClick={handleSubmit(onSubmit)}
-        >
-          {isSubmitting ? "Resetting password..." : "Reset password"}
-        </Button>
-      </div>
+      {data && data.success && (
+        <p className="text-green-600 mt-2">{data.message}</p>
+      )}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <InputField
+          label="New Password"
+          name="password"
+          type="password"
+          // placeholder="12345"
+          register={register}
+          error={errors.password?.message}
+          required
+        />
+
+        <InputField
+          label="Confirm Password"
+          name="confirmPassword"
+          type="password"
+          // placeholder="12345"
+          register={register}
+          error={errors.confirmPassword?.message}
+          required
+        />
+        <div className="pt-4">
+          <Button
+            type="submit"
+            disabled={isSubmitting || isPending}
+            className="mb-4 cursor-pointer"
+            // onClick={handleSubmit(onSubmit)}
+          >
+            {isSubmitting || isPending
+              ? "Resetting password..."
+              : "Reset password"}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };

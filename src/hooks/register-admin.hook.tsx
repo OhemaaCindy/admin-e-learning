@@ -3,6 +3,9 @@ import {
   forgotPasswordAdmin,
   loginAdmin,
   registerAdmin,
+  resetAdminPassword,
+  verifyEmailOtp,
+  type ResetAdminPasswordProps,
 } from "../services/auth-services";
 import type {
   AuthErrorRes,
@@ -12,6 +15,9 @@ import type {
   LoginResponseType,
   RegisterResponse,
   RegisterType,
+  ResetPasswordResponseype,
+  VerifyEmailPayloadType,
+  VerifyEmailResponseType,
 } from "../types/types";
 
 export const useRegisterAdmin = () =>
@@ -34,4 +40,17 @@ export const useForgotPasswordAdmin = () =>
       console.log(payload);
       return forgotPasswordAdmin(payload);
     },
+  });
+
+export const useResetPasswordAdmin = () =>
+  useMutation<ResetPasswordResponseype, AuthErrorRes, ResetAdminPasswordProps>({
+    mutationFn: ({ payload, id }: ResetAdminPasswordProps) => {
+      console.log(payload);
+      return resetAdminPassword({ payload, id });
+    },
+  });
+
+export const useOtpVerifyAdmin = () =>
+  useMutation<VerifyEmailResponseType, AuthErrorRes, VerifyEmailPayloadType>({
+    mutationFn: (payload) => verifyEmailOtp(payload),
   });

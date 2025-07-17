@@ -6,9 +6,9 @@ export const apiEndpoints = {
     register: "/auth/signup/admin",
     login: "/auth/login",
     forgotPassword: "/auth/forgot-password",
-    // verify-email:"/auth/verify-email",
+    resetPassword: (id: string) => `/auth/reset-password/${id}`,
+    verifyEmail: "/auth/verify-email",
     // resend-verification-token:"/auth/resend-token",
-    // reset-password:(id)=>`/auth/reset-password/${id}`,
     // update-password:"/auth/change-password",
     // logout:"/admin/auth/logout"
     // check-auth:"auth/check-auth"
