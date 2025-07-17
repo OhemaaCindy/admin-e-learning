@@ -3,10 +3,14 @@ import { apiEndpoints } from "../constants/api-endpoints";
 import { axiosClient } from "../lib/axios";
 import type {
   AuthErrorRes,
+  ForgotPasswordPayloadType,
+  ForgotPasswordResponseType,
   LoginPayloadType,
   LoginResponseType,
   RegisterResponse,
   RegisterType,
+  ResetPasswordPayloadType,
+  ResetPasswordResponseype,
 } from "../types/types";
 
 export const registerAdmin = async (
@@ -39,6 +43,56 @@ export const loginAdmin = async (
       apiEndpoints.AUTH.login,
       payload
     );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError(error) && error.response) {
+      // Cast and throw structured error for React Query
+      throw error.response.data as AuthErrorRes;
+    }
+    // Unknown error fallback
+    throw {
+      success: false,
+      errors: [{ message: "Something went wrong" }],
+    } as AuthErrorRes;
+  }
+};
+
+export const forgotPasswordAdmin = async (
+  payload: ForgotPasswordPayloadType
+): Promise<ForgotPasswordResponseType> => {
+  try {
+    const response = await axiosClient.post<ForgotPasswordResponseType>(
+      apiEndpoints.AUTH.forgotPassword,
+      payload
+    );
+    console.log("🚀 ~ response.data:", response.data);
+    console.log(payload);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    if (axios.isAxiosError(error) && error.response) {
+      // Cast and throw structured error for React Query
+      throw error.response.data as AuthErrorRes;
+    }
+    // Unknown error fallback
+    throw {
+      success: false,
+      errors: [{ message: "Something went wrong" }],
+    } as AuthErrorRes;
+  }
+};
+
+export const resetAdminPassword = async (
+  payload: ResetPasswordPayloadType
+): Promise<ResetPasswordResponseype> => {
+  try {
+    const response = await axiosClient.post<ResetPasswordResponseype>(
+      apiEndpoints.AUTH.forgotPassword,
+      payload
+    );
+    console.log("🚀 ~ response.data:", response.data);
+    console.log(payload);
     return response.data;
   } catch (error) {
     console.log(error);

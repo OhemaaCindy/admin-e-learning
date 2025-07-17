@@ -3,55 +3,74 @@ import { Button } from "./button";
 import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  registrationSchema,
-  type RegistrationFormData,
+  forgotPasswordSchema,
+  // registrationSchema,
+  type ForgotPasswordFormData,
+  // type RegistrationFormData,
 } from "../schemas/auth-schema";
+import toast from "react-hot-toast";
+// import { useNavigate } from "react-router";
+// import { useMutation } from "@tanstack/react-query";
+// import { forgotPasswordAdmin } from "../services/auth-services";
+import { useForgotPasswordAdmin } from "../hooks/register-admin.hook";
 
 const RequestPasswordResetForm: React.FC = () => {
+  // const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<RegistrationFormData>({
-    resolver: zodResolver(registrationSchema),
+  } = useForm<ForgotPasswordFormData>({
+    resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmit = async (data: RegistrationFormData) => {
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Registration data:", data);
-      alert("Registration successful!");
-      reset();
-    } catch (error) {
-      console.error("Registration failed:", error);
-      alert("Registration failed. Please try again.");
-    }
+  const { mutate: requestReset, isPending } = useForgotPasswordAdmin();
+
+  const onSubmit = async (data: ForgotPasswordFormData) => {
+    console.log(data);
+    requestReset(
+      { ...data, baseResetURL: "http://localhost:5173/reset-password" },
+      {
+        onSuccess() {
+          reset();
+          toast.success("Forgot password request sent successfully");
+
+          // navigate("/reset-password");
+        },
+        onError() {
+          toast.error("Failed to send request.Please try again later");
+        },
+      }
+    );
   };
 
   return (
     <div className="space-y-4">
-      <InputField
-        label="Email"
-        name="email"
-        type="email"
-        // placeholder="12345"
-        register={register}
-        error={errors.password?.message}
-        required
-      />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <InputField
+          label="Email"
+          name="email"
+          type="email"
+          // placeholder="12345"
+          register={register}
+          error={errors.email?.message}
+          required
+        />
 
-      <div className="pt-4">
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="mb-4 cursor-pointer"
-          onClick={handleSubmit(onSubmit)}
-        >
-          {isSubmitting ? "Resetting password..." : "Reset password"}
-        </Button>
-      </div>
+        <div className="pt-4">
+          <Button
+            type="submit"
+            disabled={isSubmitting || isPending}
+            className="mb-4 cursor-pointer"
+            // onClick={handleSubmit(onSubmit)}
+          >
+            {isSubmitting || isPending
+              ? "Resetting password..."
+              : "Reset password"}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };

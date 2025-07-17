@@ -1,7 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
-import { loginAdmin, registerAdmin } from "../services/auth-services";
+import {
+  forgotPasswordAdmin,
+  loginAdmin,
+  registerAdmin,
+} from "../services/auth-services";
 import type {
   AuthErrorRes,
+  ForgotPasswordPayloadType,
+  ForgotPasswordResponseType,
   LoginPayloadType,
   LoginResponseType,
   RegisterResponse,
@@ -16,4 +22,16 @@ export const useRegisterAdmin = () =>
 export const useLoginAdmin = () =>
   useMutation<LoginResponseType, AuthErrorRes, LoginPayloadType>({
     mutationFn: (payload) => loginAdmin(payload),
+  });
+
+export const useForgotPasswordAdmin = () =>
+  useMutation<
+    ForgotPasswordResponseType,
+    AuthErrorRes,
+    ForgotPasswordPayloadType
+  >({
+    mutationFn: (payload) => {
+      console.log(payload);
+      return forgotPasswordAdmin(payload);
+    },
   });

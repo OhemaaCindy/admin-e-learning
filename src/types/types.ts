@@ -66,3 +66,27 @@ export interface User {
   updatedAt: Date;
   __v: number;
 }
+
+export interface ForgotPasswordPayloadType {
+  email: string;
+  baseResetURL: string;
+}
+
+export interface ForgotPasswordResponseType {
+  success: boolean;
+  message: string;
+}
+
+export interface ResetPasswordPayloadType {
+  password: string;
+  confirmPassword: string;
+}
+
+export interface ResetPasswordResponseype {
+  success: boolean;
+  errors: Error[];
+}
+
+export interface Error {
+  message: string;
+}
