@@ -40,7 +40,7 @@ const RegistrationForm: React.FC = () => {
         reset();
         toast.success("Admin  created successfully");
 
-        navigate("/");
+        navigate("/otp-verification");
       },
       onError() {
         toast.error("Failed to create account");

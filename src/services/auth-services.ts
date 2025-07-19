@@ -68,8 +68,8 @@ export const forgotPasswordAdmin = async (
       apiEndpoints.AUTH.forgotPassword,
       payload
     );
-    console.log("🚀 ~ response.data:", response.data);
-    console.log(payload);
+    // console.log("🚀 ~ response.data:", response.data);
+    // console.log(payload);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -99,11 +99,11 @@ export const resetAdminPassword = async ({
       apiEndpoints.AUTH.resetPassword(id),
       payload
     );
-    console.log("🚀 ~ response.data:", response.data);
-    console.log(payload);
+    // console.log("🚀 ~ response.data:", response.data);
+    // console.log(payload);
     return response.data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (axios.isAxiosError(error) && error.response) {
       // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
@@ -126,7 +126,7 @@ export const verifyEmailOtp = async (
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (axios.isAxiosError(error) && error.response) {
       // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
