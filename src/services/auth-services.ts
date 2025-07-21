@@ -26,10 +26,8 @@ export const registerAdmin = async (
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],
@@ -49,10 +47,8 @@ export const loginAdmin = async (
   } catch (error) {
     console.log(error);
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],
@@ -74,10 +70,8 @@ export const forgotPasswordAdmin = async (
   } catch (error) {
     console.log(error);
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],
@@ -105,10 +99,8 @@ export const resetAdminPassword = async ({
   } catch (error) {
     // console.log(error);
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],
@@ -128,10 +120,8 @@ export const verifyEmailOtp = async (
   } catch (error) {
     // console.log(error);
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],

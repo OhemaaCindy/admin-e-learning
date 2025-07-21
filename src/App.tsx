@@ -1,10 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import { RegistrationPage } from "./pages/register-page";
+import RegistrationPage from "./pages/register-page";
 import { LoginPage } from "./pages/login-page";
 import { Otpverification } from "./pages/otp-verification";
 import { Requestpasswordreset } from "./pages/request-password-reset-form";
 import { ResetPassword } from "./pages/reset-password";
 import { Toaster } from "react-hot-toast";
+import Dashboard from "./pages/dashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,6 +28,10 @@ function App() {
     {
       path: "/reset-password/:id",
       element: <ResetPassword />,
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
     },
   ]);
 

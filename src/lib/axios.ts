@@ -11,32 +11,6 @@ export const axiosClient = axios.create({
   },
 });
 
-// axiosClient.interceptors.request.use(function (config) {
-//     const token = Cookies.get("token")
-//     if(token){
-//       config.headers.Authorization = `Bearer ${token}`
-//     }
-//     return config;
-//   }, function (error) {
-//     return Promise.reject(error);
-//   });
-
-// axiosClient.interceptors.response.use(function (response) {
-//    return response;
-//   }, function (error) {
-//     if(error.response){
-//       if(error.response.status === 401){
-//         // redirct the user to the login page
-//         window.location.href = "/"
-//       }else if(error.response.status === 500){
-//       return("server error please try again later")
-//       }else if(error.code === "ECONABORATED"){
-//         return ("Request timeout.Please try again later")
-//       }
-//     }
-//     return Promise.reject(error);
-//   });
-
 axiosClient.interceptors.request.use(
   function (config) {
     const token = Cookies.get("token");
