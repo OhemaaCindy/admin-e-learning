@@ -1,5 +1,5 @@
 import React from "react";
-import { Users, DollarSign, FileText } from "lucide-react";
+// import { DollarSign, FileText } from "lucide-react";
 import StatCard from "@/components/statCard";
 import TrackCard from "@/components/trackCard";
 import RevenueChart from "@/components/revenue-chart";
@@ -26,21 +26,21 @@ const Overview: React.FC = () => {
       value: "12,450",
       change: "12%",
       changeType: "positive" as const,
-      icon: <Users className="w-5 h-5" />,
+      iconPath: "/images/learners-img.png",
     },
     {
       title: "Revenue",
       value: "$12,450",
       change: "12%",
       changeType: "positive" as const,
-      icon: <DollarSign className="w-5 h-5" />,
+      iconPath: "/images/revenue-img.png",
     },
     {
       title: "Invoice",
       value: "100",
       change: "2%",
       changeType: "positive" as const,
-      icon: <FileText className="w-5 h-5" />,
+      iconPath: "/images/invoice-img.png",
     },
   ];
 
@@ -146,7 +146,7 @@ const Overview: React.FC = () => {
             <InvoiceList invoices={invoices} />
           </div>
         </div>
-        <ChartTooltipDefault />
+        {/* <ChartTooltipDefault /> */}
       </div>
     </>
   );

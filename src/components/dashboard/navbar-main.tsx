@@ -13,13 +13,10 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, useLocation } from "react-router";
 import { cn } from "@/lib/utils";
+import type { NavMainItems } from "./app-sidebar";
 
 interface NavMainProps {
-  items: {
-    title: string;
-    url: string;
-    icon?: Icon;
-  }[];
+  items: NavMainItems[];
 }
 
 export function NavMain({ items }: NavMainProps) {

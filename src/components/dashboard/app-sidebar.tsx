@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import {
-  IconChartBar,
-  IconDashboard,
-  IconFolder,
-  IconInnerShadowTop,
+  // IconChartBar,
+  // IconDashboard,
+  // IconFolder,
+  // IconInnerShadowTop,
   IconListDetails,
-  IconUsers,
+  // IconUsers,
 } from "@tabler/icons-react";
 
 import {
@@ -21,18 +21,28 @@ import {
 } from "@/components/ui/sidebar";
 import { NavMain } from "./navbar-main";
 import { NavUser } from "./nav-user";
-import { Link } from "react-router";
+import {
+  FileText,
+  GraduationCap,
+  LayoutDashboard,
+  type LucideIcon,
+} from "lucide-react";
 
-const navMain = [
+export interface NavMainItems {
+  title: string;
+  url: string;
+  icon: LucideIcon;
+}
+const navMain: NavMainItems[] = [
   {
     title: "Dashboard",
     url: "/overview",
-    icon: IconDashboard,
+    icon: LayoutDashboard,
   },
   {
     title: "Invoices",
     url: "/invoices",
-    icon: IconListDetails,
+    icon: FileText,
   },
   {
     title: "Learners",
@@ -42,17 +52,17 @@ const navMain = [
   {
     title: "Tracks",
     url: "/tracks",
-    icon: IconChartBar,
+    icon: GraduationCap,
   },
   {
     title: "Courses",
     url: "/courses",
-    icon: IconFolder,
+    icon: GraduationCap,
   },
   {
     title: "Report",
     url: "/report",
-    icon: IconUsers,
+    icon: LayoutDashboard,
   },
 ];
 
