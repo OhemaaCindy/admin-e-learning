@@ -11,4 +11,13 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://tmp-se-projectapi.azurewebsites.net/",
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
 });
