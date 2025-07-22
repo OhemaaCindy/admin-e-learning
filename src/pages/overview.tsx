@@ -1,11 +1,12 @@
 import React from "react";
 // import { DollarSign, FileText } from "lucide-react";
 import StatCard from "@/components/statCard";
-import TrackCard from "@/components/trackCard";
+// import TrackCard from "@/components/overview-track-card";
 import RevenueChart from "@/components/revenue-chart";
 import InvoiceList from "@/components/invoice-list";
-import { ChartTooltipDefault } from "@/components/charts/revenuebar-chart";
+// import { ChartTooltipDefault } from "@/components/charts/revenuebar-chart";
 import { SiteHeader } from "@/components/dashboard/site-header";
+import OverviewTrackCard from "@/components/overview-track-card";
 
 interface RevenueData {
   month: string;
@@ -135,7 +136,7 @@ const Overview: React.FC = () => {
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Tracks</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {tracks.map((track, index) => (
-                <TrackCard key={index} {...track} />
+                <OverviewTrackCard key={index} {...track} />
               ))}
             </div>
           </div>

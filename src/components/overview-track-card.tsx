@@ -9,7 +9,7 @@ interface TrackCardProps {
   gradient: string;
 }
 
-const TrackCard: React.FC<TrackCardProps> = ({
+const OverviewTrackCard: React.FC<TrackCardProps> = ({
   title,
   duration,
   price,
@@ -48,4 +48,4 @@ const TrackCard: React.FC<TrackCardProps> = ({
   );
 };
 
-export default TrackCard;
+export default OverviewTrackCard;
