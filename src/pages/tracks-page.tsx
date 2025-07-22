@@ -39,12 +39,12 @@ const Track = () => {
   //   },
   // ];
   return (
-    <div className="p-6">
+    <div>
       <SiteHeader
         title={"Manage Tracks "}
         description={"Filter, sort, and access detailed tracks"}
       />
-      <div className="flex  items-center justify-between mb-8">
+      <div className="flex  items-center justify-between mb-8 p-6">
         <div className="flex justify-start items-center  gap-2 p-2 rounded-md shadow-md w-80">
           <Search size={18} className="text-[#7F7E83]" />
 

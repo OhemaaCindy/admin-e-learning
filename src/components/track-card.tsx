@@ -2,7 +2,7 @@ import { Calendar, User } from "lucide-react";
 
 export default function TrackCard() {
   return (
-    <div className="w-80  rounded-2xl shadow-lg overflow-hidden">
+    <div className="w-80  rounded-2xl shadow-lg overflow-hidden m-6">
       {/* Header with mountain landscape */}
       <div className="relative h-48 bg-gradient-to-b from-blue-300 to-blue-100 overflow-hidden ">
         {/* Price tag */}
