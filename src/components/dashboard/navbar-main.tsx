@@ -1,8 +1,9 @@
 "use client";
 
-import { IconCirclePlusFilled, IconMail, type Icon } from "@tabler/icons-react";
+// import { IconCirclePlusFilled, IconMail, type Icon } from "@tabler/icons-react";
+import { type Icon } from "@tabler/icons-react";
 
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -36,21 +37,20 @@ export function NavMain({ items }: NavMainProps) {
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2 ">
-        <SidebarMenu className="flex flex-col gap-6">
+        <SidebarMenu className="flex flex-col gap-4">
           {items.map((item) => (
-            <SidebarMenuItem
-              key={item.title}
-              // className="bg-amber-700 p-3 rounded-sm"
-            >
+            <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 tooltip={item.title}
                 asChild
+                size={"lg"}
                 className={cn(
+                  "text-sidebar-primary-foreground hover:text-sidebar-primary",
                   isActive(item.url) &&
-                    "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear "
+                    "bg-sidebar-primary-foreground text-sidebar-label hover:bg-sidebar-primary-foreground/80 hover:text-sidebar-label active:bg-sidebar-primary-foreground active:text-sidebar-label min-w-8 duration-200 ease-linear "
                 )}
               >
-                <Link to={item.url} className="flex items-center gap-2">
+                <Link to={item.url} className="flex items-center gap-2 ">
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </Link>

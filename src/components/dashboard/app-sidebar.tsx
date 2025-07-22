@@ -64,18 +64,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              size={"lg"}
+              className="data-[slot=sidebar-menu-button]:!p-1.5 bg-white h-20 "
             >
-              <Link to="#">
-                {/* <IconInnerShadowTop className="!size-5" /> */}
-                {/* <span className="text-base font-semibold">Acme Inc.</span> */}
-                <img src="/images/logo.png" alt="logo" />
-              </Link>
+              {/* <Link to="#"> */}
+              <span className="flex items-center justify-center">
+                <img
+                  src="/images/logo.png"
+                  alt="logo"
+                  className="w-auto h-8 object-cover"
+                />
+              </span>
+              {/* </Link> */}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
-      <SidebarContent className="bg-[#01589A]">
+      <SidebarContent className="bg-sidebar-primary">
         <NavMain items={navMain} />
       </SidebarContent>
       <SidebarFooter>
