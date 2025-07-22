@@ -5,6 +5,7 @@ import TrackCard from "@/components/trackCard";
 import RevenueChart from "@/components/revenue-chart";
 import InvoiceList from "@/components/invoice-list";
 import { ChartTooltipDefault } from "@/components/charts/revenuebar-chart";
+import { SiteHeader } from "@/components/dashboard/site-header";
 
 interface RevenueData {
   month: string;
@@ -115,33 +116,39 @@ const Overview: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {stats.map((stat, index) => (
-            <StatCard key={index} {...stat} />
-          ))}
-        </div>
-
-        {/* Tracks Section */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Tracks</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {tracks.map((track, index) => (
-              <TrackCard key={index} {...track} />
+    <>
+      <SiteHeader
+        title="Welcome Admin 👋"
+        description="Track activity, trends, and popular destinations in real time"
+      />
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {stats.map((stat, index) => (
+              <StatCard key={index} {...stat} />
             ))}
           </div>
-        </div>
 
-        {/* Bottom Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <RevenueChart data={revenueData} />
-          <InvoiceList invoices={invoices} />
+          {/* Tracks Section */}
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Tracks</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {tracks.map((track, index) => (
+                <TrackCard key={index} {...track} />
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <RevenueChart data={revenueData} />
+            <InvoiceList invoices={invoices} />
+          </div>
         </div>
+        <ChartTooltipDefault />
       </div>
-      <ChartTooltipDefault />
-    </div>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
-import { SiteHeader } from "@/components/dashboard/site-header";
+// import { SiteHeader } from "@/components/dashboard/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export default function Dashboardlayout() {
@@ -16,7 +16,7 @@ export default function Dashboardlayout() {
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
-        <SiteHeader />
+        {/* <SiteHeader /> */}
         <div className="flex flex-1 flex-col">
           <div className="@container/main flex flex-1 flex-col gap-2">
             <Outlet />
