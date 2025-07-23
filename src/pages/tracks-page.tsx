@@ -1,31 +1,30 @@
 import { SiteHeader } from "@/components/dashboard/site-header";
 import TrackCard from "@/components/track-card";
 import { allTracks } from "@/services/track-services";
-import type { Error, TrackResponseType } from "@/types/types";
+import type { Error } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-// import TrackCard from "@/components/trackCard";
+
 import { Plus, Search } from "lucide-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Fragment } from "react/jsx-runtime";
+import type { TrackResponse } from "@/types/track.type";
 
 const Track = () => {
-  const { data, isLoading, error, isError } = useQuery<
-    TrackResponseType,
-    Error
-  >({
+  const { data, isLoading, error, isError } = useQuery<TrackResponse, Error>({
     queryKey: ["get-all-tracks"],
     queryFn: allTracks,
   });
 
   const trackOverview = data?.tracks || [];
-  console.log("🚀 ~ Track ~ trackOverview:", trackOverview);
+  // console.log("🚀 ~ Track ~ trackOverview:", trackOverview);
 
   return (
-    <div>
+    <div className="w-full">
       <SiteHeader
         title={"Manage Tracks "}
         description={"Filter, sort, and access detailed tracks"}
       />
-      <div className="flex  items-center justify-between mb-8 p-6">
+      <div className="flex  items-center justify-between mb-8 p-6  ">
         <div className="flex justify-start items-center  gap-2 p-2 rounded-md shadow-md w-80">
           <Search size={18} className="text-[#7F7E83]" />
 
@@ -42,11 +41,24 @@ const Track = () => {
         </span>
       )}
       {isError && <div>{error.message}</div>}
-      {trackOverview.map((track, index) => (
-        <TrackCard key={index} {...track} />
-      ))}
+
+      <div className="p-8">
+        <div className="grid w-full grid-cols-1 grid-rows-4 gap-6 sm:grid-cols-2 md:grid-cols-2 md:px-0 lg:grid-cols-3 xl:grid-cols-4">
+          {trackOverview.map((track, index) => (
+            <Fragment key={track._id + index}>
+              <TrackCard track={track} />
+            </Fragment>
+          ))}
+        </div>
+      </div>
+      {/* {trackOverview.map((track, index) => (
+        <div key={index} className="bg-green-600 flex">
+          <TrackCard track={track} />
+        </div>
+      ))} */}
     </div>
   );
 };
 
 export default Track;
+// className="grid w-full grid-cols-1 gap-6 px-2 sm:grid-cols-2 md:grid-cols-3 md:px-0 lg:grid-cols-5"

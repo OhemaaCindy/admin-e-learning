@@ -1,11 +1,12 @@
 import { apiEndpoints } from "@/constants/api-endpoints";
 import { axiosClient } from "@/lib/axios";
-import type { AuthErrorRes, TrackResponseType } from "@/types/types";
+import type { TrackResponse } from "@/types/track.type";
+import type { AuthErrorRes } from "@/types/types";
 import axios from "axios";
 
-export const allTracks = async (): Promise<TrackResponseType> => {
+export const allTracks = async (): Promise<TrackResponse> => {
   try {
-    const response = await axiosClient.get<TrackResponseType>(
+    const response = await axiosClient.get<TrackResponse>(
       apiEndpoints.TRACKS.getAllTracks
     );
     return response.data;
