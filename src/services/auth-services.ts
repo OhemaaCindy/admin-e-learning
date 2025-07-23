@@ -9,6 +9,7 @@ import type {
   LoginResponseType,
   RegisterResponse,
   RegisterType,
+  ResendOtpType,
   ResetPasswordPayloadType,
   ResetPasswordResponseype,
   VerifyEmailPayloadType,
@@ -26,10 +27,8 @@ export const registerAdmin = async (
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],
@@ -49,10 +48,8 @@ export const loginAdmin = async (
   } catch (error) {
     console.log(error);
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],
@@ -68,16 +65,14 @@ export const forgotPasswordAdmin = async (
       apiEndpoints.AUTH.forgotPassword,
       payload
     );
-    console.log("🚀 ~ response.data:", response.data);
-    console.log(payload);
+    // console.log("🚀 ~ response.data:", response.data);
+    // console.log(payload);
     return response.data;
   } catch (error) {
     console.log(error);
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],
@@ -99,16 +94,14 @@ export const resetAdminPassword = async ({
       apiEndpoints.AUTH.resetPassword(id),
       payload
     );
-    console.log("🚀 ~ response.data:", response.data);
-    console.log(payload);
+    // console.log("🚀 ~ response.data:", response.data);
+    // console.log(payload);
     return response.data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],
@@ -126,12 +119,28 @@ export const verifyEmailOtp = async (
     );
     return response.data;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     if (axios.isAxiosError(error) && error.response) {
-      // Cast and throw structured error for React Query
       throw error.response.data as AuthErrorRes;
     }
-    // Unknown error fallback
+    throw {
+      success: false,
+      errors: [{ message: "Something went wrong" }],
+    } as AuthErrorRes;
+  }
+};
+
+export const resendOtp = async (): Promise<ResendOtpType> => {
+  try {
+    const response = await axiosClient.post<ResendOtpType>(
+      apiEndpoints.AUTH.resendVerificationToken
+    );
+    return response.data;
+  } catch (error) {
+    // console.log(error);
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as AuthErrorRes;
+    }
     throw {
       success: false,
       errors: [{ message: "Something went wrong" }],

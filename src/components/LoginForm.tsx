@@ -37,7 +37,7 @@ const LoginForm: React.FC = () => {
         reset();
         toast.success("Login successful");
 
-        navigate("/otp-verification");
+        navigate("/overview");
       },
       onError() {
         toast.error("Failed to login.Please try again later");

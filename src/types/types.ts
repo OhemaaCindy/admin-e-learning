@@ -114,3 +114,8 @@ export interface User {
   updatedAt: Date;
   __v: number;
 }
+
+export interface ResendOtpType {
+  success: boolean;
+  message: string;
+}
