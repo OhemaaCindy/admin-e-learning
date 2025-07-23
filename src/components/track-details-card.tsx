@@ -1,23 +1,29 @@
+// const TrackDetailsCard = () => {
+//   return <div></div>;
+// };
+
+// export default TrackDetailsCard;
+
 import { Calendar, User } from "lucide-react";
 import { Link } from "react-router";
 
-export default function TrackCard() {
+function TrackDetailsCard() {
   return (
-    <div className="w-80  rounded-2xl shadow-lg overflow-hidden m-6  ">
+    <div className="rounded-2xl shadow-lg overflow-hidden m-6  w-5xl ">
       {/* Header with mountain landscape */}
       <Link to="/tracks/:id">
-        <div className="relative h-48 bg-gradient-to-b from-blue-300 to-blue-100 overflow-hidden ">
+        <div className=" relative h-90 bg-gradient-to-b from-blue-300 to-blue-100 overflow-hidden ">
           {/* Price tag */}
 
-          <div className="absolute top-4 right-4 bg-white bg-opacity-90 backdrop-blur-sm rounded-3xl px-3 py-1">
+          {/* <div className="absolute top-4 right-4 bg-white bg-opacity-90 backdrop-blur-sm rounded-3xl px-3 py-1">
             <span className="text-gray-800 font-semibold text-md">$250</span>
-          </div>
+          </div> */}
         </div>
 
         {/* Content */}
         <div className="p-6">
           {/* Title */}
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">UI/UX</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-3 h-90">UI/UX</h2>
 
           {/* Description */}
           <p className="text-gray-600 text-base mb-6 leading-relaxed">
@@ -50,3 +56,5 @@ export default function TrackCard() {
     </div>
   );
 }
+
+export default TrackDetailsCard;

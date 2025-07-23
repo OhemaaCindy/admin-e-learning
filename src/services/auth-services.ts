@@ -9,6 +9,7 @@ import type {
   LoginResponseType,
   RegisterResponse,
   RegisterType,
+  ResendOtpType,
   ResetPasswordPayloadType,
   ResetPasswordResponseype,
   VerifyEmailPayloadType,
@@ -115,6 +116,24 @@ export const verifyEmailOtp = async (
     const response = await axiosClient.post<VerifyEmailResponseType>(
       apiEndpoints.AUTH.verifyEmail,
       payload
+    );
+    return response.data;
+  } catch (error) {
+    // console.log(error);
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as AuthErrorRes;
+    }
+    throw {
+      success: false,
+      errors: [{ message: "Something went wrong" }],
+    } as AuthErrorRes;
+  }
+};
+
+export const resendOtp = async (): Promise<ResendOtpType> => {
+  try {
+    const response = await axiosClient.post<ResendOtpType>(
+      apiEndpoints.AUTH.resendVerificationToken
     );
     return response.data;
   } catch (error) {

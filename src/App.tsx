@@ -13,6 +13,7 @@ import Report from "./pages/report-page";
 import Dashboardlayout from "./pages/layouts/dashboard-layout";
 import Overview from "./pages/overview";
 import Authlayout from "./pages/layouts/auth-layout";
+import TrackDetails from "./pages/track-details";
 
 function App() {
   const router = createBrowserRouter([
@@ -61,6 +62,10 @@ function App() {
         {
           path: "tracks",
           element: <Track />,
+        },
+        {
+          path: "tracks/:id",
+          element: <TrackDetails />,
         },
         {
           path: "courses",
