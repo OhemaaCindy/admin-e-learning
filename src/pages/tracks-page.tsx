@@ -8,14 +8,22 @@ import { Plus, Search } from "lucide-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Fragment } from "react/jsx-runtime";
 import type { TrackResponse } from "@/types/track.type";
+import { useState } from "react";
 
 const Track = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  console.log("🚀 ~ Track ~ seachTerm:", searchTerm);
+
   const { data, isLoading, error, isError } = useQuery<TrackResponse, Error>({
     queryKey: ["get-all-tracks"],
     queryFn: allTracks,
   });
 
-  const trackOverview = data?.tracks || [];
+  let trackOverview = data?.tracks || [];
+
+  let filteredTracks = trackOverview.filter((trackname) => {
+    return trackname.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <div className="w-full">
@@ -27,7 +35,13 @@ const Track = () => {
         <div className="flex justify-start items-center  gap-2 p-2 rounded-md shadow-md w-80">
           <Search size={18} className="text-[#7F7E83]" />
 
-          <input type="text" placeholder="Search Track" className="outline-0" />
+          <input
+            type="text"
+            placeholder="Search Track"
+            className="outline-0"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
         <div className="flex justify-center items-center text-white bg-[#01589A]  px-4 py-2 gap-2 rounded-md cursor-pointer ">
           <Plus size={18} />
@@ -43,7 +57,7 @@ const Track = () => {
 
       <div className="p-8">
         <div className="grid w-full grid-cols-1 grid-rows-4 gap-6 sm:grid-cols-2 md:grid-cols-2 md:px-0 lg:grid-cols-3 xl:grid-cols-4">
-          {trackOverview.map((track, index) => (
+          {filteredTracks.map((track, index) => (
             <Fragment key={track._id + index}>
               <TrackCard track={track} />
             </Fragment>
