@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 // import { DollarSign, FileText } from "lucide-react";
 import StatCard from "@/components/statCard";
 // import TrackCard from "@/components/overview-track-card";
@@ -7,6 +7,11 @@ import InvoiceList from "@/components/invoice-list";
 // import { ChartTooltipDefault } from "@/components/charts/revenuebar-chart";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import OverviewTrackCard from "@/components/overview-track-card";
+import { useQuery } from "@tanstack/react-query";
+import type { TrackResponse } from "@/types/track.type";
+import { allTracks } from "@/services/track-services";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import Loading from "@/components/loading";
 
 interface RevenueData {
   month: string;
@@ -19,6 +24,8 @@ interface InvoiceItem {
   amount: number;
   avatar: string;
 }
+
+export type TrackCardColors = { light: string; deep: string }[];
 
 const Overview: React.FC = () => {
   const stats = [
@@ -116,28 +123,71 @@ const Overview: React.FC = () => {
     },
   ];
 
+  const { data, isLoading: isloadingTacks } = useQuery<TrackResponse, Error>({
+    queryKey: ["get-all-tracks"],
+    queryFn: allTracks,
+  });
+
+  const trackDetails = data?.tracks || [];
+
+  const trackCardColors: TrackCardColors[] = [
+    [
+      { light: "#ECFDF3", deep: "#027A48" },
+      { light: "#F3F0FB", deep: "#6941C6" },
+    ],
+    [
+      { light: "#F3F0FB", deep: "#6991C6" },
+      { light: "#F3F0FB", deep: "#6941C6" },
+    ],
+    [
+      { light: "#555555", deep: "#111111" },
+      { light: "#F3F0FB", deep: "#6941C6" },
+    ],
+    [
+      { light: "#ECFDF3", deep: "#827D08" },
+      { light: "#F3F0FB", deep: "#6941C6" },
+    ],
+    [
+      { light: "#F3F0FB", deep: "#827D08" },
+      { light: "#F3F0FB", deep: "#6941C6" },
+    ],
+    [
+      { light: "#555555", deep: "#146111" },
+      { light: "#F3F0FB", deep: "#6941C6" },
+    ],
+  ];
+
   return (
     <>
       <SiteHeader
         title="Welcome Admin 👋"
         description="Track activity, trends, and popular destinations in real time"
       />
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-gray-50 p-6 ">
         <div className="max-w-7xl mx-auto">
-          {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {stats.map((stat, index) => (
               <StatCard key={index} {...stat} />
             ))}
           </div>
 
+          {isloadingTacks && <span>{/* <Loading /> */}</span>}
           {/* Tracks Section */}
           <div className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Tracks</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {tracks.map((track, index) => (
-                <OverviewTrackCard key={index} {...track} />
-              ))}
+              {trackDetails.map((track, index) => {
+                const trackColors = trackCardColors[index];
+
+                return (
+                  <Fragment key={track._id + index}>
+                    <OverviewTrackCard
+                      track={track}
+                      trackColors={trackColors}
+                    />
+                  </Fragment>
+                );
+              })}
             </div>
           </div>
 
@@ -147,7 +197,6 @@ const Overview: React.FC = () => {
             <InvoiceList invoices={invoices} />
           </div>
         </div>
-        {/* <ChartTooltipDefault /> */}
       </div>
     </>
   );

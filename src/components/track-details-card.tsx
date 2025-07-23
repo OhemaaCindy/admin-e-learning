@@ -1,30 +1,15 @@
-// const TrackDetailsCard = () => {
-//   return <div></div>;
-// };
-
-// export default TrackDetailsCard;
-
 import { Calendar, Pen, Trash2, User } from "lucide-react";
 import { Link } from "react-router";
 
 function TrackDetailsCard() {
   return (
     <div className="rounded-2xl shadow-lg overflow-hidden m-6  w-3xl ">
-      {/* Header with mountain landscape */}
       <Link to="/tracks/:id">
         <div className=" relative h-90 bg-gradient-to-b from-blue-300 to-blue-100 overflow-hidden "></div>
 
-        {/* Content */}
         <div className="p-6 h-90">
-          {/* Title */}
           <h2 className="text-2xl font-bold text-gray-900 mb-5 ">UI/UX</h2>
 
-          {/* Description */}
-          {/* <p className="text-gray-600 text-base mb-6 leading-relaxed">
-            Unlock your potential with comprehensive training in .....
-          </p> */}
-
-          {/* Course details */}
           <div className="flex justify-between items-center gap-3 mb-5">
             <div className="flex gap-3">
               <div className="flex items-center gap-3 text-gray-500">

@@ -5,7 +5,6 @@ import { Fragment } from "react";
 
 export default function TrackCard({ track }: { track: Track }) {
   const courses = track?.courses || [];
-  // console.log("🚀 ~ courses:", courses);
   return (
     <Link
       to="/tracks/:id"

@@ -16,7 +16,6 @@ const Track = () => {
   });
 
   const trackOverview = data?.tracks || [];
-  // console.log("🚀 ~ Track ~ trackOverview:", trackOverview);
 
   return (
     <div className="w-full">
@@ -51,14 +50,8 @@ const Track = () => {
           ))}
         </div>
       </div>
-      {/* {trackOverview.map((track, index) => (
-        <div key={index} className="bg-green-600 flex">
-          <TrackCard track={track} />
-        </div>
-      ))} */}
     </div>
   );
 };
 
 export default Track;
-// className="grid w-full grid-cols-1 gap-6 px-2 sm:grid-cols-2 md:grid-cols-3 md:px-0 lg:grid-cols-5"
