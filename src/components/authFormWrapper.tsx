@@ -36,6 +36,7 @@ export interface AuthFormWrapperProps
 export const AuthFormWrapper: React.FC<AuthFormWrapperProps> = ({
   title,
   description,
+  descriptionComponent,
   text,
   page,
   href,
@@ -45,7 +46,11 @@ export const AuthFormWrapper: React.FC<AuthFormWrapperProps> = ({
   return (
     <div className="rounded-lg bg-white p-8 shadow-md">
       <Logo />
-      <FormHeader title={title} description={description} />
+      <FormHeader
+        title={title}
+        description={description}
+        descriptionComponent={descriptionComponent}
+      />
       {children}
       <div className="mt-6">
         {otpBtn ? (

@@ -10,6 +10,7 @@ import { useRegisterAdmin } from "../hooks/register-admin.hook";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
+import { cn } from "@/lib/utils";
 
 const RegistrationForm: React.FC = () => {
   const navigate = useNavigate();
@@ -31,16 +32,23 @@ const RegistrationForm: React.FC = () => {
     // },
   });
 
-  const { mutate, isPending, error, isError, data } = useRegisterAdmin();
+  const {
+    mutate,
+    isPending,
+    error,
+    isError,
+    data: response,
+  } = useRegisterAdmin();
 
   const onSubmit = async (data: RegistrationFormData) => {
+    // console.log("🚀 ~ onSubmit ~ data:", data);
     mutate(data, {
       onSuccess(res) {
         Cookies.set("token", res.token);
         reset();
-        toast.success("Admin  created successfully");
+        toast.success("Admin created successfully");
 
-        navigate("/otp-verification");
+        navigate(`/otp-verification?email=${data.email}`);
       },
       onError() {
         toast.error("Failed to create account");
@@ -58,8 +66,8 @@ const RegistrationForm: React.FC = () => {
         </ul>
       )}
 
-      {data && data.success && (
-        <p className="text-green-600 mt-2">{data.message}</p>
+      {response && response.success && (
+        <p className="text-green-600 mt-2">{response.message}</p>
       )}
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
@@ -107,14 +115,27 @@ const RegistrationForm: React.FC = () => {
           required
         />
 
-        <InputField
-          label="Contact"
-          name="contact"
-          type="text"
-          register={register}
-          error={errors.contact?.message}
-          required
-        />
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Contact
+        </label>
+        <div
+          className={cn(
+            "flex items-center gap-2 w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ",
+            errors.contact?.message && "border-red-500 bg-red-50"
+          )}
+        >
+          <p className=" flex items-center gap-1 bg-[#E6E6E6]">
+            +233 <span className="-mt-1 text-[#E6E6E6]">|</span>
+          </p>
+          <input
+            className={"w-full outline-none focus:outline-none "}
+            type="text"
+            {...register("contact")}
+          />
+        </div>
+        {errors.contact && (
+          <span style={{ color: "red" }}>{errors?.contact?.message}</span>
+        )}
 
         <div className="pt-4">
           <Button

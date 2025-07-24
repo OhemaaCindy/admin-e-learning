@@ -14,6 +14,8 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Loading from "@/components/loading";
 import type { AllTrackResponse } from "@/types/invoices.types";
 import { allInvoice } from "@/services/invoice-services";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 interface RevenueData {
   month: string;
@@ -123,9 +125,16 @@ const Overview: React.FC = () => {
           {isloadingTacks && <span>{/* <Loading /> */}</span>}
           {/* Tracks Section */}
           <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Tracks</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                Tracks
+              </h2>
+              <Button variant={"ghost"} asChild>
+                <Link to={"/tracks"}>View more</Link>
+              </Button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {trackDetails.map((track, index) => {
+              {trackDetails.slice(0, 4).map((track, index) => {
                 const trackColors = trackCardColors[index];
 
                 return (

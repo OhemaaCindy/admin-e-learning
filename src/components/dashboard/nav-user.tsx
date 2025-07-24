@@ -24,13 +24,13 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useMutation } from "@tanstack/react-query";
-import { logout } from "@/services/auth-services";
 import { uselogoutAdmin } from "@/hooks/register-admin.hook";
-import toast from "react-hot-toast";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
 
   const user = {
     name: "Cindy Essuman",
@@ -46,58 +46,12 @@ export function NavUser() {
       .substring(0, 1)}`;
   }
 
-  // const { mutate } = useMutation({
-  //   mutationFn: logout,
-  //   onSuccess: () => {
-  //     console.log("Logged out successfully");
+  const { mutate } = uselogoutAdmin();
 
-  //   },
-  //   onError: (error) => {
-  //     console.error("Logout failed:", error);
-  //   },
-  // });
-
-  // const handleLogout = () => {
-  //   mutate();
-  // };
-
-  //  const { mutate } = uselogoutAdmin(
-  //   {onSuccess: () => {
-  //     console.log("Logged out successfully");
-
-  //   },
-  //   onError: (error) => {
-  //     console.error("Logout failed:", error);
-  //   },
-  //  })}
-  //  );
-
-  //  const handleLogout = () => {
-  //   mutate(
-  //       {onSuccess: () => {
-  //     console.log("Logged out successfully");
-
-  //   },
-  //   onError: (error) => {
-  //     console.error("Logout failed:", error);
-  //   },
-  //  })}
-  //   });
-  // };
-  // const onSubmit = async () => {
-  //   mutate( {
-  //     onSuccess() {
-  //     console.log("logout successfully")
-  //       reset();
-  //       toast.success("Logout successfully");
-
-  //       // navigate("/otp-verification");
-  //     },
-  //     onError() {
-  //       toast.error("Failed to create account");
-  //     },
-  //   });
-  // };
+  const handleLogout = () => {
+    mutate(), Cookies.remove("token");
+    navigate("/");
+  };
 
   return (
     <SidebarMenu>
@@ -127,31 +81,16 @@ export function NavUser() {
             align="end"
             sideOffset={4}
           >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">
-                    {fallbackName(user.name)}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="text-muted-foreground truncate text-xs">
-                    {user.email}
-                  </span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
+            <DropdownMenuLabel className="p-0 font-normal"></DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <IconUserCircle />
-                Prfile
+                Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="bg-amber-600">
+            <DropdownMenuItem onClick={handleLogout} className="bg-amber-400">
               <IconLogout />
               Log out
             </DropdownMenuItem>

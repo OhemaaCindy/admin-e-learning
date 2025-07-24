@@ -17,6 +17,7 @@ import type {
   LogoutResponse,
   RegisterResponse,
   RegisterType,
+  ResendOtpType,
   ResetPasswordResponseype,
   VerifyEmailPayloadType,
   VerifyEmailResponseType,
@@ -55,6 +56,11 @@ export const useResetPasswordAdmin = () =>
 export const useOtpVerifyAdmin = () =>
   useMutation<VerifyEmailResponseType, AuthErrorRes, VerifyEmailPayloadType>({
     mutationFn: (payload) => verifyEmailOtp(payload),
+  });
+
+export const useResendOtpAdmin = () =>
+  useMutation<ResendOtpType, AuthErrorRes>({
+    mutationFn: logout,
   });
 
 export const uselogoutAdmin = () =>

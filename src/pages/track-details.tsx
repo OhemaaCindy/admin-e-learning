@@ -14,7 +14,7 @@ const TrackDetails = () => {
   console.log("🚀 ~ TrackDetails ~ id:", id);
 
   const { data, isLoading } = useQuery<SingleTrackResponse, Error>({
-    queryKey: ["gert-single-track"],
+    queryKey: ["gert-single-track", id],
     queryFn: () => singleTrack(id as string),
   });
 

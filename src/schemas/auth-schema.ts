@@ -20,7 +20,17 @@ export const registrationSchema = z
       ),
     // password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
-    contact: z.string().min(8, "Contact should contain +233"),
+    contact: z
+      .string()
+      .regex(/^0?\d{9}$/, {
+        message: "Contact must be 10 digits",
+      })
+      .transform((val) => {
+        if (val.startsWith("0")) {
+          return "+233" + val.slice(1);
+        }
+        return "+233" + val;
+      }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
