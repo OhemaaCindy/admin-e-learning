@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import {
   forgotPasswordAdmin,
   loginAdmin,
+  logout,
   registerAdmin,
   resetAdminPassword,
   verifyEmailOtp,
@@ -13,6 +14,7 @@ import type {
   ForgotPasswordResponseType,
   LoginPayloadType,
   LoginResponseType,
+  LogoutResponse,
   RegisterResponse,
   RegisterType,
   ResetPasswordResponseype,
@@ -53,4 +55,9 @@ export const useResetPasswordAdmin = () =>
 export const useOtpVerifyAdmin = () =>
   useMutation<VerifyEmailResponseType, AuthErrorRes, VerifyEmailPayloadType>({
     mutationFn: (payload) => verifyEmailOtp(payload),
+  });
+
+export const uselogoutAdmin = () =>
+  useMutation<LogoutResponse, AuthErrorRes>({
+    mutationFn: logout,
   });

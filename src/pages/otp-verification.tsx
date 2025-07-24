@@ -2,15 +2,24 @@ import { useMutation } from "@tanstack/react-query";
 import { AuthFormWrapper } from "../components/authFormWrapper";
 import OtpForm from "../components/opt-form";
 import { resendOtp } from "@/services/auth-services";
+import toast from "react-hot-toast";
 
 export const Otpverification = () => {
-  //  const handleChange = () =>{
+  const { mutate: handleOtpResend } = useMutation({
+    mutationFn: resendOtp,
+  });
 
-  //  }
-
-  // const {data} = useMutation({
-  //  mutationFn:resendOtp
-  // })
+  const handleResend = () => {
+    handleOtpResend(),
+      {
+        onSuccess: () => {
+          toast.success("Logout sucessfull");
+        },
+        onError: (error: any) => {
+          toast.error(error.message);
+        },
+      };
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-500 to-blue-500">
@@ -25,10 +34,21 @@ export const Otpverification = () => {
           text="Didn't recieve the otp?"
           page="Resend Otp"
           href="#"
-          // onClick = {handleChange}
+          otpBtn={
+            <div className="flex justify-start items-center gap-4">
+              <p className="font-semibold">Didn't recieve the otp?</p>
+              <button
+                className="text-[#01589A] font-bold"
+                onClick={handleResend}
+              >
+                Resend Otp
+              </button>
+            </div>
+          }
         >
           <OtpForm />
         </AuthFormWrapper>
+        ;
       </div>
     </div>
   );

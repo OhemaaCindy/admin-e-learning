@@ -24,6 +24,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useMutation } from "@tanstack/react-query";
+import { logout } from "@/services/auth-services";
+import { uselogoutAdmin } from "@/hooks/register-admin.hook";
+import toast from "react-hot-toast";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -41,6 +45,59 @@ export function NavUser() {
       .split(" ")[1]
       .substring(0, 1)}`;
   }
+
+  // const { mutate } = useMutation({
+  //   mutationFn: logout,
+  //   onSuccess: () => {
+  //     console.log("Logged out successfully");
+
+  //   },
+  //   onError: (error) => {
+  //     console.error("Logout failed:", error);
+  //   },
+  // });
+
+  // const handleLogout = () => {
+  //   mutate();
+  // };
+
+  //  const { mutate } = uselogoutAdmin(
+  //   {onSuccess: () => {
+  //     console.log("Logged out successfully");
+
+  //   },
+  //   onError: (error) => {
+  //     console.error("Logout failed:", error);
+  //   },
+  //  })}
+  //  );
+
+  //  const handleLogout = () => {
+  //   mutate(
+  //       {onSuccess: () => {
+  //     console.log("Logged out successfully");
+
+  //   },
+  //   onError: (error) => {
+  //     console.error("Logout failed:", error);
+  //   },
+  //  })}
+  //   });
+  // };
+  // const onSubmit = async () => {
+  //   mutate( {
+  //     onSuccess() {
+  //     console.log("logout successfully")
+  //       reset();
+  //       toast.success("Logout successfully");
+
+  //       // navigate("/otp-verification");
+  //     },
+  //     onError() {
+  //       toast.error("Failed to create account");
+  //     },
+  //   });
+  // };
 
   return (
     <SidebarMenu>
@@ -94,7 +151,7 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem className="bg-amber-600">
               <IconLogout />
               Log out
             </DropdownMenuItem>

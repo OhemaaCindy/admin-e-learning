@@ -34,11 +34,11 @@ const PasswordResetForm = ({ userId }: { userId: string | undefined }) => {
       {
         onSuccess() {
           reset();
-          toast.success("Forgot password request sent successfully");
+          toast.success("Reset password link sent to your email");
           navigate("/");
         },
         onError() {
-          toast.error("Failed to send request.Please try again later");
+          toast.error("Failed to send link to email.Please try again later");
         },
       }
     );

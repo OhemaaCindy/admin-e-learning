@@ -10,7 +10,7 @@ export const apiEndpoints = {
     verifyEmail: "/auth/verify-email",
     resendVerificationToken: "/auth/resend-token",
     // update-password:"/auth/change-password",
-    // logout:"/admin/auth/logout"
+    logout: "/admin/auth/logout",
     // check-auth:"auth/check-auth"
   },
   TRACKS: {
