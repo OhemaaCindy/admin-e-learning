@@ -3,9 +3,12 @@ import TrackDetailsCard from "@/components/track-details-card";
 import { singleTrack } from "@/services/track-services";
 import type { SingleTrackResponse } from "@/types/track.type";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router";
+import { ChevronsLeft } from "lucide-react";
+import { useNavigate, useParams } from "react-router";
 
 const TrackDetails = () => {
+  const navigate = useNavigate();
+
   const params = useParams();
   const id = params.id;
   console.log("🚀 ~ TrackDetails ~ id:", id);
@@ -17,13 +20,22 @@ const TrackDetails = () => {
 
   const details = data?.track || {};
 
+  const handleBack = () => {
+    navigate("/tracks");
+  };
+
   return (
-    <div>
+    <div className="flex flex-col">
       <SiteHeader
         title={"Manage Tracks "}
         description={"Filter, sort, and access detailed tracks"}
       />
-      <div className="flex justify-center bg-red-500 w-full">
+      <div className="bg-[#8CB4FA] mx-5 w-fit rounded-full p-4">
+        <span onClick={handleBack} className="cursor-pointer">
+          <ChevronsLeft />
+        </span>
+      </div>
+      <div className="flex justify-center w-full  px-40 py-20 ">
         {isLoading && <div>Loading...</div>}
         {!isLoading && data && <TrackDetailsCard details={details} />}
       </div>

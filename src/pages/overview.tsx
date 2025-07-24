@@ -12,6 +12,8 @@ import type { TrackResponse } from "@/types/track.type";
 import { allTracks } from "@/services/track-services";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import Loading from "@/components/loading";
+import type { AllTrackResponse } from "@/types/invoices.types";
+import { allInvoice } from "@/services/invoice-services";
 
 interface RevenueData {
   month: string;
@@ -52,41 +54,6 @@ const Overview: React.FC = () => {
     },
   ];
 
-  const tracks = [
-    {
-      title: "Software Engineering",
-      duration: "12 weeks",
-      price: 400,
-      image: "/api/placeholder/280/128",
-      tags: ["Node.js", "React.js"],
-      gradient: "bg-gradient-to-br from-teal-400 to-cyan-500",
-    },
-    {
-      title: "Cloud Computing",
-      duration: "12 weeks",
-      price: 350,
-      image: "/api/placeholder/280/128",
-      tags: ["Azure", "AWS"],
-      gradient: "bg-gradient-to-br from-orange-400 to-red-500",
-    },
-    {
-      title: "Data Science",
-      duration: "12 weeks",
-      price: 400,
-      image: "/api/placeholder/280/128",
-      tags: ["PowerBI", "Python"],
-      gradient: "bg-gradient-to-br from-purple-500 to-indigo-600",
-    },
-    {
-      title: "UI/UX",
-      duration: "8 weeks",
-      price: 250,
-      image: "/api/placeholder/280/128",
-      tags: ["Figma", "Sketch"],
-      gradient: "bg-gradient-to-br from-blue-400 to-cyan-500",
-    },
-  ];
-
   const revenueData: RevenueData[] = [
     { month: "Jan", value: 2200 },
     { month: "Feb", value: 1800 },
@@ -94,33 +61,6 @@ const Overview: React.FC = () => {
     { month: "Apr", value: 2800 },
     { month: "May", value: 2900 },
     { month: "Jun", value: 2600 },
-  ];
-
-  const invoices: InvoiceItem[] = [
-    {
-      id: "1",
-      name: "James Anderson",
-      amount: 320,
-      avatar: "/api/placeholder/40/40",
-    },
-    {
-      id: "2",
-      name: "Michael Johnson",
-      amount: 210,
-      avatar: "/api/placeholder/40/40",
-    },
-    {
-      id: "3",
-      name: "David Brown",
-      amount: 315,
-      avatar: "/api/placeholder/40/40",
-    },
-    {
-      id: "4",
-      name: "Orlando Diggs",
-      amount: 250,
-      avatar: "/api/placeholder/40/40",
-    },
   ];
 
   const { data, isLoading: isloadingTacks } = useQuery<TrackResponse, Error>({
@@ -136,16 +76,16 @@ const Overview: React.FC = () => {
       { light: "#F3F0FB", deep: "#6941C6" },
     ],
     [
-      { light: "#F3F0FB", deep: "#6991C6" },
-      { light: "#F3F0FB", deep: "#6941C6" },
+      { light: "#F0F9FF", deep: "#026AA2" },
+      { light: "#F8F9FC", deep: "#5A628C" },
     ],
     [
-      { light: "#555555", deep: "#111111" },
-      { light: "#F3F0FB", deep: "#6941C6" },
+      { light: "#F7EDF6", deep: "#C11574" },
+      { light: "#E9F3FB", deep: "#175CD3" },
     ],
     [
-      { light: "#ECFDF3", deep: "#827D08" },
-      { light: "#F3F0FB", deep: "#6941C6" },
+      { light: "#FFF4ED", deep: "#B93815" },
+      { light: "#FFF1F3", deep: "#C01048" },
     ],
     [
       { light: "#F3F0FB", deep: "#827D08" },
@@ -156,6 +96,15 @@ const Overview: React.FC = () => {
       { light: "#F3F0FB", deep: "#6941C6" },
     ],
   ];
+
+  const { data: invoiceDetails, isLoading: isloadingInvoices } = useQuery<
+    AllTrackResponse,
+    Error
+  >({
+    queryKey: ["get-all-invoices"],
+    queryFn: allInvoice,
+  });
+  const info = invoiceDetails || [];
 
   return (
     <>
@@ -192,9 +141,11 @@ const Overview: React.FC = () => {
           </div>
 
           {/* Bottom Section */}
+          {isloadingInvoices && <span>{/* <Loading /> */}</span>}
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <RevenueChart data={revenueData} />
-            <InvoiceList invoices={invoices} />
+            {!isloadingInvoices && info && <InvoiceList info={info} />}
           </div>
         </div>
       </div>

@@ -3,12 +3,12 @@ import { Calendar, Pen, Trash2, User } from "lucide-react";
 
 function TrackDetailsCard({ details }: { details: Track }) {
   return (
-    <div className="h-2/4 rounded-2xl shadow-lg overflow-hidden   w-3xl ">
+    <div className=" rounded-2xl shadow-lg overflow-hidden  w-2xl ">
       <div className=" relative overflow-hidden "></div>
       <img
         src={details?.image}
         alt="track image"
-        className="h-full w-full object-cover"
+        className="h-80 w-full object-cover"
       />
       <div className="p-6 h-90">
         <h2 className="text-2xl font-bold text-gray-900 mb-5 ">
@@ -46,7 +46,7 @@ function TrackDetailsCard({ details }: { details: Track }) {
             {details?.ratings}
           </div>
         </div>
-        <p className="mb-3">{details?.description}</p>
+        <p className="mb-5">{details?.description}</p>
         <div className="flex items-center justify-end gap-3">
           <div className="bg-[#f1f1e7] p-3 shadow-md">
             <Pen size={20} className="text-[#01589A] cursor-pointer " />

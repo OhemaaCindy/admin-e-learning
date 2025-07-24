@@ -1,7 +1,17 @@
+import { useMutation } from "@tanstack/react-query";
 import { AuthFormWrapper } from "../components/authFormWrapper";
 import OtpForm from "../components/opt-form";
+import { resendOtp } from "@/services/auth-services";
 
 export const Otpverification = () => {
+  //  const handleChange = () =>{
+
+  //  }
+
+  // const {data} = useMutation({
+  //  mutationFn:resendOtp
+  // })
+
   return (
     <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-500 to-blue-500">
       <div className="absolute inset-0 bg-[url('/images/form-bg.png')] bg-cover bg-center bg-no-repeat"></div>
@@ -15,6 +25,7 @@ export const Otpverification = () => {
           text="Didn't recieve the otp?"
           page="Resend Otp"
           href="#"
+          // onClick = {handleChange}
         >
           <OtpForm />
         </AuthFormWrapper>

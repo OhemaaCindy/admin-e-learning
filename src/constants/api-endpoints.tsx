@@ -17,4 +17,7 @@ export const apiEndpoints = {
     getAllTracks: "/tracks",
     getOneTrack: (id: string) => `/tracks/${id}`,
   },
+  INVOICES: {
+    getAllInvoices: "/invoices",
+  },
 };

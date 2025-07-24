@@ -1,11 +1,6 @@
-interface InvoiceItem {
-  id: string;
-  name: string;
-  amount: number;
-  avatar: string;
-}
+import type { AllTrackResponse } from "@/types/invoices.types";
 
-const InvoiceList: React.FC<{ invoices: InvoiceItem[] }> = ({ invoices }) => {
+const InvoiceList = ({ info }: { info: AllTrackResponse }) => {
   return (
     <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
       <h3 className="text-lg font-semibold text-gray-900 mb-6">
@@ -16,21 +11,25 @@ const InvoiceList: React.FC<{ invoices: InvoiceItem[] }> = ({ invoices }) => {
           <span>Name</span>
           <span>Amount</span>
         </div>
-        {invoices.map((invoice) => (
+        {info.invoices.map((invoice) => (
           <div
-            key={invoice.id}
+            key={invoice._id}
             className="flex items-center justify-between py-3 border-b border-gray-50 last:border-0"
           >
             <div className="flex items-center space-x-3">
               <img
-                src={invoice.avatar}
-                alt={invoice.name}
+                src={invoice.learner?.profileImage}
+                alt="invoice.avatar"
                 className="w-10 h-10 rounded-full object-cover"
               />
-              <span className="font-medium text-gray-900">{invoice.name}</span>
+              <span className="font-medium text-gray-900">
+                {`${invoice?.learner?.firstName || "N/A"} ${
+                  invoice?.learner?.lastName || "N/A"
+                }`}
+              </span>
             </div>
             <span className="font-semibold text-gray-900">
-              ${invoice.amount}
+              ${invoice?.amount}
             </span>
           </div>
         ))}
