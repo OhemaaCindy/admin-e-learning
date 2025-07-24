@@ -14,7 +14,7 @@ export const Otpverification = () => {
           description="Enter the verification code we sent to your admin1234@gmail.com"
           text="Didn't recieve the otp?"
           page="Resend Otp"
-          href="/"
+          href="#"
         >
           <OtpForm />
         </AuthFormWrapper>

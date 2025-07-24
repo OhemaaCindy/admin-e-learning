@@ -12,7 +12,6 @@ import { useState } from "react";
 
 const Track = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  console.log("🚀 ~ Track ~ seachTerm:", searchTerm);
 
   const { data, isLoading, error, isError } = useQuery<TrackResponse, Error>({
     queryKey: ["get-all-tracks"],
@@ -57,11 +56,15 @@ const Track = () => {
 
       <div className="p-8">
         <div className="grid w-full grid-cols-1 grid-rows-4 gap-6 sm:grid-cols-2 md:grid-cols-2 md:px-0 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredTracks.map((track, index) => (
-            <Fragment key={track._id + index}>
-              <TrackCard track={track} />
-            </Fragment>
-          ))}
+          {!isLoading && filteredTracks && filteredTracks.length === 0 ? (
+            <div>No tracks to show</div>
+          ) : (
+            filteredTracks.map((track, index) => (
+              <Fragment key={track._id + index}>
+                <TrackCard track={track} />
+              </Fragment>
+            ))
+          )}
         </div>
       </div>
     </div>
