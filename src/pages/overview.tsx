@@ -15,6 +15,7 @@ import type { AllTrackResponse } from "@/types/invoices.types";
 import { allInvoice } from "@/services/invoice-services";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
+import { LoaderCircle } from "lucide-react";
 
 interface RevenueData {
   month: string;
@@ -121,7 +122,15 @@ const Overview: React.FC = () => {
             ))}
           </div>
 
-          {isloadingTacks && <span>Loading...</span>}
+          {isloadingTacks && (
+            // <div className="flex items-center text-[#15A3DD] ... px-6 py-2 gap-2 rounded-sm">
+            //   <LoaderCircle className="animate-spin" />
+            //   <button type="button" className="" disabled>
+            //     Loading…
+            //   </button>
+            // </div>
+            <span></span>
+          )}
           {/* Tracks Section */}
           <div className="mb-8">
             <div className="flex items-center justify-between">
@@ -149,15 +158,18 @@ const Overview: React.FC = () => {
           </div>
 
           {/* Bottom Section */}
-          {isloadingInvoices && (
-            <span>
-              {/* <Loading /> */}
-              Loading.....
-            </span>
-          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <RevenueChart data={revenueData} />
+            {isloadingInvoices && (
+              // <div className="flex items-center text-[#15A3DD] ... px-6 py-2 gap-2 rounded-sm">
+              //   <LoaderCircle className="animate-spin" />
+              //   <button type="button" className="" disabled>
+              //     Loading…
+              //   </button>
+              // </div>
+              <span></span>
+            )}
             {!isloadingInvoices && info && <InvoiceList info={info} />}
           </div>
         </div>

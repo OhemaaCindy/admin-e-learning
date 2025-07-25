@@ -4,11 +4,13 @@ import { allTracks } from "@/services/track-services";
 import type { Error } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 
-import { Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Fragment } from "react/jsx-runtime";
 import type { TrackResponse } from "@/types/track.type";
 import { useState } from "react";
+import { AddModal } from "@/components/add-modal";
+import AddTrackForm from "@/components/add-track-form";
 
 const Track = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,10 +44,13 @@ const Track = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex justify-center items-center text-white bg-[#01589A]  px-4 py-2 gap-2 rounded-md cursor-pointer ">
+        {/* <div className="flex justify-center items-center text-white bg-[#01589A]  px-4 py-2 gap-2 rounded-md cursor-pointer ">
           <Plus size={18} />
           <button className="cursor-pointer">Add Track</button>
-        </div>
+        </div> */}
+        <AddModal text="Add Track" title="Add New Track">
+          <AddTrackForm />
+        </AddModal>
       </div>
       {isLoading && (
         <span>

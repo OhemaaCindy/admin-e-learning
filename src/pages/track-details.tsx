@@ -3,7 +3,7 @@ import TrackDetailsCard from "@/components/track-details-card";
 import { singleTrack } from "@/services/track-services";
 import type { SingleTrackResponse } from "@/types/track.type";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronsLeft } from "lucide-react";
+import { ChevronsLeft, LoaderCircle } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 
 const TrackDetails = () => {
@@ -11,7 +11,6 @@ const TrackDetails = () => {
 
   const params = useParams();
   const id = params.id;
-  console.log("🚀 ~ TrackDetails ~ id:", id);
 
   const { data, isLoading } = useQuery<SingleTrackResponse, Error>({
     queryKey: ["gert-single-track", id],
@@ -36,7 +35,14 @@ const TrackDetails = () => {
         </span>
       </div>
       <div className="flex justify-center w-full  px-40 py-20 ">
-        {isLoading && <div>Loading...</div>}
+        {isLoading && (
+          <div className="flex items-center text-[#15A3DD] ... px-6 py-2 gap-2 rounded-sm">
+            <LoaderCircle className="animate-spin" />
+            <button type="button" className="" disabled>
+              Loading…
+            </button>
+          </div>
+        )}
         {!isLoading && data && <TrackDetailsCard details={details} />}
       </div>
     </div>
