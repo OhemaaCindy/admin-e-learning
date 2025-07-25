@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 // import { DollarSign, FileText } from "lucide-react";
 import StatCard from "@/components/statCard";
 // import TrackCard from "@/components/overview-track-card";
@@ -7,6 +7,15 @@ import InvoiceList from "@/components/invoice-list";
 // import { ChartTooltipDefault } from "@/components/charts/revenuebar-chart";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import OverviewTrackCard from "@/components/overview-track-card";
+import { useQuery } from "@tanstack/react-query";
+import type { TrackResponse } from "@/types/track.type";
+import { allTracks } from "@/services/track-services";
+
+import type { AllTrackResponse } from "@/types/invoices.types";
+import { allInvoice } from "@/services/invoice-services";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
+import { LoaderCircle } from "lucide-react";
 
 interface RevenueData {
   month: string;
@@ -19,6 +28,8 @@ interface InvoiceItem {
   amount: number;
   avatar: string;
 }
+
+export type TrackCardColors = { light: string; deep: string }[];
 
 const Overview: React.FC = () => {
   const stats = [
@@ -45,41 +56,6 @@ const Overview: React.FC = () => {
     },
   ];
 
-  const tracks = [
-    {
-      title: "Software Engineering",
-      duration: "12 weeks",
-      price: 400,
-      image: "/api/placeholder/280/128",
-      tags: ["Node.js", "React.js"],
-      gradient: "bg-gradient-to-br from-teal-400 to-cyan-500",
-    },
-    {
-      title: "Cloud Computing",
-      duration: "12 weeks",
-      price: 350,
-      image: "/api/placeholder/280/128",
-      tags: ["Azure", "AWS"],
-      gradient: "bg-gradient-to-br from-orange-400 to-red-500",
-    },
-    {
-      title: "Data Science",
-      duration: "12 weeks",
-      price: 400,
-      image: "/api/placeholder/280/128",
-      tags: ["PowerBI", "Python"],
-      gradient: "bg-gradient-to-br from-purple-500 to-indigo-600",
-    },
-    {
-      title: "UI/UX",
-      duration: "8 weeks",
-      price: 250,
-      image: "/api/placeholder/280/128",
-      tags: ["Figma", "Sketch"],
-      gradient: "bg-gradient-to-br from-blue-400 to-cyan-500",
-    },
-  ];
-
   const revenueData: RevenueData[] = [
     { month: "Jan", value: 2200 },
     { month: "Feb", value: 1800 },
@@ -89,32 +65,48 @@ const Overview: React.FC = () => {
     { month: "Jun", value: 2600 },
   ];
 
-  const invoices: InvoiceItem[] = [
-    {
-      id: "1",
-      name: "James Anderson",
-      amount: 320,
-      avatar: "/api/placeholder/40/40",
-    },
-    {
-      id: "2",
-      name: "Michael Johnson",
-      amount: 210,
-      avatar: "/api/placeholder/40/40",
-    },
-    {
-      id: "3",
-      name: "David Brown",
-      amount: 315,
-      avatar: "/api/placeholder/40/40",
-    },
-    {
-      id: "4",
-      name: "Orlando Diggs",
-      amount: 250,
-      avatar: "/api/placeholder/40/40",
-    },
+  const { data, isLoading: isloadingTacks } = useQuery<TrackResponse, Error>({
+    queryKey: ["get-all-tracks"],
+    queryFn: allTracks,
+  });
+
+  const trackDetails = data?.tracks || [];
+
+  const trackCardColors: TrackCardColors[] = [
+    [
+      { light: "#ECFDF3", deep: "#027A48" },
+      { light: "#F3F0FB", deep: "#6941C6" },
+    ],
+    [
+      { light: "#F0F9FF", deep: "#026AA2" },
+      { light: "#F8F9FC", deep: "#5A628C" },
+    ],
+    [
+      { light: "#F7EDF6", deep: "#C11574" },
+      { light: "#E9F3FB", deep: "#175CD3" },
+    ],
+    [
+      { light: "#FFF4ED", deep: "#B93815" },
+      { light: "#FFF1F3", deep: "#C01048" },
+    ],
+    [
+      { light: "#F3F0FB", deep: "#827D08" },
+      { light: "#F3F0FB", deep: "#6941C6" },
+    ],
+    [
+      { light: "#555555", deep: "#146111" },
+      { light: "#F3F0FB", deep: "#6941C6" },
+    ],
   ];
+
+  const { data: invoiceDetails, isLoading: isloadingInvoices } = useQuery<
+    AllTrackResponse,
+    Error
+  >({
+    queryKey: ["get-all-invoices"],
+    queryFn: allInvoice,
+  });
+  const info = invoiceDetails || [];
 
   return (
     <>
@@ -122,32 +114,65 @@ const Overview: React.FC = () => {
         title="Welcome Admin 👋"
         description="Track activity, trends, and popular destinations in real time"
       />
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-gray-50 p-6 ">
         <div className="max-w-7xl mx-auto">
-          {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {stats.map((stat, index) => (
               <StatCard key={index} {...stat} />
             ))}
           </div>
 
+          {isloadingTacks && (
+            // <div className="flex items-center text-[#15A3DD] ... px-6 py-2 gap-2 rounded-sm">
+            //   <LoaderCircle className="animate-spin" />
+            //   <button type="button" className="" disabled>
+            //     Loading…
+            //   </button>
+            // </div>
+            <span></span>
+          )}
           {/* Tracks Section */}
           <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Tracks</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                Tracks
+              </h2>
+              <Button variant={"ghost"} asChild>
+                <Link to={"/tracks"}>View more</Link>
+              </Button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {tracks.map((track, index) => (
-                <OverviewTrackCard key={index} {...track} />
-              ))}
+              {trackDetails.slice(0, 4).map((track, index) => {
+                const trackColors = trackCardColors[index];
+
+                return (
+                  <Fragment key={track._id + index}>
+                    <OverviewTrackCard
+                      track={track}
+                      trackColors={trackColors}
+                    />
+                  </Fragment>
+                );
+              })}
             </div>
           </div>
 
           {/* Bottom Section */}
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <RevenueChart data={revenueData} />
-            <InvoiceList invoices={invoices} />
+            {isloadingInvoices && (
+              // <div className="flex items-center text-[#15A3DD] ... px-6 py-2 gap-2 rounded-sm">
+              //   <LoaderCircle className="animate-spin" />
+              //   <button type="button" className="" disabled>
+              //     Loading…
+              //   </button>
+              // </div>
+              <span></span>
+            )}
+            {!isloadingInvoices && info && <InvoiceList info={info} />}
           </div>
         </div>
-        {/* <ChartTooltipDefault /> */}
       </div>
     </>
   );

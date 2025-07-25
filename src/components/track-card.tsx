@@ -5,10 +5,9 @@ import { Fragment } from "react";
 
 export default function TrackCard({ track }: { track: Track }) {
   const courses = track?.courses || [];
-  // console.log("🚀 ~ courses:", courses);
   return (
     <Link
-      to="/tracks/:id"
+      to={`${track._id}`}
       className="inline-block h-[420px] rounded-2xl shadow-lg overflow-x-hidden"
     >
       <div className="w-full h-full flex flex-col">

@@ -119,3 +119,34 @@ export interface ResendOtpType {
   success: boolean;
   message: string;
 }
+
+export interface LogoutResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface CheckAuthResponse {
+  success: boolean;
+  user: User;
+}
+
+export interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  contact: string;
+  isVerified: boolean;
+  verificationToken: string;
+  verificationTokenExpiresAt: Date;
+  lastLogin: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+  resetPasswordExpiresAt: Date;
+  resetPasswordToken: string;
+  description: string;
+  disabled: boolean;
+  location: string;
+}

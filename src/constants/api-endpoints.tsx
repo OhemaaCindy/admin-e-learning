@@ -9,11 +9,15 @@ export const apiEndpoints = {
     resetPassword: (id: string) => `/auth/reset-password/${id}`,
     verifyEmail: "/auth/verify-email",
     resendVerificationToken: "/auth/resend-token",
+    logout: "/admin/auth/logout",
+    checkAuth: "auth/check-auth",
     // update-password:"/auth/change-password",
-    // logout:"/admin/auth/logout"
-    // check-auth:"auth/check-auth"
   },
   TRACKS: {
     getAllTracks: "/tracks",
+    getOneTrack: (id: string) => `/tracks/${id}`,
+  },
+  INVOICES: {
+    getAllInvoices: "/invoices",
   },
 };
