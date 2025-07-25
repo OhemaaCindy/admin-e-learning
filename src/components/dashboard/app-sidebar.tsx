@@ -1,14 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  // IconChartBar,
-  // IconDashboard,
-  // IconFolder,
-  // IconInnerShadowTop,
-  IconListDetails,
-  // IconUsers,
-} from "@tabler/icons-react";
+import { IconListDetails } from "@tabler/icons-react";
 
 import {
   Sidebar,

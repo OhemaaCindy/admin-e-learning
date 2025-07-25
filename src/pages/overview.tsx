@@ -10,8 +10,7 @@ import OverviewTrackCard from "@/components/overview-track-card";
 import { useQuery } from "@tanstack/react-query";
 import type { TrackResponse } from "@/types/track.type";
 import { allTracks } from "@/services/track-services";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import Loading from "@/components/loading";
+
 import type { AllTrackResponse } from "@/types/invoices.types";
 import { allInvoice } from "@/services/invoice-services";
 import { Button } from "@/components/ui/button";
@@ -122,7 +121,7 @@ const Overview: React.FC = () => {
             ))}
           </div>
 
-          {isloadingTacks && <span>{/* <Loading /> */}</span>}
+          {isloadingTacks && <span>Loading...</span>}
           {/* Tracks Section */}
           <div className="mb-8">
             <div className="flex items-center justify-between">
@@ -150,7 +149,12 @@ const Overview: React.FC = () => {
           </div>
 
           {/* Bottom Section */}
-          {isloadingInvoices && <span>{/* <Loading /> */}</span>}
+          {isloadingInvoices && (
+            <span>
+              {/* <Loading /> */}
+              Loading.....
+            </span>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <RevenueChart data={revenueData} />

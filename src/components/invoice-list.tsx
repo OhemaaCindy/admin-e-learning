@@ -1,4 +1,5 @@
 import type { AllTrackResponse } from "@/types/invoices.types";
+import { UserIcon } from "lucide-react";
 
 const InvoiceList = ({ info }: { info: AllTrackResponse }) => {
   return (
@@ -17,11 +18,18 @@ const InvoiceList = ({ info }: { info: AllTrackResponse }) => {
             className="flex items-center justify-between py-3 border-b border-gray-50 last:border-0"
           >
             <div className="flex items-center space-x-3">
-              <img
-                src={invoice.learner?.profileImage}
-                alt="invoice.avatar"
-                className="w-10 h-10 rounded-full object-cover"
-              />
+              {invoice.learner?.profileImage ? (
+                <img
+                  src={invoice.learner?.profileImage}
+                  alt="invoice.avatar"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                  <UserIcon className="h-6 w-6 text-gray-500" />
+                </div>
+              )}
+
               <span className="font-medium text-gray-900">
                 {`${invoice?.learner?.firstName || "N/A"} ${
                   invoice?.learner?.lastName || "N/A"

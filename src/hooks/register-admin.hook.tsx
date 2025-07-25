@@ -1,5 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  checkAuthUser,
   forgotPasswordAdmin,
   loginAdmin,
   logout,
@@ -10,6 +11,8 @@ import {
 } from "../services/auth-services";
 import type {
   AuthErrorRes,
+  CheckAuthResponse,
+  CheckAuthType,
   ForgotPasswordPayloadType,
   ForgotPasswordResponseType,
   LoginPayloadType,
