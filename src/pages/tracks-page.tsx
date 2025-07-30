@@ -39,7 +39,7 @@ const Track = () => {
           <input
             type="text"
             placeholder="Search Track"
-            className="outline-0"
+            className="outline-0 w-full"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -59,7 +59,7 @@ const Track = () => {
       <div className="p-8">
         <div className="grid w-full grid-cols-1 grid-rows-4 gap-6 sm:grid-cols-2 md:grid-cols-2 md:px-0 lg:grid-cols-3 xl:grid-cols-4">
           {!isLoading && filteredTracks && filteredTracks.length === 0 ? (
-            <div>No tracks to show</div>
+            <div>No track to show</div>
           ) : (
             filteredTracks.map((track, index) => (
               <Fragment key={track._id + index}>

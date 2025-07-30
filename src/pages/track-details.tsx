@@ -18,6 +18,7 @@ const TrackDetails = () => {
   });
 
   const details = data?.track || {};
+  // console.log("🚀 ~ TrackDetails ~ details:", details);
 
   const handleBack = () => {
     navigate("/tracks");

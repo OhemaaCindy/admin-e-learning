@@ -26,15 +26,14 @@ const RevenueChart: React.FC<{ data: RevenueData[] }> = ({ data }) => {
           </div>
         ))}
       </div>
-      <div className="flex justify-between text-xs text-gray-500 mt-2">
+      {/* <div className="flex justify-between text-xs text-gray-500 mt-2">
         <span>0</span>
         <span>1k</span>
         <span>2k</span>
         <span>3k</span>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default RevenueChart
-
+export default RevenueChart;

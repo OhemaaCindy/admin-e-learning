@@ -1,9 +1,9 @@
-import type { Track } from "@/types/track.type";
 import { Calendar, User } from "lucide-react";
 import { UpdateModal } from "./update-modal";
 import UpdateTrackForm from "./update-track-form";
 import { DeleteModal } from "./delete-modal";
 import Deletetrack from "./delete-track";
+import type { Track } from "@/types/track.type";
 
 function TrackDetailsCard({ details }: { details: Track }) {
   return (
@@ -40,10 +40,9 @@ function TrackDetailsCard({ details }: { details: Track }) {
         <div className="flex items-center justify-between mb-5">
           <div className="flex gap-3">
             <span className="px-4 py-1 bg-red-50 text-red-600 rounded-full text-sm font-medium border border-red-100">
-              Figma
-            </span>
-            <span className="px-4 py-1 bg-pink-50 text-pink-600 rounded-full text-sm font-medium border border-pink-100">
-              Sketch
+              {details?.courses.map((course) => (
+                <div key={course._id}>{course?.title}</div>
+              ))}
             </span>
           </div>
           <div className="bg-[#FFF4ED] text-[#B93815] px-4 py-1 rounded-full">
