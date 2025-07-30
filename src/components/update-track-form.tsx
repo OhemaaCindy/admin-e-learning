@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 // import { cn } from "@/lib/utils";
 import { Button } from "./button";
 
-const AddTrackForm = () => {
+const UpdateTrackForm = () => {
   const {
     register,
     // handleSubmit,
@@ -89,7 +89,7 @@ const AddTrackForm = () => {
             disabled={isSubmitting}
             className="mb-4 cursor-pointer"
           >
-            {isSubmitting ? "Creating Track..." : "Create Track"}
+            {isSubmitting ? "Updating Track..." : "Update Track"}
           </Button>
         </div>
       </form>
@@ -97,4 +97,4 @@ const AddTrackForm = () => {
   );
 };
 
-export default AddTrackForm;
+export default UpdateTrackForm;

@@ -6,20 +6,18 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Plus, X } from "lucide-react";
+import { Pen, X } from "lucide-react";
 
 interface ModalProps {
-  text: string;
   title: string;
   children: React.ReactNode;
 }
-export function AddModal({ text, title, children }: ModalProps) {
+export function UpdateModal({ title, children }: ModalProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <div className="flex justify-center items-center text-white bg-[#01589A]  px-4 py-2 gap-2 rounded-md cursor-pointer w-fit">
-          <Plus size={18} />
-          <button className="cursor-pointer">{text}</button>
+        <div className="bg-[#fbfbf8] p-3 shadow-md">
+          <Pen size={20} className="text-[#01589A] cursor-pointer " />
         </div>
       </AlertDialogTrigger>
       <AlertDialogContent>

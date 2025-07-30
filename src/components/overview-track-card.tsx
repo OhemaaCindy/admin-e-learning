@@ -9,6 +9,7 @@ const OverviewTrackCard = ({
   track: Track;
   trackColors: TrackCardColors;
 }) => {
+  console.log("🚀 ~ OverviewTrackCard ~ trackColors:", trackColors);
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
       <div className={`h-32  relative flex items-center justify-center`}>
@@ -34,7 +35,7 @@ const OverviewTrackCard = ({
               <span
                 key={course._id}
                 className="px-2 py-1 text-xs rounded-md font-medium"
-                style={{ color: colors.deep, backgroundColor: colors.light }}
+                style={{ backgroundColor: colors?.light, color: colors?.deep }}
               >
                 {course?.title}
               </span>

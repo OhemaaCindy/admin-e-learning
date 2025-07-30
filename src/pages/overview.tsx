@@ -29,7 +29,7 @@ interface InvoiceItem {
   avatar: string;
 }
 
-export type TrackCardColors = { light: string; deep: string }[];
+export type TrackCardColors = { light?: string; deep?: string }[];
 
 const Overview: React.FC = () => {
   const stats = [
@@ -143,7 +143,7 @@ const Overview: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {trackDetails.slice(0, 4).map((track, index) => {
-                const trackColors = trackCardColors[index];
+                const trackColors = trackCardColors?.[index];
 
                 return (
                   <Fragment key={track._id + index}>

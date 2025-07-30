@@ -31,10 +31,9 @@ axiosClient.interceptors.response.use(
   function (error) {
     if (error.response) {
       if (error.response.status === 401) {
-        Cookies.remove("token"); // optional: clear token on unauth
+        Cookies.remove("token");
         window.location.href = "/";
       } else if (error.response.status === 500) {
-        // return a rejected promise with custom message
         return Promise.reject(
           new Error("Server error. Please try again later.")
         );

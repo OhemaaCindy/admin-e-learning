@@ -38,3 +38,36 @@ export const singleTrack = async (id: string): Promise<SingleTrackResponse> => {
     } as AuthErrorRes;
   }
 };
+
+export const updateTrack = async (id: string, payload) => {
+  try {
+    const response = await axiosClient.put(
+      apiEndpoints.TRACKS.updateTrack(id),
+      payload
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as AuthErrorRes;
+    }
+    throw {
+      success: false,
+      errors: [{ message: "Something went wrong" }],
+    } as AuthErrorRes;
+  }
+};
+
+export const deleteTrack = async (id: string) => {
+  try {
+    const response = await axiosClient.put(apiEndpoints.TRACKS.deleteTrack(id));
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as AuthErrorRes;
+    }
+    throw {
+      success: false,
+      errors: [{ message: "Something went wrong" }],
+    } as AuthErrorRes;
+  }
+};
