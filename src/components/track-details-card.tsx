@@ -1,7 +1,9 @@
 import type { Track } from "@/types/track.type";
-import { Calendar, Trash2, User } from "lucide-react";
+import { Calendar, User } from "lucide-react";
 import { UpdateModal } from "./update-modal";
 import UpdateTrackForm from "./update-track-form";
+import { DeleteModal } from "./delete-modal";
+import Deletetrack from "./delete-track";
 
 function TrackDetailsCard({ details }: { details: Track }) {
   return (
@@ -50,15 +52,13 @@ function TrackDetailsCard({ details }: { details: Track }) {
         </div>
         <p className="mb-5">{details?.description}</p>
         <div className="flex items-center justify-end gap-3">
-          {/* <div className="bg-[#fbfbf8] p-3 shadow-md">
-            <Pen size={20} className="text-[#01589A] cursor-pointer " />
-          </div> */}
           <UpdateModal title="Update Track">
             <UpdateTrackForm />
           </UpdateModal>
-          <div className="bg-[#fbfbf8] p-3 shadow-md">
-            <Trash2 size={20} className="text-[#2E2C48] cursor-pointer " />
-          </div>
+
+          <DeleteModal title="Delete Track">
+            <Deletetrack />
+          </DeleteModal>
         </div>
       </div>
     </div>
