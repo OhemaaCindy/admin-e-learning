@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/dashboard/site-header";
 import TrackDetailsCard from "@/components/track-details-card";
 import { singleTrack } from "@/services/track-services";
-import type { SingleTrackResponse } from "@/types/track.type";
+import type { SingleTrackResponse, Track } from "@/types/track.type";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronsLeft, LoaderCircle } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
@@ -13,12 +13,11 @@ const TrackDetails = () => {
   const id = params.id;
 
   const { data, isLoading } = useQuery<SingleTrackResponse, Error>({
-    queryKey: ["gert-single-track", id],
+    queryKey: ["get-single-track", id],
     queryFn: () => singleTrack(id as string),
   });
 
-  const details = data?.track || {};
-  // console.log("🚀 ~ TrackDetails ~ details:", details);
+  const details = data?.track;
 
   const handleBack = () => {
     navigate("/tracks");
@@ -44,7 +43,11 @@ const TrackDetails = () => {
             </button>
           </div>
         )}
-        {!isLoading && data && <TrackDetailsCard details={details} />}
+        {isLoading ? (
+          "loadin..."
+        ) : (
+          <TrackDetailsCard details={details as Track} />
+        )}
       </div>
     </div>
   );

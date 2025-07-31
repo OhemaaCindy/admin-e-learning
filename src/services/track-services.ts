@@ -39,6 +39,24 @@ export const singleTrack = async (id: string): Promise<SingleTrackResponse> => {
   }
 };
 
+export const createTrack = async (payload) => {
+  try {
+    const response = await axiosClient.post(
+      apiEndpoints.TRACKS.createTrack,
+      payload
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as AuthErrorRes;
+    }
+    throw {
+      success: false,
+      errors: [{ message: "Something went wrong" }],
+    } as AuthErrorRes;
+  }
+};
+
 export const updateTrack = async (id: string, payload) => {
   try {
     const response = await axiosClient.put(

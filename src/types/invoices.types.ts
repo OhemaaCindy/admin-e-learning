@@ -18,7 +18,7 @@ interface Invoice {
   paidAt?: Date;
   paystackTransactionId?: string;
 }
-interface Learner {
+export interface Learner {
   _id: string;
   firstName: string;
   lastName: string;

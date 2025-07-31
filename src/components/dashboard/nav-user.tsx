@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  IconCreditCard,
+  // IconCreditCard,
   IconDotsVertical,
   IconLogout,
-  IconNotification,
+  // IconNotification,
   IconUserCircle,
 } from "@tabler/icons-react";
 
@@ -30,7 +30,8 @@ import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { checkAuthUser } from "@/services/auth-services";
 import type { CheckAuthResponse } from "@/types/types";
-import { Info } from "lucide-react";
+// import { Info } from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -50,17 +51,15 @@ export function NavUser() {
     navigate("/");
   };
 
-  const { data: userInfo } = useQuery<CheckAuthResponse, Error>({
+  const { data: userInfo, isLoading } = useQuery<CheckAuthResponse, Error>({
     queryKey: ["get-info"],
     queryFn: checkAuthUser,
   });
+
   const info = userInfo?.user;
 
-  function fallbackName(info: string | undefine): string {
-    if (!info?.firstName || info?.lastName) return "";
-    return `${info?.firstName.split("")[0]}${info?.lastName
-      .split(" ")[1]
-      .substring(0, 1)}`;
+  function fallbackName(info: { firstName: string; lastName: string }): string {
+    return `${info.firstName.split("")[0]}${info.lastName.split("")[0]}`;
   }
 
   return (
@@ -74,13 +73,30 @@ export function NavUser() {
             >
               <Avatar className="size-11">
                 <AvatarImage src="" alt="user name" />
-                <AvatarFallback className="rounded-lg">
-                  {fallbackName(`${info?.firstName} ${info?.lastName}`)}
+                <AvatarFallback className="rounded-lg text-black uppercase">
+                  {isLoading ? (
+                    <Skeleton className="size-full rounded-full bg-amber-400/10" />
+                  ) : (
+                    fallbackName({
+                      firstName: info?.firstName ?? "",
+                      lastName: info?.lastName ?? "",
+                    })
+                  )}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{`${info?.firstName} ${info?.lastName}`}</span>
-                <span className=" truncate text-xs">{info?.email}</span>
+                {isLoading ? (
+                  // "loading"
+                  <div className="flex flex-col gap-1">
+                    <Skeleton className="h-4 w-full bg-amber-400/10" />
+                    <Skeleton className="h-4 w-full bg-amber-400/10" />
+                  </div>
+                ) : (
+                  <>
+                    <span className="truncate font-medium">{`${info?.firstName} ${info?.lastName}`}</span>
+                    <span className=" truncate text-xs">{info?.email}</span>
+                  </>
+                )}
               </div>
               <IconDotsVertical className="ml-auto size-4" />
             </SidebarMenuButton>
