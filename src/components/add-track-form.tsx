@@ -1,21 +1,27 @@
-import {
-  registrationSchema,
-  type RegistrationFormData,
-} from "@/schemas/auth-schema";
 import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 // import { cn } from "@/lib/utils";
 import { Button } from "./button";
+import {
+  AddTrackTypeSchema,
+  type AddTrackFormData,
+} from "@/schemas/track-schema";
+import type { AddTrackType } from "@/types/track.type";
+import TrackPhotoSelector from "./track-picture-uploadSelector";
+import { useState } from "react";
 
 const AddTrackForm = () => {
+  const [profilePic, setProfilePic] = useState(null);
+  // const [preview, setPreview] = useState<string | null>();
+
   const {
     register,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors, isSubmitting },
     // reset,
-  } = useForm<RegistrationFormData>({
-    resolver: zodResolver(registrationSchema),
+  } = useForm<AddTrackFormData>({
+    resolver: zodResolver(AddTrackTypeSchema),
     // defaultValues: {
     //   firstName: "cindy",
     //   lastName: "Essuman",
@@ -25,61 +31,65 @@ const AddTrackForm = () => {
     //   contact: "+2330594809966",
     // },
   });
+  const onSubmit = (data: AddTrackFormData) => {
+    console.log("🚀 ~ onSubmit ~ data:", data);
+  };
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
           label="Track name"
-          name="firstName"
+          name="name"
           type="text"
           register={register}
-          error={errors.firstName?.message}
+          error={errors.name?.message}
           required
         />
 
         <InputField
           label="Price"
-          name="lastName"
+          name="price"
           type="text"
           register={register}
-          error={errors.lastName?.message}
+          error={errors.price?.message}
           required
         />
 
         <InputField
           label="Duration"
-          name="email"
-          type="email"
+          name="duration"
+          type="text"
           register={register}
-          error={errors.email?.message}
+          error={errors.duration?.message}
           required
         />
 
         <InputField
           label="Instructor"
-          name="password"
-          type="password"
+          name="instructor"
+          type="text"
           register={register}
-          error={errors.password?.message}
+          error={errors.instructor?.message}
           required
         />
-
-        <InputField
+        <TrackPhotoSelector image={profilePic} setImage={setProfilePic} />
+        {/* <InputField
           label="Picture"
-          name="confirmPassword"
-          type="password"
+          name="image"
+          type="text"
           register={register}
-          error={errors.confirmPassword?.message}
+          error={errors.image?.message}
           required
-        />
+          placeholder="Choose File"
+        /> */}
 
         <InputField
           label="Description"
-          name="confirmPassword"
-          type="password"
+          name="description"
+          type="text"
           register={register}
-          error={errors.confirmPassword?.message}
+          error={errors.description?.message}
           required
         />
 

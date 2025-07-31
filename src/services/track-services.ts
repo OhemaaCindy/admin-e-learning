@@ -1,6 +1,11 @@
 import { apiEndpoints } from "@/constants/api-endpoints";
 import { axiosClient } from "@/lib/axios";
-import type { SingleTrackResponse, TrackResponse } from "@/types/track.type";
+import type { AddTrackFormData } from "@/schemas/track-schema";
+import type {
+  AddTrackType,
+  SingleTrackResponse,
+  TrackResponse,
+} from "@/types/track.type";
 import type { AuthErrorRes } from "@/types/types";
 import axios from "axios";
 
@@ -39,14 +44,19 @@ export const singleTrack = async (id: string): Promise<SingleTrackResponse> => {
   }
 };
 
-export const createTrack = async (payload) => {
+export const createTrack = async ({ payload }: AddTrackFormData) => {
+  const formData = new FormData();
+  formData.append("name", payload.name);
+  formData.append("price", payload.price);
+
   try {
     const response = await axiosClient.post(
       apiEndpoints.TRACKS.createTrack,
-      payload
+      formData
     );
     return response.data;
   } catch (error) {
+    console.log("🚀 ~ createTrack ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }

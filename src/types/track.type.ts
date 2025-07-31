@@ -94,3 +94,12 @@ interface Course {
   updatedAt: Date;
   __v: number;
 }
+
+// export interface AddTrackType {
+//   name: string;
+//   price: string;
+//   instructor: string;
+//   duration: string;
+//   description: string;
+//   image: string;
+// }
