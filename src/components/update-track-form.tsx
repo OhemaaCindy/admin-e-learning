@@ -1,95 +1,150 @@
-import {
-  registrationSchema,
-  type RegistrationFormData,
-} from "@/schemas/auth-schema";
 import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-// import { cn } from "@/lib/utils";
 import { Button } from "./button";
+import { ImageUpload } from "./image-upload";
+import { useUpdateTrack } from "@/hooks/add-track.hook";
+import {
+  UpdateTrackTypeSchema,
+  type UpdateTrackFormData,
+} from "@/schemas/track-schema";
+import toast from "react-hot-toast";
+import { useParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import type { SingleTrackResponse } from "@/types/track.type";
+import { singleTrack } from "@/services/track-services";
+interface UpdateTrackFormProps {
+  closeModal: (state: boolean) => void;
+}
 
-const UpdateTrackForm = () => {
-  const {
-    register,
-    // handleSubmit,
-    formState: { errors, isSubmitting },
-    // reset,
-  } = useForm<RegistrationFormData>({
-    resolver: zodResolver(registrationSchema),
-    // defaultValues: {
-    //   firstName: "cindy",
-    //   lastName: "Essuman",
-    //   email: "cindyessuman05@gmail.com",
-    //   password: "Cindy@123",
-    //   confirmPassword: "Cindy@123",
-    //   contact: "+2330594809966",
-    // },
+const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
+  const params = useParams();
+  const id = params.id;
+
+  const { data } = useQuery<SingleTrackResponse, Error>({
+    queryKey: ["get-single-track", id],
+    queryFn: () => singleTrack(id as string),
   });
 
+  const details = data?.track;
+  console.log("🚀 ~ UpdateTrackForm ~ details:", details);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setValue,
+    watch,
+  } = useForm<UpdateTrackFormData>({
+    resolver: zodResolver(UpdateTrackTypeSchema),
+    defaultValues: {
+      name: details?.name,
+      price: details?.price,
+      duration: details?.duration,
+      instructor: details?.instructor,
+      // Add this to your defaultValues
+      description: details?.description,
+      // image: details?.image,
+    },
+  });
+
+  const selectedImage = watch("image");
+
+  const { mutate: updateTrack, isPending, error, isError } = useUpdateTrack();
+
+  const onSubmit = async (data: UpdateTrackFormData) => {
+    updateTrack(data, {
+      onSuccess(res) {
+        console.log("🚀 ~ onSuccess ~ res:", res);
+        reset();
+        closeModal(false);
+        toast.success("Track updated successfully");
+      },
+      onError() {
+        toast.error("Failed to update Track");
+      },
+    });
+  };
   return (
     <div>
-      <form>
+      {isError && error && (
+        <ul className="text-rose-500 mt-2 bg-rose-100 border border-rose-500 rounded-lg px-8 py-2 list-disc">
+          {error.errors.map((err, index) => (
+            <li key={index}>{err.message}</li>
+          ))}
+        </ul>
+      )}
+
+      <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
           label="Track name"
-          name="firstName"
+          name="name"
           type="text"
           register={register}
-          error={errors.firstName?.message}
+          error={errors.name?.message}
           required
         />
 
         <InputField
           label="Price"
-          name="lastName"
+          name="price"
           type="text"
           register={register}
-          error={errors.lastName?.message}
+          error={errors.price?.message}
           required
         />
 
         <InputField
           label="Duration"
-          name="email"
-          type="email"
+          name="duration"
+          type="text"
           register={register}
-          error={errors.email?.message}
+          error={errors.duration?.message}
           required
         />
 
         <InputField
           label="Instructor"
-          name="password"
-          type="password"
+          name="instructor"
+          type="text"
           register={register}
-          error={errors.password?.message}
+          error={errors.instructor?.message}
           required
         />
 
-        <InputField
-          label="Picture"
-          name="confirmPassword"
-          type="password"
-          register={register}
-          error={errors.confirmPassword?.message}
-          required
-        />
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Track Image
+            {errors.image && <span className="text-red-500">*</span>}
+          </label>
+          <ImageUpload
+            value={selectedImage}
+            onImageSelect={(file) => setValue("image", file)}
+            error={errors.image?.message}
+            maxSize={5}
+            placeholder="Upload track image"
+            accept="image/*"
+            showPreview={true}
+          />
+        </div>
 
         <InputField
           label="Description"
-          name="confirmPassword"
-          type="password"
+          name="description"
+          type="text"
           register={register}
-          error={errors.confirmPassword?.message}
+          error={errors.description?.message}
           required
         />
 
         <div className="pt-4">
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isPending}
             className="mb-4 cursor-pointer"
           >
-            {isSubmitting ? "Updating Track..." : "Update Track"}
+            {isSubmitting || isPending ? "Updating Track..." : "Update Track"}
           </Button>
         </div>
       </form>

@@ -14,6 +14,7 @@ import AddTrackForm from "@/components/add-track-form";
 
 const Track = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [openState, toogleState] = useState(false);
 
   const { data, isLoading, error, isError } = useQuery<TrackResponse, Error>({
     queryKey: ["get-all-tracks"],
@@ -45,8 +46,13 @@ const Track = () => {
           />
         </div>
 
-        <AddModal text="Add Track" title="Add New Track">
-          <AddTrackForm />
+        <AddModal
+          text="Add Track"
+          title="Add New Track"
+          openState={openState}
+          toogleState={toogleState}
+        >
+          <AddTrackForm closeModal={toogleState} />
         </AddModal>
       </div>
       {isLoading && (

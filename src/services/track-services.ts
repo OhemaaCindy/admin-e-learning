@@ -1,10 +1,15 @@
 import { apiEndpoints } from "@/constants/api-endpoints";
 import { axiosClient } from "@/lib/axios";
-import type { AddTrackFormData } from "@/schemas/track-schema";
 import type {
-  AddTrackType,
+  AddTrackFormData,
+  UpdateTrackFormData,
+} from "@/schemas/track-schema";
+import type {
+  AddTrackResponse,
+  // AddTrackType,
   SingleTrackResponse,
   TrackResponse,
+  UpdateTrackResponse,
 } from "@/types/track.type";
 import type { AuthErrorRes } from "@/types/types";
 import axios from "axios";
@@ -31,7 +36,7 @@ export const singleTrack = async (id: string): Promise<SingleTrackResponse> => {
     const response = await axiosClient.get<SingleTrackResponse>(
       apiEndpoints.TRACKS.getOneTrack(id)
     );
-    console.log("🚀 ~ singleTrack ~ response:", response);
+    // console.log("🚀 ~ singleTrack ~ response:", response);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -44,19 +49,36 @@ export const singleTrack = async (id: string): Promise<SingleTrackResponse> => {
   }
 };
 
-export const createTrack = async ({ payload }: AddTrackFormData) => {
+export const createTrack = async (
+  payload: AddTrackFormData
+): Promise<AddTrackResponse> => {
+  console.log("🔥 ~ createTrack ~ payload:", payload);
+
+  const { name, price, image, instructor, duration, description } = payload;
+
   const formData = new FormData();
-  formData.append("name", payload.name);
-  formData.append("price", payload.price);
+  formData.append("name", name);
+  formData.append("price", price);
+  formData.append("instructor", instructor);
+  formData.append("duration", duration);
+  formData.append("description", description);
+  formData.append("image", image);
+
+  // for (const [key, value] of formData.entries()) {
+  //   console.log(`🔥 ${key}:`, value);
+  // }
 
   try {
-    const response = await axiosClient.post(
+    const response = await axiosClient.post<AddTrackResponse>(
       apiEndpoints.TRACKS.createTrack,
-      formData
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
     );
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ createTrack ~ error:", error);
+    // console.log("🚀 ~ createTrack ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }
@@ -66,15 +88,41 @@ export const createTrack = async ({ payload }: AddTrackFormData) => {
     } as AuthErrorRes;
   }
 };
+export interface UpdateTrackProps {
+  id: string;
+  payload: UpdateTrackFormData;
+}
+export const upateTrack = async ({
+  id,
+  payload,
+}: UpdateTrackProps): Promise<UpdateTrackResponse> => {
+  console.log("🔥 ~ createTrack ~ payload:", payload);
 
-export const updateTrack = async (id: string, payload) => {
+  const { name, price, image, instructor, duration, description } = payload;
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("price", price);
+  formData.append("instructor", instructor);
+  formData.append("duration", duration);
+  formData.append("description", description);
+  formData.append("image", image);
+
+  // for (const [key, value] of formData.entries()) {
+  //   console.log(`🔥 ${key}:`, value);
+  // }
+
   try {
-    const response = await axiosClient.put(
+    const response = await axiosClient.post<UpdateTrackResponse>(
       apiEndpoints.TRACKS.updateTrack(id),
-      payload
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
     );
     return response.data;
   } catch (error) {
+    // console.log("🚀 ~ createTrack ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }
@@ -85,17 +133,17 @@ export const updateTrack = async (id: string, payload) => {
   }
 };
 
-export const deleteTrack = async (id: string) => {
-  try {
-    const response = await axiosClient.put(apiEndpoints.TRACKS.deleteTrack(id));
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      throw error.response.data as AuthErrorRes;
-    }
-    throw {
-      success: false,
-      errors: [{ message: "Something went wrong" }],
-    } as AuthErrorRes;
-  }
-};
+// export const deleteTrack = async (id: string) => {
+//   try {
+//     const response = await axiosClient.put(apiEndpoints.TRACKS.deleteTrack(id));
+//     return response.data;
+//   } catch (error) {
+//     if (axios.isAxiosError(error) && error.response) {
+//       throw error.response.data as AuthErrorRes;
+//     }
+//     throw {
+//       success: false,
+//       errors: [{ message: "Something went wrong" }],
+//     } as AuthErrorRes;
+//   }
+// };

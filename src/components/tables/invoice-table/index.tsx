@@ -13,7 +13,13 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronDown,
+  MoreHorizontal,
+  Pen,
+  Trash2,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,6 +48,7 @@ export type Payment = {
   amount: number;
   status: "pending" | "processing" | "success" | "failed";
   email: string;
+  profilePhoto: string;
 };
 
 // backend data
@@ -51,36 +58,60 @@ const data: Payment[] = [
     amount: 316,
     status: "success",
     email: "ken99@example.com",
+    profilePhoto:
+      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: "3u1reuv4",
     amount: 242,
     status: "success",
     email: "Abe45@example.com",
+    profilePhoto:
+      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: "derv1ws0",
     amount: 837,
     status: "processing",
     email: "Monserrat44@example.com",
+    profilePhoto:
+      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: "5kma53ae",
     amount: 874,
     status: "success",
     email: "Silas22@example.com",
+    profilePhoto:
+      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: "bhqecj4p",
     amount: 721,
     status: "failed",
     email: "carmella@example.com",
+    profilePhoto:
+      "https://images.unsplash.com/photo-1750263117381-4aecca6942e1?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8",
   },
 ];
 
 export const columns: ColumnDef<Payment>[] = [
   {
     header: "Learners",
+    accessorKey: "profilePhoto",
+    cell: ({ row }) => {
+      const imageUrl = row.getValue("profilePhoto") as string;
+      return (
+        <img
+          src={imageUrl}
+          alt="Image"
+          className="h-12 w-12 object-cover rounded-full"
+        />
+      );
+    },
+  },
+  {
+    header: "",
     accessorKey: "status",
   },
   {
@@ -100,7 +131,7 @@ export const columns: ColumnDef<Payment>[] = [
           className="hidden md:block"
         >
           Amount
-          <ArrowUpDown />
+          {/* <ArrowUpDown /> */}
         </Button>
       );
     },
@@ -127,10 +158,13 @@ export const columns: ColumnDef<Payment>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      return "edit - delete";
+    cell: () => {
+      return (
+        <div className="flex items-center gap-1 cursor-pointer">
+          <Pen size={22} />
+          <Trash2 size={22} />
+        </div>
+      );
     },
   },
 ];

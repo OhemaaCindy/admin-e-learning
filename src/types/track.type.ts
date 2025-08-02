@@ -103,3 +103,44 @@ interface Course {
 //   description: string;
 //   image: string;
 // }
+export interface AddTrackResponse {
+  success: boolean;
+  message: string;
+  track: Track;
+}
+
+export interface Track {
+  admin: Admin;
+  name: string;
+  price: number;
+  instructor: string;
+  duration: string;
+  image: string;
+  description: string;
+  _id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+  id: string;
+}
+
+export interface UpdateTrackResponse {
+  success: boolean;
+  message: string;
+  track: Track;
+}
+
+export interface Track {
+  _id: string;
+  admin: Admin;
+  name: string;
+  price: number;
+  instructor: string;
+  duration: string;
+  image: string;
+  description: string;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
+  id: string;
+}
