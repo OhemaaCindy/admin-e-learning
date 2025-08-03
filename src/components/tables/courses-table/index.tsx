@@ -172,7 +172,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 ];
 
-export function InvoiceDataTable() {
+export function CoursesDataTable() {
   const [openState, toogleState] = React.useState(false);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);

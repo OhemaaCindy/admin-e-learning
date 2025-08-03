@@ -43,14 +43,9 @@ import {
 } from "@/components/ui/table";
 import InvoiceImage from "@/components/invoice-table-image";
 import { AddModal } from "@/components/add-modal";
-import AddTrackForm from "@/components/add-track-form";
 import AddInvoiceForm from "@/components/add-invoice-form";
-import { UpdateModal } from "@/components/update-modal";
-import UpdateTrackForm from "@/components/update-track-form";
-import { DeleteModal } from "@/components/delete-modal";
-import Deletetrack from "@/components/delete-track";
-import UpdateInvoiceForm from "@/components/update-invoice-form";
-import DeleteInvoiceForm from "@/components/delete-invoive-form";
+import { ViewProfileModal } from "@/components/view-profile-modal";
+import LearnerProfile from "@/components/learner-profile-view";
 
 export type Payment = {
   id: string;
@@ -122,7 +117,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
 
   {
-    header: "Emal Address",
+    header: "Courses",
     accessorKey: "email",
   },
   {
@@ -146,7 +141,7 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
   {
-    header: "Status",
+    header: "Gender",
     accessorKey: "status",
   },
   {
@@ -154,25 +149,15 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
     cell: () => {
       return (
-        <div className="flex items-center justify-end gap-3">
-          <UpdateModal
-            title="Update Invoice"
-            // openState={openState}
-            // toogleState={toogleState}
-          >
-            <UpdateInvoiceForm />
-          </UpdateModal>
-
-          <DeleteModal title="Delete Invoice">
-            <DeleteInvoiceForm />
-          </DeleteModal>
-        </div>
+        <ViewProfileModal>
+          <LearnerProfile />
+        </ViewProfileModal>
       );
     },
   },
 ];
 
-export function InvoiceDataTable() {
+export function LearnersDataTable() {
   const [openState, toogleState] = React.useState(false);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -204,7 +189,7 @@ export function InvoiceDataTable() {
 
   return (
     <div className="w-full ">
-      <div className="items-center py-4 flex justify-between">
+      <div className="py-4 ">
         <Input
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -213,11 +198,11 @@ export function InvoiceDataTable() {
           }
           className="max-w-sm"
         />
-        <div className="">
+        {/* <div className="">
           <AddModal text="Add Invoice" title="Add New Invoice">
             <AddInvoiceForm closeModal={toogleState} />
           </AddModal>
-        </div>
+        </div> */}
       </div>
       <div className="overflow-hidden rounded-md border">
         <Table>

@@ -55,6 +55,7 @@ function TrackDetailsCard({ details }: { details: Track }) {
         <p className="mb-5">{details?.description}</p>
         <div className="flex items-center justify-end gap-3">
           <UpdateModal
+            shadow
             title="Update Track"
             // openState={openState}
             // toogleState={toogleState}
@@ -62,8 +63,8 @@ function TrackDetailsCard({ details }: { details: Track }) {
             <UpdateTrackForm closeModal={toogleState} />
           </UpdateModal>
 
-          <DeleteModal title="Delete Track">
-            <Deletetrack />
+          <DeleteModal title="Delete Track" shadow>
+            <Deletetrack closeModal={toogleState} />
           </DeleteModal>
         </div>
       </div>

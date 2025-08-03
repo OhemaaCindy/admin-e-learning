@@ -1,3 +1,4 @@
+import { Eye } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -6,20 +7,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Pen, X } from "lucide-react";
 
-interface ModalProps {
-  title: string;
+interface ProfileProps {
+  title?: string;
   children: React.ReactNode;
   shadow?: boolean;
 }
-export function UpdateModal({ title, children, shadow = false }: ModalProps) {
+export function ViewProfileModal({ title, children, shadow }: ProfileProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <div className={cn(shadow ? "bg-[#fbfbf8] p-3 shadow-md" : "")}>
-          <Pen size={20} className="text-[#01589A] cursor-pointer " />
+        <div className={cn(shadow && "bg-[#fbfbf8] p-3 shadow-md")}>
+          <Eye size={20} className="text-[#2E2C48] cursor-pointer " />
         </div>
       </AlertDialogTrigger>
       <AlertDialogContent>

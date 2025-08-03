@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router";
 interface DeleteTrackFormProps {
   closeModal: (state: boolean) => void;
 }
-const Deletetrack = ({ closeModal }: DeleteTrackFormProps) => {
+const DeleteInvoiceForm = ({ closeModal }: DeleteTrackFormProps) => {
   // const [closeModal] = useState<null>(null);
 
   const handleCloseModal = () => {
@@ -18,9 +18,9 @@ const Deletetrack = ({ closeModal }: DeleteTrackFormProps) => {
   const id = params.id;
   console.log("🚀 ~ Delete TrackForm ~ id:", id);
 
-  const { mutate: handleDeleteTrack, isError, error } = useDeleteTrack();
+  const { mutate: handleDeleteInvoice, isError, error } = useDeleteTrack();
   const handleDelete = (id: string) => {
-    handleDeleteTrack(id, {
+    handleDeleteInvoice(id, {
       onSuccess: () => {
         toast.success("Track Deleted sucessfully");
 
@@ -42,7 +42,7 @@ const Deletetrack = ({ closeModal }: DeleteTrackFormProps) => {
           ))}
         </ul>
       )}
-      <p>Are you sure you want to delete the track?</p>
+      <p>Are you sure you want to delete the invoice?</p>
       <div className="flex justify-end items-center gap-2 mt-4 ">
         <button
           className="border-1 py-1 px-2 rounded-md cursor-pointer"
@@ -62,4 +62,4 @@ const Deletetrack = ({ closeModal }: DeleteTrackFormProps) => {
   );
 };
 
-export default Deletetrack;
+export default DeleteInvoiceForm;

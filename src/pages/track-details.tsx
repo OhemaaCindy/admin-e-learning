@@ -29,8 +29,8 @@ const TrackDetails = () => {
         title={"Manage Tracks "}
         description={"Filter, sort, and access detailed tracks"}
       />
-      <div className="bg-[#8CB4FA] mx-5 w-fit rounded-full p-4">
-        <span onClick={handleBack} className="cursor-pointer">
+      <div className="bg-[#8CB4FA] mx-5 w-fit rounded-full p-4 cursor-pointer">
+        <span onClick={handleBack}>
           <ChevronsLeft />
         </span>
       </div>
