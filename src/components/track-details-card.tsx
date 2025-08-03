@@ -4,8 +4,11 @@ import UpdateTrackForm from "./update-track-form";
 import { DeleteModal } from "./delete-modal";
 import Deletetrack from "./delete-track";
 import type { Track } from "@/types/track.type";
+import { useState } from "react";
 
 function TrackDetailsCard({ details }: { details: Track }) {
+  const [openState, toogleState] = useState(false);
+
   return (
     <div className=" rounded-2xl shadow-lg overflow-hidden  w-2xl ">
       <div className=" relative overflow-hidden "></div>
@@ -51,8 +54,12 @@ function TrackDetailsCard({ details }: { details: Track }) {
         </div>
         <p className="mb-5">{details?.description}</p>
         <div className="flex items-center justify-end gap-3">
-          <UpdateModal title="Update Track">
-            <UpdateTrackForm />
+          <UpdateModal
+            title="Update Track"
+            // openState={openState}
+            // toogleState={toogleState}
+          >
+            <UpdateTrackForm closeModal={toogleState} />
           </UpdateModal>
 
           <DeleteModal title="Delete Track">

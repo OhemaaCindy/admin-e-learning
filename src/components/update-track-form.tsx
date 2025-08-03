@@ -20,6 +20,7 @@ interface UpdateTrackFormProps {
 const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
   const params = useParams();
   const id = params.id;
+  // console.log("🚀 ~ UpdateTrackForm ~ id:", id);
 
   const { data } = useQuery<SingleTrackResponse, Error>({
     queryKey: ["get-single-track", id],
@@ -39,12 +40,12 @@ const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
   } = useForm<UpdateTrackFormData>({
     resolver: zodResolver(UpdateTrackTypeSchema),
     defaultValues: {
-      name: details?.name,
-      price: details?.price,
-      duration: details?.duration,
-      instructor: details?.instructor,
+      name: details?.name || "",
+      price: details?.price ? String(details.price) : "",
+      duration: details?.duration || "",
+      instructor: details?.instructor || "",
       // Add this to your defaultValues
-      description: details?.description,
+      description: details?.description || "",
       // image: details?.image,
     },
   });
@@ -54,17 +55,26 @@ const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
   const { mutate: updateTrack, isPending, error, isError } = useUpdateTrack();
 
   const onSubmit = async (data: UpdateTrackFormData) => {
-    updateTrack(data, {
-      onSuccess(res) {
-        console.log("🚀 ~ onSuccess ~ res:", res);
-        reset();
-        closeModal(false);
-        toast.success("Track updated successfully");
-      },
-      onError() {
-        toast.error("Failed to update Track");
-      },
-    });
+    if (!id) {
+      toast.error("");
+      return;
+    }
+
+    updateTrack(
+      { id, payload: data },
+      // { id: id as string, payload: data },
+      {
+        onSuccess(res) {
+          console.log("🚀 ~ onSuccess ~ res:", res);
+          reset();
+          closeModal(false);
+          toast.success("Track updated successfully");
+        },
+        onError() {
+          toast.error("Failed to update Track");
+        },
+      }
+    );
   };
   return (
     <div>
@@ -126,6 +136,7 @@ const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
             placeholder="Upload track image"
             accept="image/*"
             showPreview={true}
+            tempPreviewUrl={details?.image}
           />
         </div>
 

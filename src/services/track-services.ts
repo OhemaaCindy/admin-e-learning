@@ -6,7 +6,7 @@ import type {
 } from "@/schemas/track-schema";
 import type {
   AddTrackResponse,
-  // AddTrackType,
+  DeleteTrackResponse,
   SingleTrackResponse,
   TrackResponse,
   UpdateTrackResponse,
@@ -36,7 +36,6 @@ export const singleTrack = async (id: string): Promise<SingleTrackResponse> => {
     const response = await axiosClient.get<SingleTrackResponse>(
       apiEndpoints.TRACKS.getOneTrack(id)
     );
-    // console.log("🚀 ~ singleTrack ~ response:", response);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
@@ -108,12 +107,22 @@ export const upateTrack = async ({
   formData.append("description", description);
   formData.append("image", image);
 
+  Object.entries(payload).forEach(([key, value]) => {
+    if (key === "image") {
+      if (value instanceof File) {
+        formData.append("image", value);
+      }
+    } else {
+      formData.append(key, value as string);
+    }
+  });
+
   // for (const [key, value] of formData.entries()) {
   //   console.log(`🔥 ${key}:`, value);
   // }
 
   try {
-    const response = await axiosClient.post<UpdateTrackResponse>(
+    const response = await axiosClient.put<UpdateTrackResponse>(
       apiEndpoints.TRACKS.updateTrack(id),
       formData,
       {
@@ -133,17 +142,19 @@ export const upateTrack = async ({
   }
 };
 
-// export const deleteTrack = async (id: string) => {
-//   try {
-//     const response = await axiosClient.put(apiEndpoints.TRACKS.deleteTrack(id));
-//     return response.data;
-//   } catch (error) {
-//     if (axios.isAxiosError(error) && error.response) {
-//       throw error.response.data as AuthErrorRes;
-//     }
-//     throw {
-//       success: false,
-//       errors: [{ message: "Something went wrong" }],
-//     } as AuthErrorRes;
-//   }
-// };
+export const deleteTrack = async (id: string): Promise<DeleteTrackResponse> => {
+  try {
+    const response = await axiosClient.delete<DeleteTrackResponse>(
+      apiEndpoints.TRACKS.deleteTrack(id)
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      throw error.response.data as AuthErrorRes;
+    }
+    throw {
+      success: false,
+      errors: [{ message: "Something went wrong" }],
+    } as AuthErrorRes;
+  }
+};

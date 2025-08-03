@@ -14,6 +14,7 @@ interface ImageUploadProps {
   className?: string;
   placeholder?: string;
   showPreview?: boolean;
+  tempPreviewUrl?: string;
   disabled?: boolean;
   error?: string;
   value?: File | null;
@@ -34,11 +35,14 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
       showPreview = true,
       disabled = false,
       error,
+      tempPreviewUrl,
       value,
     },
     ref
   ) => {
-    const [preview, setPreview] = useState<string | null>(null);
+    const [preview, setPreview] = useState<string | null>(
+      tempPreviewUrl || null
+    );
     const [isDragging, setIsDragging] = useState(false);
     const [uploadError, setUploadError] = useState<string>("");
     const fileInputRef = useRef<HTMLInputElement>(null);

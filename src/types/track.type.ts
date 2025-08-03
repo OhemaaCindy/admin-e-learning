@@ -144,3 +144,8 @@ export interface Track {
   __v: number;
   id: string;
 }
+
+export interface DeleteTrackResponse {
+  success: boolean;
+  message: string;
+}
