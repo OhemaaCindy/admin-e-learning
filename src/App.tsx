@@ -14,6 +14,7 @@ import Dashboardlayout from "./pages/layouts/dashboard-layout";
 import Overview from "./pages/overview";
 import Authlayout from "./pages/layouts/auth-layout";
 import TrackDetails from "./pages/track-details";
+import ProfilePage from "./pages/profile-page";
 
 function App() {
   const router = createBrowserRouter([
@@ -74,6 +75,10 @@ function App() {
         {
           path: "report",
           element: <Report />,
+        },
+        {
+          path: "profile",
+          element: <ProfilePage />,
         },
       ],
     },

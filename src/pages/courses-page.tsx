@@ -1,6 +1,5 @@
 import { SiteHeader } from "@/components/dashboard/site-header";
 import { CoursesDataTable } from "@/components/tables/courses-table";
-import { LearnersDataTable } from "@/components/tables/learners-table";
 
 const Courses = () => {
   return (

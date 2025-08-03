@@ -30,19 +30,11 @@ import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { checkAuthUser } from "@/services/auth-services";
 import type { CheckAuthResponse } from "@/types/types";
-// import { Info } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
   const navigate = useNavigate();
-
-  // const user = {
-  //   name: "Cindy Essuman",
-  //   email: "m@example.com",
-  //   avatar:
-  //     "https://images.unsplash.com/photo-1713207453356-263654a8e557?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  // };
 
   const { mutate } = uselogoutAdmin();
 
@@ -61,7 +53,9 @@ export function NavUser() {
   function fallbackName(info: { firstName: string; lastName: string }): string {
     return `${info.firstName.split("")[0]}${info.lastName.split("")[0]}`;
   }
-
+  const handleNavigation = () => {
+    navigate("/profile");
+  };
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -110,13 +104,13 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal"></DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={handleNavigation}>
                 <IconUserCircle />
                 Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout} className="bg-amber-400">
+            <DropdownMenuItem onClick={handleLogout}>
               <IconLogout />
               Log out
             </DropdownMenuItem>

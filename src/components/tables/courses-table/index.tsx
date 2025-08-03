@@ -51,6 +51,9 @@ import { DeleteModal } from "@/components/delete-modal";
 import Deletetrack from "@/components/delete-track";
 import UpdateInvoiceForm from "@/components/update-invoice-form";
 import DeleteInvoiceForm from "@/components/delete-invoive-form";
+import AddCourseForm from "@/components/add-course-form";
+import UpdateCourseForm from "@/components/update-course-form";
+import DeleteCourseForm from "@/components/delete-course-form";
 
 export type Payment = {
   id: string;
@@ -112,41 +115,16 @@ const data: Payment[] = [
 
 export const columns: ColumnDef<Payment>[] = [
   {
-    header: "Learners",
-    accessorKey: "profilePhoto",
-    cell: ({ row }) => {
-      const { profilePhoto } = row.original;
-
-      return <InvoiceImage profilePhoto={profilePhoto} />;
-    },
-  },
-
-  {
-    header: "Emal Address",
+    header: "Courses",
     accessorKey: "email",
   },
   {
-    header: "Date Joined",
+    header: "Tracks",
     accessorKey: "dateJoined",
   },
 
   {
-    header: "Amount",
-    accessorKey: "amount",
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="">{formatted}</div>;
-    },
-  },
-  {
-    header: "Status",
+    header: "Date Joined",
     accessorKey: "status",
   },
   {
@@ -155,16 +133,12 @@ export const columns: ColumnDef<Payment>[] = [
     cell: () => {
       return (
         <div className="flex items-center justify-end gap-3">
-          <UpdateModal
-            title="Update Invoice"
-            // openState={openState}
-            // toogleState={toogleState}
-          >
-            <UpdateInvoiceForm />
+          <UpdateModal title="Update Course">
+            <UpdateCourseForm />
           </UpdateModal>
 
-          <DeleteModal title="Delete Invoice">
-            <DeleteInvoiceForm />
+          <DeleteModal title="Delete Course">
+            <DeleteCourseForm />
           </DeleteModal>
         </div>
       );
@@ -214,8 +188,8 @@ export function CoursesDataTable() {
           className="max-w-sm"
         />
         <div className="">
-          <AddModal text="Add Invoice" title="Add New Invoice">
-            <AddInvoiceForm closeModal={toogleState} />
+          <AddModal text="Add Course" title="Add New Course">
+            <AddCourseForm closeModal={toogleState} />
           </AddModal>
         </div>
       </div>

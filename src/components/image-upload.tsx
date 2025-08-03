@@ -5,7 +5,8 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { Upload, X, FileImage } from "lucide-react";
+import { Upload, X, FileImage, Camera, User } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ImageUploadProps {
   onImageSelect: (file: File) => void;
@@ -18,6 +19,7 @@ interface ImageUploadProps {
   disabled?: boolean;
   error?: string;
   value?: File | null;
+  profile?: boolean;
 }
 
 export interface ImageUploadRef {
@@ -37,6 +39,7 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
       error,
       tempPreviewUrl,
       value,
+      profile = false,
     },
     ref
   ) => {
@@ -78,7 +81,6 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
 
         if (validationError) {
           setUploadError(validationError);
-          //   onImageSelect(null);
           return;
         }
 
@@ -130,7 +132,6 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
     const handleRemove = () => {
       setPreview(null);
       setUploadError("");
-      //   onImageSelect(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
@@ -157,6 +158,91 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
       }
     }, [value]);
 
+    // Profile image component
+    if (profile) {
+      return (
+        <div className={`relative ${className}`}>
+          <div
+            onClick={handleClick}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={cn(
+              "relative w-60 h-60 rounded-full border-4 transition-all duration-200 cursor-pointer overflow-hidden group",
+              isDragging && !disabled
+                ? "border-blue-400 bg-blue-50"
+                : displayError
+                ? "border-red-300 bg-red-50"
+                : "border-gray-300 hover:border-gray-400 bg-gray-50",
+              disabled
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:border-gray-400"
+            )}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept={accept}
+              onChange={handleInputChange}
+              disabled={disabled}
+              className="hidden"
+            />
+
+            {preview && showPreview ? (
+              <>
+                <img
+                  src={preview}
+                  alt="Profile Preview"
+                  className="w-full h-full object-cover"
+                />
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                  <div className="flex items-center space-x-2">
+                    <Camera className="w-5 h-5 text-white" />
+                    <span className="text-white text-sm">Change</span>
+                  </div>
+                </div>
+                {/* Remove button */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemove();
+                  }}
+                  disabled={disabled}
+                  className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors cursor-pointer shadow-lg"
+                >
+                  <X size={14} />
+                </button>
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center w-full h-full text-center">
+                <div
+                  className={`mb-2 p-2 rounded-full ${
+                    displayError ? "bg-red-100" : "bg-gray-200"
+                  }`}
+                >
+                  {displayError ? (
+                    <FileImage className="w-6 h-6 text-red-500" />
+                  ) : (
+                    <User className="w-6 h-6 text-gray-500" />
+                  )}
+                </div>
+                <p className="text-xs text-gray-600 px-2">Upload Profile</p>
+              </div>
+            )}
+          </div>
+
+          {displayError && (
+            <p className="mt-2 text-sm text-red-600 text-center">
+              {displayError}
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    // Regular file upload component
     return (
       <div className={`w-full ${className}`}>
         <div
@@ -164,17 +250,15 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          className={`
-          relative border-2 border-dashed rounded-lg transition-all duration-200 cursor-pointer
-          ${
+          className={cn(
+            "relative border-2 border-dashed rounded-lg transition-all duration-200 cursor-pointer",
             isDragging && !disabled
               ? "border-blue-400 bg-blue-50"
               : displayError
               ? "border-red-300 bg-red-50"
-              : "border-gray-300 hover:border-gray-400 bg-gray-50"
-          }
-          ${disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100"}
-        `}
+              : "border-gray-300 hover:border-gray-400 bg-gray-50",
+            disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100"
+          )}
         >
           <input
             ref={fileInputRef}
