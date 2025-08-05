@@ -1,7 +1,8 @@
-import type { AllTrackResponse } from "@/types/invoices.types";
+import type { Invoice } from "@/types/invoices.types";
 import { UserIcon } from "lucide-react";
 
-const InvoiceList = ({ info }: { info: AllTrackResponse }) => {
+const InvoiceList = ({ info }: { info: Invoice[] }) => {
+  // console.log("🚀 ~ InvoiceList ~ info:", info);
   return (
     <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
       <h3 className="text-lg font-semibold text-gray-900 mb-6">
@@ -12,7 +13,7 @@ const InvoiceList = ({ info }: { info: AllTrackResponse }) => {
           <span>Name</span>
           <span>Amount</span>
         </div>
-        {info.invoices.map((invoice) => (
+        {info.map((invoice) => (
           <div
             key={invoice._id}
             className="flex items-center justify-between py-3 border-b border-gray-50 last:border-0"

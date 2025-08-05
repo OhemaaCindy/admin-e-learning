@@ -13,25 +13,11 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
-import {
-  // ArrowUpDown,
-  // ChevronDown,
-  // MoreHorizontal,
-  Pen,
-  Trash2,
-} from "lucide-react";
+
+import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
-// import { Checkbox } from "@/components/ui/checkbox";
-// import {
-//   DropdownMenu,
-//   DropdownMenuCheckboxItem,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
+
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -43,91 +29,41 @@ import {
 } from "@/components/ui/table";
 import InvoiceImage from "@/components/invoice-table-image";
 import { AddModal } from "@/components/add-modal";
-import AddTrackForm from "@/components/add-track-form";
 import AddInvoiceForm from "@/components/add-invoice-form";
 import { UpdateModal } from "@/components/update-modal";
-import UpdateTrackForm from "@/components/update-track-form";
 import { DeleteModal } from "@/components/delete-modal";
-import Deletetrack from "@/components/delete-track";
 import UpdateInvoiceForm from "@/components/update-invoice-form";
 import DeleteInvoiceForm from "@/components/delete-invoive-form";
+import { useQuery } from "@tanstack/react-query";
+import { allInvoice } from "@/services/invoice-services";
+import type { Invoice, Learner } from "@/types/invoices.types";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-  profilePhoto: string;
-  dateJoined: string;
-};
-
-// backend data
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-    profilePhoto:
-      "https://images.unsplash.com/photo-1750263117381-4aecca6942e1?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8",
-    dateJoined: "12thJune",
-  },
-];
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Invoice>[] = [
   {
     header: "Learners",
     accessorKey: "profilePhoto",
     cell: ({ row }) => {
-      const { profilePhoto } = row.original;
+      const learner: Learner | null = row.original.learner;
 
-      return <InvoiceImage profilePhoto={profilePhoto} />;
+      return <InvoiceImage learner={learner} />;
     },
   },
 
   {
     header: "Emal Address",
-    accessorKey: "email",
+    accessorKey: "learner",
+    cell: ({ row }) => {
+      const learner = row.original.learner;
+      return <p>{learner?.email}</p>;
+    },
   },
   {
     header: "Date Joined",
     accessorKey: "dateJoined",
+    cell: ({ row }) => {
+      const learner = row.original.createdAt;
+      return <p>{format(new Date(learner), "do MMMM, yyyy")}</p>;
+    },
   },
 
   {
@@ -183,8 +119,18 @@ export function InvoiceDataTable() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  const { data: invoiceDetails, isLoading: isloadingInvoices } = useQuery<
+    Invoice[],
+    Error
+  >({
+    queryKey: ["get-all-invoices"],
+    queryFn: allInvoice,
+  });
+  const info = invoiceDetails || [];
+  // console.log("🚀 ~ Overview ~ info:", info);
+
   const table = useReactTable({
-    data,
+    data: info,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -204,6 +150,7 @@ export function InvoiceDataTable() {
 
   return (
     <div className="w-full ">
+      {isloadingInvoices && <span>Loading...</span>}
       <div className="items-center py-4 flex justify-between">
         <Input
           placeholder="Filter emails..."

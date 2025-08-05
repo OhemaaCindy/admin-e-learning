@@ -13,25 +13,9 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
-import {
-  // ArrowUpDown,
-  // ChevronDown,
-  // MoreHorizontal,
-  Pen,
-  Trash2,
-} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-// import { Checkbox } from "@/components/ui/checkbox";
-// import {
-//   DropdownMenu,
-//   DropdownMenuCheckboxItem,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
+
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -41,88 +25,37 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import InvoiceImage from "@/components/invoice-table-image";
-import { AddModal } from "@/components/add-modal";
-import AddInvoiceForm from "@/components/add-invoice-form";
+
 import { ViewProfileModal } from "@/components/view-profile-modal";
 import LearnerProfile from "@/components/learner-profile-view";
+import { allLearners } from "@/services/learner-services";
+import { useQuery } from "@tanstack/react-query";
+import type { Learner } from "@/types/learners.type";
+import ImageAndName from "@/components/learner-image-and-name";
+import { format } from "date-fns";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-  profilePhoto: string;
-  dateJoined: string;
-};
-
-// backend data
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-    profilePhoto:
-      "https://images.unsplash.com/photo-1750263117381-4aecca6942e1?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8",
-    dateJoined: "12thJune",
-  },
-];
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Learner>[] = [
   {
     header: "Learners",
     accessorKey: "profilePhoto",
     cell: ({ row }) => {
-      const { profilePhoto } = row.original;
+      const learner: Learner | null = row.original.profileImage;
 
-      return <InvoiceImage profilePhoto={profilePhoto} />;
+      return <ImageAndName learner={learner} />;
     },
   },
 
   {
     header: "Courses",
-    accessorKey: "email",
+    accessorKey: "course",
   },
   {
     header: "Date Joined",
     accessorKey: "dateJoined",
+    cell: ({ row }) => {
+      const learner = row.original.createdAt;
+      return <p>{format(new Date(learner), "do MMMM, yyyy")}</p>;
+    },
   },
 
   {
@@ -142,15 +75,15 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     header: "Gender",
-    accessorKey: "status",
+    accessorKey: "gender",
   },
   {
     id: "actions",
     enableHiding: false,
-    cell: () => {
+    cell: (row) => {
       return (
         <ViewProfileModal>
-          <LearnerProfile />
+          <LearnerProfile row={row.row.original._id} />
         </ViewProfileModal>
       );
     },
@@ -168,8 +101,18 @@ export function LearnersDataTable() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  const { data: learnerDetails, isLoading: isloadingLearners } = useQuery<
+    Learner[],
+    Error
+  >({
+    queryKey: ["get-all-learners"],
+    queryFn: allLearners,
+  });
+  const learners = learnerDetails || [];
+  console.log("🚀 ~ LearnersDataTable ~ learners:", learners);
+
   const table = useReactTable({
-    data,
+    data: learners,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -189,6 +132,7 @@ export function LearnersDataTable() {
 
   return (
     <div className="w-full ">
+      {isloadingLearners && <span>Loading...</span>}
       <div className="py-4 ">
         <Input
           placeholder="Filter emails..."

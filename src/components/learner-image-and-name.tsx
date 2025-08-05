@@ -1,12 +1,12 @@
-import type { Learner } from "@/types/invoices.types";
+import type { Learner } from "@/types/learners.type";
 import { User } from "lucide-react";
 
 interface Details {
   learner: Learner | null;
 }
 
-const InvoiceImage = ({ learner }: Details) => {
-  if (!learner) return;
+const ImageAndName = ({ learner }: Details) => {
+  // if (!learner) return;
 
   return (
     <div className="flex items-center gap-3">
@@ -24,9 +24,11 @@ const InvoiceImage = ({ learner }: Details) => {
         </div>
       )}
 
-      <span className="font-medium text-sm">{`${learner?.firstName} ${learner?.lastName}`}</span>
+      <span className="font-medium text-sm">{`${learner?.firstName ?? "N/A"} ${
+        learner?.lastName ?? "N/A"
+      }`}</span>
     </div>
   );
 };
 
-export default InvoiceImage;
+export default ImageAndName;

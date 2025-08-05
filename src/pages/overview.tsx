@@ -11,23 +11,23 @@ import { useQuery } from "@tanstack/react-query";
 import type { TrackResponse } from "@/types/track.type";
 import { allTracks } from "@/services/track-services";
 
-import type { AllTrackResponse } from "@/types/invoices.types";
+import type { Invoice } from "@/types/invoices.types";
 import { allInvoice } from "@/services/invoice-services";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-import { LoaderCircle } from "lucide-react";
+// import { LoaderCircle } from "lucide-react";
 
 interface RevenueData {
   month: string;
   value: number;
 }
 
-interface InvoiceItem {
-  id: string;
-  name: string;
-  amount: number;
-  avatar: string;
-}
+// interface InvoiceItem {
+//   id: string;
+//   name: string;
+//   amount: number;
+//   avatar: string;
+// }
 
 export type TrackCardColors = { light?: string; deep?: string }[];
 
@@ -100,7 +100,7 @@ const Overview: React.FC = () => {
   ];
 
   const { data: invoiceDetails, isLoading: isloadingInvoices } = useQuery<
-    AllTrackResponse,
+    Invoice[],
     Error
   >({
     queryKey: ["get-all-invoices"],

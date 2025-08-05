@@ -23,4 +23,8 @@ export const apiEndpoints = {
   INVOICES: {
     getAllInvoices: "/invoices",
   },
+  LEARNERS: {
+    getAllLearners: "/learners",
+    getOneLearner: (id: string) => `/learners/${id}`,
+  },
 };

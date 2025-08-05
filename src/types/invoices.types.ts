@@ -4,7 +4,7 @@ export interface AllTrackResponse {
   invoices: Invoice[];
 }
 
-interface Invoice {
+export interface Invoice {
   _id: string;
   learner: Learner | null;
   track: Track;
