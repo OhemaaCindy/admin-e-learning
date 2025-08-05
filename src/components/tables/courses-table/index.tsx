@@ -13,25 +13,9 @@ import {
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
-import {
-  // ArrowUpDown,
-  // ChevronDown,
-  // MoreHorizontal,
-  Pen,
-  Trash2,
-} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-// import { Checkbox } from "@/components/ui/checkbox";
-// import {
-//   DropdownMenu,
-//   DropdownMenuCheckboxItem,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
+
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -41,91 +25,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import InvoiceImage from "@/components/invoice-table-image";
 import { AddModal } from "@/components/add-modal";
-import AddTrackForm from "@/components/add-track-form";
-import AddInvoiceForm from "@/components/add-invoice-form";
 import { UpdateModal } from "@/components/update-modal";
-import UpdateTrackForm from "@/components/update-track-form";
 import { DeleteModal } from "@/components/delete-modal";
-import Deletetrack from "@/components/delete-track";
-import UpdateInvoiceForm from "@/components/update-invoice-form";
-import DeleteInvoiceForm from "@/components/delete-invoive-form";
 import AddCourseForm from "@/components/add-course-form";
 import UpdateCourseForm from "@/components/update-course-form";
 import DeleteCourseForm from "@/components/delete-course-form";
+import { allCourses } from "@/services/courses-services";
+import type { Course } from "@/types/courses.types";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-  profilePhoto: string;
-  dateJoined: string;
-};
-
-// backend data
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-    profilePhoto:
-      "https://plus.unsplash.com/premium_photo-1752231846149-ddd0a41c479e?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
-    dateJoined: "12thJune",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-    profilePhoto:
-      "https://images.unsplash.com/photo-1750263117381-4aecca6942e1?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8",
-    dateJoined: "12thJune",
-  },
-];
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Course>[] = [
   {
     header: "Courses",
-    accessorKey: "email",
+    accessorKey: "title",
   },
   {
     header: "Tracks",
-    accessorKey: "dateJoined",
+    accessorKey: "track",
+    cell: ({ row }) => {
+      const track = row.original.track;
+      return <p>{track.name}</p>;
+    },
   },
 
   {
     header: "Date Joined",
-    accessorKey: "status",
+    accessorKey: "admin",
+    cell: ({ row }) => {
+      const admin = row.original.createdAt;
+      return <p>{format(new Date(admin), "do MMMM, yyyy")}</p>;
+    },
   },
   {
     id: "actions",
@@ -157,8 +88,18 @@ export function CoursesDataTable() {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
+  const { data: courseDetails, isLoading: isloadingCourseses } = useQuery<
+    Course[],
+    Error
+  >({
+    queryKey: ["get-all-courses"],
+    queryFn: allCourses,
+  });
+  const info = courseDetails || [];
+  console.log("🚀 ~ CoursesDataTable ~ info:", info);
+
   const table = useReactTable({
-    data,
+    data: info,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -178,6 +119,7 @@ export function CoursesDataTable() {
 
   return (
     <div className="w-full ">
+      {isloadingCourseses && <span>Loading....</span>}
       <div className="items-center py-4 flex justify-between">
         <Input
           placeholder="Filter emails..."

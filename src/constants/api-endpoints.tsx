@@ -27,4 +27,7 @@ export const apiEndpoints = {
     getAllLearners: "/learners",
     getOneLearner: (id: string) => `/learners/${id}`,
   },
+  COURSES: {
+    getAllCourses: "/courses",
+  },
 };
