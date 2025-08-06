@@ -1,8 +1,9 @@
 import { singleLearner } from "@/services/learner-services";
 import type { Learner } from "@/types/learners.type";
 import { useQuery } from "@tanstack/react-query";
+import { User } from "lucide-react";
 
-const LearnerProfile = ({ row }: { row: string }) => {
+const LearnerProfile = ({ id }: { id: string }) => {
   // console.log("🚀 ~ LearnerProfile ~ row:", row);
 
   const {
@@ -11,8 +12,8 @@ const LearnerProfile = ({ row }: { row: string }) => {
     error,
     isError,
   } = useQuery<Learner, Error>({
-    queryKey: ["get-learner", row],
-    queryFn: (id) => singleLearner(row),
+    queryKey: ["get-learner", id],
+    queryFn: () => singleLearner(id),
   });
 
   // let learnerDetails = data?. || {};
@@ -20,18 +21,44 @@ const LearnerProfile = ({ row }: { row: string }) => {
     <div>
       {isLoading && <span>Loading...</span>}
       {isError && <span>{error.message}</span>}
-      <div className="flex items-center justify-center">
+      {/* <div className="flex items-center justify-center">
         <img
           src="https://images.unsplash.com/photo-1752046462544-9454fa2a13b2?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw2Mnx8fGVufDB8fHx8fA%3D%3D"
           alt="student picture"
           className="w-50 h-50 rounded-full"
         />
-      </div>
+      </div> */}
+
+      {learnerDetails?.profileImage ? (
+        // <img
+        //   src={learnerDetails?.profileImage}
+        //   alt="photo"
+        //   className="w-12 h-12 rounded-full object-cover"
+        // />
+        <div className="flex items-center justify-center ">
+          <img
+            src={learnerDetails?.profileImage}
+            alt="photo"
+            className="w-50 h-50 rounded-full object-cover"
+          />
+        </div>
+      ) : (
+        <div className="flex items-center justify-center">
+          <User className="w-50 h-50 rounded-full text-gray-500 object-cover" />
+        </div>
+      )}
+
       <div className="flex items-center justify-center flex-col mt-3 mb-10">
-        <p className=" text-[#1F1F36] font-bold text-xl">
-          {`${learnerDetails?.firstName} ${learnerDetails?.lastName}`}
-        </p>
-        <p className="text-[#1F1F36] ">{learnerDetails?.email}</p>
+        {isLoading ? (
+          "loading..."
+        ) : (
+          <>
+            <p className=" text-[#1F1F36] font-bold text-xl">
+              {`${learnerDetails?.firstName} ${learnerDetails?.lastName}`}
+            </p>
+            <p className="text-[#1F1F36] ">{learnerDetails?.email}</p>
+          </>
+        )}
       </div>
       <div className="flex flex-col w-ful px-8 py-9 rounded-2xl gap-4 shadow-sm">
         <div className="flex justify-between">

@@ -2,19 +2,24 @@ import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "./button";
-import {
-  AddTrackTypeSchema,
-  type AddTrackFormData,
-} from "@/schemas/track-schema";
-import { ImageUpload } from "./image-upload";
-import { useAddTrack } from "@/hooks/add-track.hook";
-import toast from "react-hot-toast";
 
-interface AddTrackFormProps {
+import { ImageUpload } from "./image-upload";
+import toast from "react-hot-toast";
+import {
+  AddCourseTypeSchema,
+  type AddCourseFormData,
+} from "@/schemas/course-schema";
+import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import type { TrackResponse } from "@/types/track.type";
+import { allTracks } from "@/services/track-services";
+import { useAddCourse } from "@/hooks/course-hook";
+
+interface AddCourseFormProps {
   closeModal: (state: boolean) => void;
 }
 
-const AddCourseForm = ({ closeModal }: AddTrackFormProps) => {
+const AddCourseForm = ({ closeModal }: AddCourseFormProps) => {
   const {
     register,
     handleSubmit,
@@ -22,41 +27,45 @@ const AddCourseForm = ({ closeModal }: AddTrackFormProps) => {
     reset,
     setValue,
     watch,
-  } = useForm<AddTrackFormData>({
-    resolver: zodResolver(AddTrackTypeSchema),
+  } = useForm<AddCourseFormData>({
+    resolver: zodResolver(AddCourseTypeSchema),
     defaultValues: {
-      name: "",
-      price: "",
-      duration: "",
-      instructor: "",
-      // Add this to your defaultValues
+      title: "",
+      track: "",
       description: "",
     },
   });
   const selectedImage = watch("image");
 
+  const { data } = useQuery<TrackResponse, Error>({
+    queryKey: ["get-all-tracks"],
+    queryFn: allTracks,
+  });
+
+  let trackList = data?.tracks || [];
+
   const {
-    mutate: addTrack,
+    mutate: addCourse,
     isPending,
     error,
     isError,
     // data,
-  } = useAddTrack();
+  } = useAddCourse();
 
-  const onSubmit = async (data: AddTrackFormData) => {
-    // console.log("🚀 ~ onSubmit ~ data:", data),
-    addTrack(data, {
-      onSuccess(res) {
-        console.log("🚀 ~ onSuccess ~ res:", res);
-        reset();
-        closeModal(false);
-        toast.success("Track created successfully");
-      },
-      onError() {
-        // console.log("error");
-        toast.error("Failed to create Track");
-      },
-    });
+  const onSubmit = async (data: AddCourseFormData) => {
+    console.log("🚀 ~ onSubmit ~ data:", data),
+      addCourse(data, {
+        onSuccess(res) {
+          console.log("🚀 ~ onSuccess ~ res:", res);
+          reset();
+          closeModal(false);
+          toast.success("Course created successfully");
+        },
+        onError() {
+          console.log("error");
+          toast.error("Failed to create Course");
+        },
+      });
   };
 
   return (
@@ -72,21 +81,34 @@ const AddCourseForm = ({ closeModal }: AddTrackFormProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
           label="Title"
-          name="name"
+          name="title"
           type="text"
           register={register}
-          error={errors.name?.message}
+          error={errors.title?.message}
           required
         />
 
-        <InputField
-          label="Track"
-          name="price"
-          type="text"
-          register={register}
-          error={errors.price?.message}
-          required
-        />
+        <select
+          {...register("track")}
+          className={cn(
+            "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "border-gray-300",
+            // errors && "border-red-500 bg-red-50"
+            errors.track && "border-red-500 bg-red-50"
+          )}
+        >
+          <option value="">Select a track</option>
+          {trackList.map((track) =>
+            track.courses.map((item) => (
+              <option key={item._id} value={track._id}>
+                {item.title}
+              </option>
+            ))
+          )}
+        </select>
+        {errors.track && (
+          <p className="text-red-500 text-sm mt-1">{errors.track.message}</p>
+        )}
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -103,7 +125,6 @@ const AddCourseForm = ({ closeModal }: AddTrackFormProps) => {
             showPreview={true}
           />
         </div>
-
         <InputField
           label="Description"
           name="description"
@@ -112,14 +133,13 @@ const AddCourseForm = ({ closeModal }: AddTrackFormProps) => {
           error={errors.description?.message}
           required
         />
-
         <div className="pt-4">
           <Button
             type="submit"
             disabled={isSubmitting || isPending}
             className="mb-4 cursor-pointer"
           >
-            {isSubmitting || isPending ? "Course Track..." : "Course Track"}
+            {isSubmitting || isPending ? "Creating Course..." : "Create Course"}
           </Button>
         </div>
       </form>

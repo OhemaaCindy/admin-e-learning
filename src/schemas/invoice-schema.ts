@@ -1,0 +1,11 @@
+import z from "zod";
+
+export const AddInvoiceTypeSchema = z.object({
+  learner: z.string().min(1, "Please select learner "),
+  amount: z.number().min(1, "Enter amount"),
+  dueDate: z.string().min(1, "Enter due date"),
+  paystackCallbackUrl: z.string(),
+  paymentDetails: z.string().min(1, "Enter payment details"),
+  // status: z.string().min(1, "Select status"),
+});
+export type AddInvoiceFormData = z.infer<typeof AddInvoiceTypeSchema>;

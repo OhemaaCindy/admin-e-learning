@@ -13,13 +13,25 @@ interface ModalProps {
   title: string;
   children: React.ReactNode;
   shadow?: boolean;
+  openState: boolean;
+  toogleState: (state: boolean) => void;
 }
-export function UpdateModal({ title, children, shadow = false }: ModalProps) {
+export function UpdateModal({
+  title,
+  children,
+  shadow = false,
+  openState,
+  toogleState,
+}: ModalProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <div className={cn(shadow ? "bg-[#fbfbf8] p-3 shadow-md" : "")}>
-          <Pen size={20} className="text-[#01589A] cursor-pointer " />
+          <Pen
+            size={20}
+            className="text-[#01589A] cursor-pointer "
+            onClick={() => toogleState(openState)}
+          />
         </div>
       </AlertDialogTrigger>
       <AlertDialogContent>

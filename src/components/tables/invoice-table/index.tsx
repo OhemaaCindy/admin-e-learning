@@ -99,9 +99,9 @@ export const columns: ColumnDef<Invoice>[] = [
             <UpdateInvoiceForm />
           </UpdateModal>
 
-          <DeleteModal title="Delete Invoice">
+          {/* <DeleteModal title="Delete Invoice">
             <DeleteInvoiceForm />
-          </DeleteModal>
+          </DeleteModal> */}
         </div>
       );
     },
@@ -161,7 +161,12 @@ export function InvoiceDataTable() {
           className="max-w-sm"
         />
         <div className="">
-          <AddModal text="Add Invoice" title="Add New Invoice">
+          <AddModal
+            text="Add Invoice"
+            title="Add New Invoice"
+            openState={openState}
+            toogleState={toogleState}
+          >
             <AddInvoiceForm closeModal={toogleState} />
           </AddModal>
         </div>

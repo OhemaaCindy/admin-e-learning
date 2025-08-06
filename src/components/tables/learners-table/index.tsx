@@ -38,16 +38,16 @@ export const columns: ColumnDef<Learner>[] = [
   {
     header: "Learners",
     accessorKey: "profilePhoto",
-    cell: ({ row }) => {
-      const learner: Learner | null = row.original.profileImage;
-
-      return <ImageAndName learner={learner} />;
-    },
+    cell: ({ row }) => <ImageAndName learner={row.original} />,
   },
 
   {
     header: "Courses",
     accessorKey: "course",
+    cell: ({ row }) => {
+      const learner = row.original.course || "N/A";
+      return <p>{learner}</p>;
+    },
   },
   {
     header: "Date Joined",
@@ -62,28 +62,24 @@ export const columns: ColumnDef<Learner>[] = [
     header: "Amount",
     accessorKey: "amount",
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="">{formatted}</div>;
+      return <div className="">${row.original?.amount || "0.0"}</div>;
     },
   },
   {
     header: "Gender",
-    accessorKey: "gender",
+    accessorKey: "learner",
+    cell: ({ row }) => {
+      const learner = row.original.gender || "N/A";
+      return <p>{learner}</p>;
+    },
   },
   {
     id: "actions",
     enableHiding: false,
-    cell: (row) => {
+    cell: ({ row }) => {
       return (
         <ViewProfileModal>
-          <LearnerProfile row={row.row.original._id} />
+          <LearnerProfile id={row.original._id} />
         </ViewProfileModal>
       );
     },
@@ -91,8 +87,6 @@ export const columns: ColumnDef<Learner>[] = [
 ];
 
 export function LearnersDataTable() {
-  const [openState, toogleState] = React.useState(false);
-
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -109,7 +103,6 @@ export function LearnersDataTable() {
     queryFn: allLearners,
   });
   const learners = learnerDetails || [];
-  console.log("🚀 ~ LearnersDataTable ~ learners:", learners);
 
   const table = useReactTable({
     data: learners,
@@ -142,11 +135,6 @@ export function LearnersDataTable() {
           }
           className="max-w-sm"
         />
-        {/* <div className="">
-          <AddModal text="Add Invoice" title="Add New Invoice">
-            <AddInvoiceForm closeModal={toogleState} />
-          </AddModal>
-        </div> */}
       </div>
       <div className="overflow-hidden rounded-md border">
         <Table>

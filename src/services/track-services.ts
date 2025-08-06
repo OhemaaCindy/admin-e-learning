@@ -97,29 +97,19 @@ export const upateTrack = async ({
 }: UpdateTrackProps): Promise<UpdateTrackResponse> => {
   console.log("🔥 ~ createTrack ~ payload:", payload);
 
-  const { name, price, image, instructor, duration, description } = payload;
-
   const formData = new FormData();
-  formData.append("name", name);
-  formData.append("price", price);
-  formData.append("instructor", instructor);
-  formData.append("duration", duration);
-  formData.append("description", description);
-  formData.append("image", image);
 
-  Object.entries(payload).forEach(([key, value]) => {
-    if (key === "image") {
-      if (value instanceof File) {
-        formData.append("image", value);
-      }
-    } else {
-      formData.append(key, value as string);
-    }
-  });
+  // Append only non-empty string values
+  if (payload.name) formData.append("name", payload.name);
+  if (payload.price) formData.append("price", payload.price);
+  if (payload.instructor) formData.append("instructor", payload.instructor);
+  if (payload.duration) formData.append("duration", payload.duration);
+  if (payload.description) formData.append("description", payload.description);
 
-  // for (const [key, value] of formData.entries()) {
-  //   console.log(`🔥 ${key}:`, value);
-  // }
+  // Append image only if it's a File instance
+  if (payload.image instanceof File) {
+    formData.append("image", payload.image);
+  }
 
   try {
     const response = await axiosClient.put<UpdateTrackResponse>(

@@ -9,10 +9,6 @@ interface DeleteTrackFormProps {
 const Deletetrack = ({ closeModal }: DeleteTrackFormProps) => {
   // const [closeModal] = useState<null>(null);
 
-  const handleCloseModal = () => {
-    closeModal(true);
-  };
-
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
@@ -46,7 +42,8 @@ const Deletetrack = ({ closeModal }: DeleteTrackFormProps) => {
       <div className="flex justify-end items-center gap-2 mt-4 ">
         <button
           className="border-1 py-1 px-2 rounded-md cursor-pointer"
-          onClick={handleCloseModal}
+          // onClick={handleCloseModal}
+          onClick={() => closeModal(false)}
         >
           Cancel
         </button>

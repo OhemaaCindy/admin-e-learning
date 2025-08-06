@@ -38,12 +38,13 @@ export const AddTrackTypeSchema = z.object({
 export type AddTrackFormData = z.infer<typeof AddTrackTypeSchema>;
 
 export const UpdateTrackTypeSchema = z.object({
-  name: z.string().min(1, "Track name is required"),
-  price: z.string().min(1, "Price is required"),
-  duration: z.string().min(1, "Duration is required"),
-  instructor: z.string().min(1, "Instructor is required"),
-  image: fileSchema, // Required image
-  description: z.string().min(1, "Description is required"),
+  name: z.string().optional(),
+  price: z.string().optional(),
+  duration: z.string().optional(),
+  instructor: z.string().optional(),
+  // image: fileSchema, // Required image
+  image: fileSchema.optional().or(z.literal(null)), // Make optional or required based on your needs
+  description: z.string().optional(),
 });
 
 export type UpdateTrackFormData = z.infer<typeof UpdateTrackTypeSchema>;

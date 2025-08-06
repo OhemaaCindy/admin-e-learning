@@ -57,13 +57,18 @@ function TrackDetailsCard({ details }: { details: Track }) {
           <UpdateModal
             shadow
             title="Update Track"
-            // openState={openState}
-            // toogleState={toogleState}
+            openState={openState}
+            toogleState={toogleState}
           >
             <UpdateTrackForm closeModal={toogleState} />
           </UpdateModal>
 
-          <DeleteModal title="Delete Track" shadow>
+          <DeleteModal
+            title="Delete Track"
+            shadow
+            openState={openState}
+            toogleState={toogleState}
+          >
             <Deletetrack closeModal={toogleState} />
           </DeleteModal>
         </div>

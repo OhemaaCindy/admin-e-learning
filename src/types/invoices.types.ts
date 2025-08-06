@@ -50,3 +50,16 @@ interface Track {
   __v: number;
   id: string;
 }
+
+export interface InvoiceResponse {
+  success: true;
+  message: string;
+  data: {
+    id: string;
+    amount: number;
+    dueDate: string;
+    status?: "pending" | "paid" | "failed";
+    paymentDetails?: string;
+    paystackPaymentUrl: string;
+  };
+}

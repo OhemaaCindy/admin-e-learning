@@ -26,6 +26,7 @@ export const allLearners = async (): Promise<Learner[]> => {
 };
 
 export const singleLearner = async (id: string): Promise<Learner> => {
+  console.log("🚀 ~ singleLearner ~ id:", id);
   try {
     const response = await axiosClient.get<LearnerResponse>(
       apiEndpoints.LEARNERS.getOneLearner(id)

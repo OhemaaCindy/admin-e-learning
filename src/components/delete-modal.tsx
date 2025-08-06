@@ -14,13 +14,25 @@ interface DeleteProps {
   title: string;
   children: React.ReactNode;
   shadow?: boolean;
+  openState: boolean;
+  toogleState: (state: boolean) => void;
 }
-export function DeleteModal({ title, children, shadow }: DeleteProps) {
+export function DeleteModal({
+  title,
+  children,
+  shadow,
+  openState,
+  toogleState,
+}: DeleteProps) {
   return (
-    <AlertDialog>
+    <AlertDialog open={openState} onOpenChange={toogleState}>
       <AlertDialogTrigger asChild>
         <div className={cn(shadow && "bg-[#fbfbf8] p-3 shadow-md")}>
-          <Trash2 size={20} className="text-[#2E2C48] cursor-pointer " />
+          <Trash2
+            size={20}
+            className="text-[#2E2C48] cursor-pointer "
+            onClick={() => toogleState(openState)}
+          />
         </div>
       </AlertDialogTrigger>
       <AlertDialogContent>

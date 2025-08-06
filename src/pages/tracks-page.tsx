@@ -5,7 +5,6 @@ import type { Error } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 
 import { Search } from "lucide-react";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Fragment } from "react/jsx-runtime";
 import type { TrackResponse } from "@/types/track.type";
 import { useState } from "react";
@@ -57,7 +56,8 @@ const Track = () => {
       </div>
       {isLoading && (
         <span>
-          <DotLottieReact src="path/to/animation.lottie" loop autoplay />
+          {/* <DotLottieReact src="path/to/animation.lottie" loop autoplay /> */}
+          loading....
         </span>
       )}
       {isError && <div>{error.message}</div>}

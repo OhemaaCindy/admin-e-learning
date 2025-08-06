@@ -9,7 +9,7 @@ import {
   type UpdateTrackFormData,
 } from "@/schemas/track-schema";
 import toast from "react-hot-toast";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { SingleTrackResponse } from "@/types/track.type";
 import { singleTrack } from "@/services/track-services";
@@ -18,6 +18,7 @@ interface UpdateTrackFormProps {
 }
 
 const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
+  const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
   // console.log("🚀 ~ UpdateTrackForm ~ id:", id);
@@ -34,7 +35,7 @@ const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
+    // reset,
     setValue,
     watch,
   } = useForm<UpdateTrackFormData>({
@@ -66,8 +67,9 @@ const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
       {
         onSuccess(res) {
           console.log("🚀 ~ onSuccess ~ res:", res);
-          reset();
-          closeModal(false);
+          // reset();
+          // closeModal(false);
+          navigate("/tracks");
           toast.success("Track updated successfully");
         },
         onError() {

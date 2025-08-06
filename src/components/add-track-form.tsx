@@ -29,19 +29,12 @@ const AddTrackForm = ({ closeModal }: AddTrackFormProps) => {
       price: "",
       duration: "",
       instructor: "",
-      // Add this to your defaultValues
       description: "",
     },
   });
   const selectedImage = watch("image");
 
-  const {
-    mutate: addTrack,
-    isPending,
-    error,
-    isError,
-    // data,
-  } = useAddTrack();
+  const { mutate: addTrack, isPending, error, isError } = useAddTrack();
 
   const onSubmit = async (data: AddTrackFormData) => {
     // console.log("🚀 ~ onSubmit ~ data:", data),

@@ -49,4 +49,8 @@ export interface Learner {
   disabled?: boolean;
   location?: string;
   profileImage?: string;
+  // ====================================
+  amount?: number;
+  gender?: string;
+  course?: string;
 }

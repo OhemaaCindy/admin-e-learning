@@ -3,28 +3,24 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
 
-interface DeleteTrackFormProps {
+interface DeleteCourseFormProps {
   closeModal: (state: boolean) => void;
 }
-const DeleteCourseForm = ({ closeModal }: DeleteTrackFormProps) => {
+const DeleteCourseForm = ({ closeModal }: DeleteCourseFormProps) => {
   // const [closeModal] = useState<null>(null);
-
-  const handleCloseModal = () => {
-    closeModal(true);
-  };
 
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
   console.log("🚀 ~ Delete TrackForm ~ id:", id);
 
-  const { mutate: handleDeleteInvoice, isError, error } = useDeleteTrack();
+  const { mutate: handleDeleteCourse, isError, error } = useDeleteTrack();
   const handleDelete = (id: string) => {
-    handleDeleteInvoice(id, {
+    handleDeleteCourse(id, {
       onSuccess: () => {
-        toast.success("Track Deleted sucessfully");
+        toast.success("Course Deleted sucessfully");
 
-        navigate("/tracks");
+        navigate("/courses");
       },
       onError: (error: any) => {
         toast.error(error.message);
@@ -46,7 +42,8 @@ const DeleteCourseForm = ({ closeModal }: DeleteTrackFormProps) => {
       <div className="flex justify-end items-center gap-2 mt-4 ">
         <button
           className="border-1 py-1 px-2 rounded-md cursor-pointer"
-          onClick={handleCloseModal}
+          // onClick={handleCloseModal}
+          onClick={() => closeModal(false)}
         >
           Cancel
         </button>

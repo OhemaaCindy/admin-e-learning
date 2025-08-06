@@ -22,6 +22,8 @@ export const apiEndpoints = {
   },
   INVOICES: {
     getAllInvoices: "/invoices",
+    createInvoice: "/invoices",
+    updateInvoice: "",
   },
   LEARNERS: {
     getAllLearners: "/learners",
@@ -29,5 +31,6 @@ export const apiEndpoints = {
   },
   COURSES: {
     getAllCourses: "/courses",
+    createCourse: "/courses",
   },
 };

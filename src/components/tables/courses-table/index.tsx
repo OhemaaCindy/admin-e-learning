@@ -96,7 +96,7 @@ export function CoursesDataTable() {
     queryFn: allCourses,
   });
   const info = courseDetails || [];
-  console.log("🚀 ~ CoursesDataTable ~ info:", info);
+  // console.log("🚀 ~ CoursesDataTable ~ info:", info);
 
   const table = useReactTable({
     data: info,
@@ -130,7 +130,12 @@ export function CoursesDataTable() {
           className="max-w-sm"
         />
         <div className="">
-          <AddModal text="Add Course" title="Add New Course">
+          <AddModal
+            text="Add Course"
+            title="Add New Course"
+            openState={openState}
+            toogleState={toogleState}
+          >
             <AddCourseForm closeModal={toogleState} />
           </AddModal>
         </div>
