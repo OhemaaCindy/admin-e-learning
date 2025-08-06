@@ -1,20 +1,21 @@
-import { useDeleteTrack } from "@/hooks/add-track.hook";
-import { useState } from "react";
+import { useDeleteCourse } from "@/hooks/course-hook";
 import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 
 interface DeleteCourseFormProps {
   closeModal: (state: boolean) => void;
+  id: string;
 }
-const DeleteCourseForm = ({ closeModal }: DeleteCourseFormProps) => {
+const DeleteCourseForm = ({ closeModal, id }: DeleteCourseFormProps) => {
+  // console.log("🚀 ~ DeleteCourseForm ~ id:", id);
   // const [closeModal] = useState<null>(null);
 
   const navigate = useNavigate();
-  const params = useParams();
-  const id = params.id;
-  console.log("🚀 ~ Delete TrackForm ~ id:", id);
+  // const params = useParams();
+  // const id = params.id;
+  // console.log("🚀 ~ Delete TrackForm ~ id:", id);
 
-  const { mutate: handleDeleteCourse, isError, error } = useDeleteTrack();
+  const { mutate: handleDeleteCourse, isError, error } = useDeleteCourse();
   const handleDelete = (id: string) => {
     handleDeleteCourse(id, {
       onSuccess: () => {

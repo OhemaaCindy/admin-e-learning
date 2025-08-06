@@ -2,19 +2,37 @@ import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "./button";
-import {
-  AddTrackTypeSchema,
-  type AddTrackFormData,
-} from "@/schemas/track-schema";
+
 import { ImageUpload } from "./image-upload";
-import { useAddTrack } from "@/hooks/add-track.hook";
 import toast from "react-hot-toast";
+import {
+  UpdateCourseTypeSchema,
+  type UpdateCourseFormData,
+} from "@/schemas/course-schema";
+import { useUpdateCourse } from "@/hooks/course-hook";
+import { useQuery } from "@tanstack/react-query";
+import type { SingleCourseResponse } from "@/types/courses.types";
+import { singleCourse } from "@/services/courses-services";
+import { cn } from "@/lib/utils";
+import { allTracks } from "@/services/track-services";
+import type { TrackResponse } from "@/types/track.type";
 
 interface AddTrackFormProps {
   closeModal: (state: boolean) => void;
+  id: string;
 }
 
-const UpdateCourseForm = ({ closeModal }: AddTrackFormProps) => {
+const UpdateCourseForm = ({ closeModal, id }: AddTrackFormProps) => {
+  const { data } = useQuery<SingleCourseResponse, Error>({
+    queryKey: ["get-single-track", id],
+    queryFn: () => singleCourse(id as string),
+  });
+
+  const details = data?.course;
+  // console.log("🚀 ~ UpdateCourseForm ~ details:", details);
+
+  // console.log("🚀 ~ UpdateCourseForm ~ id:", id);
+
   const {
     register,
     handleSubmit,
@@ -22,41 +40,52 @@ const UpdateCourseForm = ({ closeModal }: AddTrackFormProps) => {
     reset,
     setValue,
     watch,
-  } = useForm<AddTrackFormData>({
-    resolver: zodResolver(AddTrackTypeSchema),
+  } = useForm<UpdateCourseFormData>({
+    resolver: zodResolver(UpdateCourseTypeSchema),
     defaultValues: {
-      name: "",
-      price: "",
-      duration: "",
-      instructor: "",
+      title: details?.title || "",
+      // track: details?.track || "",
+
       // Add this to your defaultValues
-      description: "",
+      description: details?.description || "",
     },
   });
+
+  const { data: tracks } = useQuery<TrackResponse, Error>({
+    queryKey: ["get-all-tracks"],
+    queryFn: allTracks,
+  });
+
+  let trackList = tracks?.tracks || [];
+
   const selectedImage = watch("image");
 
   const {
-    mutate: addTrack,
+    mutate: updateCourse,
     isPending,
     error,
     isError,
     // data,
-  } = useAddTrack();
+  } = useUpdateCourse();
 
-  const onSubmit = async (data: AddTrackFormData) => {
+  const onSubmit = async (data: UpdateCourseFormData) => {
     // console.log("🚀 ~ onSubmit ~ data:", data),
-    addTrack(data, {
-      onSuccess(res) {
-        console.log("🚀 ~ onSuccess ~ res:", res);
-        reset();
-        closeModal(false);
-        toast.success("Track created successfully");
-      },
-      onError() {
-        // console.log("error");
-        toast.error("Failed to create Track");
-      },
-    });
+    updateCourse(
+      // {...data,},
+      { id, ...data },
+      {
+        onSuccess(res) {
+          console.log("🚀 ~ onSuccess ~ res:", res);
+          reset();
+          closeModal(false);
+          toast.success("Course updated successfully");
+        },
+        onError() {
+          // console.log("error");
+          toast.error("Failed to update Course");
+        },
+      }
+    );
   };
 
   return (
@@ -72,21 +101,42 @@ const UpdateCourseForm = ({ closeModal }: AddTrackFormProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
           label="Title"
-          name="name"
+          name="title"
           type="text"
           register={register}
-          error={errors.name?.message}
+          error={errors.title?.message}
           required
         />
 
-        <InputField
+        {/* <InputField
           label="Track"
-          name="price"
+          name="track"
           type="text"
           register={register}
-          error={errors.price?.message}
+          error={errors.track?.message}
           required
-        />
+        /> */}
+        <select
+          {...register("track")}
+          className={cn(
+            "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "border-gray-300",
+            // errors && "border-red-500 bg-red-50"
+            errors.track && "border-red-500 bg-red-50"
+          )}
+        >
+          <option value="">Select a track</option>
+          {trackList.map((track) =>
+            track.courses.map((item) => (
+              <option key={item._id} value={track._id}>
+                {item.title}
+              </option>
+            ))
+          )}
+        </select>
+        {errors.track && (
+          <p className="text-red-500 text-sm mt-1">{errors.track.message}</p>
+        )}
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -119,7 +169,9 @@ const UpdateCourseForm = ({ closeModal }: AddTrackFormProps) => {
             disabled={isSubmitting || isPending}
             className="mb-4 cursor-pointer"
           >
-            {isSubmitting || isPending ? "Course Track..." : "Course Track"}
+            {isSubmitting || isPending
+              ? "Updating Course..."
+              : " Update Course "}
           </Button>
         </div>
       </form>

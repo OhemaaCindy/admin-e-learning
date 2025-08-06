@@ -23,3 +23,25 @@ export const AddCourseTypeSchema = z.object({
 });
 
 export type AddCourseFormData = z.infer<typeof AddCourseTypeSchema>;
+
+export const UpdateCourseTypeSchema = z.object({
+  title: z.string().optional(),
+  track: z.string().optional(),
+  image: fileSchema.optional().or(z.literal(null)), // Make optional or required based on your needs
+
+  description: z.string().optional(),
+});
+
+export type UpdateCourseFormData = z.infer<typeof UpdateCourseTypeSchema>;
+
+// export const UpdateTrackTypeSchema = z.object({
+//   name: z.string().optional(),
+//   price: z.string().optional(),
+//   duration: z.string().optional(),
+//   instructor: z.string().optional(),
+//   // image: fileSchema, // Required image
+//   image: fileSchema.optional().or(z.literal(null)), // Make optional or required based on your needs
+//   description: z.string().optional(),
+// });
+
+// export type UpdateTrackFormData = z.infer<typeof UpdateTrackTypeSchema>;

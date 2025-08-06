@@ -54,6 +54,7 @@ export const columns: ColumnDef<Course>[] = [
     header: "Date Joined",
     accessorKey: "admin",
     cell: ({ row }) => {
+      // console.log("🚀 ~ row:", row.original._id);
       const admin = row.original.createdAt;
       return <p>{format(new Date(admin), "do MMMM, yyyy")}</p>;
     },
@@ -61,15 +62,15 @@ export const columns: ColumnDef<Course>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: () => {
+    cell: ({ row }) => {
       return (
         <div className="flex items-center justify-end gap-3">
           <UpdateModal title="Update Course">
-            <UpdateCourseForm />
+            <UpdateCourseForm id={row.original._id} />
           </UpdateModal>
 
           <DeleteModal title="Delete Course">
-            <DeleteCourseForm />
+            <DeleteCourseForm id={row.original._id} />
           </DeleteModal>
         </div>
       );

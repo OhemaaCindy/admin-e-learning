@@ -53,19 +53,19 @@ const AddCourseForm = ({ closeModal }: AddCourseFormProps) => {
   } = useAddCourse();
 
   const onSubmit = async (data: AddCourseFormData) => {
-    console.log("🚀 ~ onSubmit ~ data:", data),
-      addCourse(data, {
-        onSuccess(res) {
-          console.log("🚀 ~ onSuccess ~ res:", res);
-          reset();
-          closeModal(false);
-          toast.success("Course created successfully");
-        },
-        onError() {
-          console.log("error");
-          toast.error("Failed to create Course");
-        },
-      });
+    // console.log("🚀 ~ onSubmit ~ data:", data),
+    addCourse(data, {
+      onSuccess() {
+        // console.log("🚀 ~ onSuccess ~ res:", res);
+        reset();
+        closeModal(false);
+        toast.success("Course created successfully");
+      },
+      onError() {
+        console.log("error");
+        toast.error("Failed to create Course");
+      },
+    });
   };
 
   return (

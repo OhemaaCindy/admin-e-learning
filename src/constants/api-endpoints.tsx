@@ -32,5 +32,9 @@ export const apiEndpoints = {
   COURSES: {
     getAllCourses: "/courses",
     createCourse: "/courses",
+    getSingleCourse: (id: string) => `/courses/${id}`,
+
+    deleteCourse: (id: string) => `/courses/${id}`,
+    updateCourse: (id: string) => `/courses/${id}`,
   },
 };
