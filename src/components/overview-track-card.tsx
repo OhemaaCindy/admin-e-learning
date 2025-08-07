@@ -9,9 +9,8 @@ const OverviewTrackCard = ({
   track: Track;
   trackColors: TrackCardColors;
 }) => {
-  console.log("🚀 ~ OverviewTrackCard ~ trackColors:", trackColors);
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100">
+    <div className=" rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-white">
       <div className={`h-32  relative flex items-center justify-center`}>
         <img
           src={track?.image}

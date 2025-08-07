@@ -37,7 +37,7 @@ const UpdateCourseForm = ({ closeModal, id }: AddTrackFormProps) => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
+    // reset,
     setValue,
     watch,
   } = useForm<UpdateCourseFormData>({
@@ -51,7 +51,7 @@ const UpdateCourseForm = ({ closeModal, id }: AddTrackFormProps) => {
     },
   });
 
-  const { data: tracks } = useQuery<TrackResponse, Error>({
+  const { data: tracks, isLoading } = useQuery<TrackResponse, Error>({
     queryKey: ["get-all-tracks"],
     queryFn: allTracks,
   });
@@ -59,7 +59,6 @@ const UpdateCourseForm = ({ closeModal, id }: AddTrackFormProps) => {
   let trackList = tracks?.tracks || [];
 
   const selectedImage = watch("image");
-
   const {
     mutate: updateCourse,
     isPending,
@@ -72,16 +71,16 @@ const UpdateCourseForm = ({ closeModal, id }: AddTrackFormProps) => {
     // console.log("🚀 ~ onSubmit ~ data:", data),
     updateCourse(
       // {...data,},
-      { id, ...data },
+      { id, payload: data },
       {
         onSuccess(res) {
           console.log("🚀 ~ onSuccess ~ res:", res);
-          reset();
+          // reset();
           closeModal(false);
           toast.success("Course updated successfully");
         },
         onError() {
-          // console.log("error");
+          console.log("error");
           toast.error("Failed to update Course");
         },
       }
@@ -107,29 +106,22 @@ const UpdateCourseForm = ({ closeModal, id }: AddTrackFormProps) => {
           error={errors.title?.message}
           required
         />
-
-        {/* <InputField
-          label="Track"
-          name="track"
-          type="text"
-          register={register}
-          error={errors.track?.message}
-          required
-        /> */}
+        {/* {isLoading && <span>Loading....</span>} */}
         <select
           {...register("track")}
           className={cn(
             "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
             "border-gray-300",
-            // errors && "border-red-500 bg-red-50"
             errors.track && "border-red-500 bg-red-50"
           )}
         >
           <option value="">Select a track</option>
-          {trackList.map((track) =>
-            track.courses.map((item) => (
-              <option key={item._id} value={track._id}>
-                {item.title}
+          {isLoading ? (
+            <span>Loading tracks....</span>
+          ) : (
+            trackList?.map((track) => (
+              <option key={track._id} value={track._id}>
+                {track?.name}
               </option>
             ))
           )}

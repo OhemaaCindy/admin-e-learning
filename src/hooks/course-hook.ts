@@ -27,7 +27,7 @@ export const useAddCourse = () => {
 
 export const useDeleteCourse = () => {
   const queryClient = useQueryClient();
-  return useMutation<DeleteCourseResponse, AuthErrorRes>({
+  return useMutation<DeleteCourseResponse, AuthErrorRes, string>({
     mutationFn: (id) => deleteCourse(id),
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["get-all-courses"] });
@@ -35,14 +35,18 @@ export const useDeleteCourse = () => {
   });
 };
 
+interface courseProps {
+  id: string;
+  payload: UpdateCourseFormData;
+}
 export const useUpdateCourse = () => {
   const queryClient = useQueryClient();
-  return useMutation<UpdateCourseResponse, AuthErrorRes, UpdateCourseFormData>({
-    mutationFn: upateCourse,
-    onSuccess(_, variables) {
+  return useMutation<UpdateCourseResponse, AuthErrorRes, courseProps>({
+    mutationFn: ({ id, payload }) => upateCourse({ id, payload }),
+    onSuccess() {
       // queryClient.invalidateQueries({ queryKey: ["get-all-tracks"] });
       queryClient.invalidateQueries({
-        queryKey: ["get-single-course", variables.id],
+        queryKey: ["get-all-courses"],
       });
     },
   });

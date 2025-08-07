@@ -1,33 +1,22 @@
 import React, { Fragment } from "react";
-// import { DollarSign, FileText } from "lucide-react";
 import StatCard from "@/components/statCard";
-// import TrackCard from "@/components/overview-track-card";
 import RevenueChart from "@/components/revenue-chart";
 import InvoiceList from "@/components/invoice-list";
-// import { ChartTooltipDefault } from "@/components/charts/revenuebar-chart";
 import { SiteHeader } from "@/components/dashboard/site-header";
 import OverviewTrackCard from "@/components/overview-track-card";
 import { useQuery } from "@tanstack/react-query";
 import type { TrackResponse } from "@/types/track.type";
 import { allTracks } from "@/services/track-services";
-
 import type { Invoice } from "@/types/invoices.types";
 import { allInvoice } from "@/services/invoice-services";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
-// import { LoaderCircle } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface RevenueData {
   month: string;
   value: number;
 }
-
-// interface InvoiceItem {
-//   id: string;
-//   name: string;
-//   amount: number;
-//   avatar: string;
-// }
 
 export type TrackCardColors = { light?: string; deep?: string }[];
 
@@ -116,23 +105,14 @@ const Overview: React.FC = () => {
       />
       <div className="min-h-screen  p-6 ">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 ">
             {stats.map((stat, index) => (
               <StatCard key={index} {...stat} />
             ))}
           </div>
 
-          {isloadingTacks && (
-            // <div className="flex items-center text-[#15A3DD] ... px-6 py-2 gap-2 rounded-sm">
-            //   <LoaderCircle className="animate-spin" />
-            //   <button type="button" className="" disabled>
-            //     Loading…
-            //   </button>
-            // </div>
-            <span></span>
-          )}
           {/* Tracks Section */}
-          <div className="mb-8">
+          <div className="mb-8 ">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">
                 Tracks
@@ -142,18 +122,22 @@ const Overview: React.FC = () => {
               </Button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {trackDetails.slice(0, 4).map((track, index) => {
-                const trackColors = trackCardColors?.[index];
+              {isloadingTacks ? (
+                <CardSkeleton />
+              ) : (
+                trackDetails.slice(0, 4).map((track, index) => {
+                  const trackColors = trackCardColors?.[index];
 
-                return (
-                  <Fragment key={track._id + index}>
-                    <OverviewTrackCard
-                      track={track}
-                      trackColors={trackColors}
-                    />
-                  </Fragment>
-                );
-              })}
+                  return (
+                    <Fragment key={track._id + index}>
+                      <OverviewTrackCard
+                        track={track}
+                        trackColors={trackColors}
+                      />
+                    </Fragment>
+                  );
+                })
+              )}
             </div>
           </div>
 
@@ -161,16 +145,12 @@ const Overview: React.FC = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <RevenueChart data={revenueData} />
-            {isloadingInvoices && (
-              // <div className="flex items-center text-[#15A3DD] ... px-6 py-2 gap-2 rounded-sm">
-              //   <LoaderCircle className="animate-spin" />
-              //   <button type="button" className="" disabled>
-              //     Loading…
-              //   </button>
-              // </div>
-              <span></span>
+
+            {isloadingInvoices ? (
+              <InvoiceSkeleton />
+            ) : (
+              <InvoiceList info={info} />
             )}
-            {!isloadingInvoices && info && <InvoiceList info={info} />}
           </div>
         </div>
       </div>
@@ -179,3 +159,25 @@ const Overview: React.FC = () => {
 };
 
 export default Overview;
+
+const CardSkeleton = () => {
+  const items = [...Array(4)];
+  return (
+    <>
+      {items.map((_, i) => (
+        <Skeleton
+          key={i}
+          className="h-60 w-full  bg-blue-100 dark:bg-blue-200"
+        />
+      ))}
+    </>
+  );
+};
+
+const InvoiceSkeleton = () => {
+  return (
+    <>
+      <Skeleton className=" w-full  bg-blue-100 dark:bg-blue-200" />
+    </>
+  );
+};

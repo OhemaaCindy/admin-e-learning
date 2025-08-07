@@ -63,14 +63,24 @@ export const columns: ColumnDef<Course>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
+      const [openState, toogleState] = React.useState(false);
+
       return (
         <div className="flex items-center justify-end gap-3">
-          <UpdateModal title="Update Course">
-            <UpdateCourseForm id={row.original._id} />
+          <UpdateModal
+            title="Update Course"
+            openState={openState}
+            toogleState={toogleState}
+          >
+            <UpdateCourseForm id={row.original._id} closeModal={toogleState} />
           </UpdateModal>
 
-          <DeleteModal title="Delete Course">
-            <DeleteCourseForm id={row.original._id} />
+          <DeleteModal
+            title="Delete Course"
+            openState={openState}
+            toogleState={toogleState}
+          >
+            <DeleteCourseForm id={row.original._id} closeModal={toogleState} />
           </DeleteModal>
         </div>
       );
@@ -123,10 +133,10 @@ export function CoursesDataTable() {
       {isloadingCourseses && <span>Loading....</span>}
       <div className="items-center py-4 flex justify-between">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Search by course "
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

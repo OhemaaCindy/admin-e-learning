@@ -37,6 +37,7 @@ import DeleteInvoiceForm from "@/components/delete-invoive-form";
 import { useQuery } from "@tanstack/react-query";
 import { allInvoice } from "@/services/invoice-services";
 import type { Invoice, Learner } from "@/types/invoices.types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const columns: ColumnDef<Invoice>[] = [
   {
@@ -70,15 +71,7 @@ export const columns: ColumnDef<Invoice>[] = [
     header: "Amount",
     accessorKey: "amount",
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="">{formatted}</div>;
+      return <div className="">${row.original?.amount || "0.0"}</div>;
     },
   },
   {
@@ -89,14 +82,16 @@ export const columns: ColumnDef<Invoice>[] = [
     id: "actions",
     enableHiding: false,
     cell: () => {
+      const [openState, toogleState] = React.useState(false);
+
       return (
         <div className="flex items-center justify-end gap-3">
           <UpdateModal
             title="Update Invoice"
-            // openState={openState}
-            // toogleState={toogleState}
+            openState={openState}
+            toogleState={toogleState}
           >
-            <UpdateInvoiceForm />
+            <UpdateInvoiceForm closeModal={toogleState} />
           </UpdateModal>
 
           {/* <DeleteModal title="Delete Invoice">
@@ -150,7 +145,6 @@ export function InvoiceDataTable() {
 
   return (
     <div className="w-full ">
-      {isloadingInvoices && <span>Loading...</span>}
       <div className="items-center py-4 flex justify-between">
         <Input
           placeholder="Filter emails..."
@@ -160,6 +154,7 @@ export function InvoiceDataTable() {
           }
           className="max-w-sm"
         />
+
         <div className="">
           <AddModal
             text="Add Invoice"
@@ -172,54 +167,58 @@ export function InvoiceDataTable() {
         </div>
       </div>
       <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+        {isloadingInvoices ? (
+          <InvoiceTableSkeleton />
+        ) : (
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        )}
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="text-muted-foreground flex-1 text-sm">
@@ -248,3 +247,11 @@ export function InvoiceDataTable() {
     </div>
   );
 }
+
+const InvoiceTableSkeleton = () => {
+  return (
+    <>
+      <Skeleton className=" w-full  bg-blue-100 dark:bg-blue-200" />
+    </>
+  );
+};

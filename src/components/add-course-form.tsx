@@ -37,7 +37,7 @@ const AddCourseForm = ({ closeModal }: AddCourseFormProps) => {
   });
   const selectedImage = watch("image");
 
-  const { data } = useQuery<TrackResponse, Error>({
+  const { data, isLoading } = useQuery<TrackResponse, Error>({
     queryKey: ["get-all-tracks"],
     queryFn: allTracks,
   });
@@ -88,7 +88,7 @@ const AddCourseForm = ({ closeModal }: AddCourseFormProps) => {
           required
         />
 
-        <select
+        {/* <select
           {...register("track")}
           className={cn(
             "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
@@ -102,6 +102,25 @@ const AddCourseForm = ({ closeModal }: AddCourseFormProps) => {
             track.courses.map((item) => (
               <option key={item._id} value={track._id}>
                 {item.title}
+              </option>
+            ))
+          )}
+        </select> */}
+        <select
+          {...register("track")}
+          className={cn(
+            "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "border-gray-300",
+            errors.track && "border-red-500 bg-red-50"
+          )}
+        >
+          <option value="">Select a track</option>
+          {isLoading ? (
+            <span>Loading tracks....</span>
+          ) : (
+            trackList?.map((track) => (
+              <option key={track._id} value={track._id}>
+                {track?.name}
               </option>
             ))
           )}

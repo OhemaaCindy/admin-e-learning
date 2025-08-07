@@ -54,12 +54,7 @@ const Track = () => {
           <AddTrackForm closeModal={toogleState} />
         </AddModal>
       </div>
-      {isLoading && (
-        <span>
-          {/* <DotLottieReact src="path/to/animation.lottie" loop autoplay /> */}
-          loading....
-        </span>
-      )}
+      {isLoading && <span>loading....</span>}
       {isError && <div>{error.message}</div>}
 
       <div className="p-8">

@@ -101,6 +101,7 @@ export const upateCourse = async ({
   console.log("🔥 ~ updateTrack ~ payload:", payload);
 
   const formData = new FormData();
+  // console.log("🚀 ~ upateCourse ~ formData:", formData);
 
   // Append only non-empty string values
   if (payload.track) formData.append("track", payload.track);
@@ -121,9 +122,10 @@ export const upateCourse = async ({
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
+    console.log("🚀 ~ upateCourse ~  response.data:", response.data);
     return response.data;
   } catch (error) {
-    // console.log("🚀 ~ createTrack ~ error:", error);
+    console.log("🚀 ~ upateCourse ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }
