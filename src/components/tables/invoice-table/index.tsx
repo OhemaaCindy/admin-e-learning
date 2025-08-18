@@ -31,13 +31,14 @@ import InvoiceImage from "@/components/invoice-table-image";
 import { AddModal } from "@/components/add-modal";
 import AddInvoiceForm from "@/components/add-invoice-form";
 import { UpdateModal } from "@/components/update-modal";
-import { DeleteModal } from "@/components/delete-modal";
+// import { DeleteModal } from "@/components/delete-modal";
 import UpdateInvoiceForm from "@/components/update-invoice-form";
-import DeleteInvoiceForm from "@/components/delete-invoive-form";
+// import DeleteInvoiceForm from "@/components/delete-invoive-form";
 import { useQuery } from "@tanstack/react-query";
 import { allInvoice } from "@/services/invoice-services";
 import type { Invoice, Learner } from "@/types/invoices.types";
-import { Skeleton } from "@/components/ui/skeleton";
+// import InvoiceTableShimmer from "@/components/table-shimmer"; // Import the new shimmer component
+import InvoiceTableShimmer from "@/components/invoice-table-shimmer";
 
 export const columns: ColumnDef<Invoice>[] = [
   {
@@ -93,10 +94,6 @@ export const columns: ColumnDef<Invoice>[] = [
           >
             <UpdateInvoiceForm closeModal={toogleState} />
           </UpdateModal>
-
-          {/* <DeleteModal title="Delete Invoice">
-            <DeleteInvoiceForm />
-          </DeleteModal> */}
         </div>
       );
     },
@@ -168,7 +165,7 @@ export function InvoiceDataTable() {
       </div>
       <div className="overflow-hidden rounded-md border">
         {isloadingInvoices ? (
-          <InvoiceTableSkeleton />
+          <InvoiceTableShimmer />
         ) : (
           <Table>
             <TableHeader>
@@ -247,11 +244,3 @@ export function InvoiceDataTable() {
     </div>
   );
 }
-
-const InvoiceTableSkeleton = () => {
-  return (
-    <>
-      <Skeleton className=" w-full  bg-blue-100 dark:bg-blue-200" />
-    </>
-  );
-};

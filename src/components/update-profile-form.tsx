@@ -10,11 +10,11 @@ import { ImageUpload } from "./image-upload";
 import { useAddTrack } from "@/hooks/add-track.hook";
 import toast from "react-hot-toast";
 
-interface AddTrackFormProps {
+interface AddProfileFormProps {
   closeModal: (state: boolean) => void;
 }
 
-const UpdateProfileForm = ({ closeModal }: AddTrackFormProps) => {
+const UpdateProfileForm = ({ closeModal }: AddProfileFormProps) => {
   const {
     register,
     handleSubmit,

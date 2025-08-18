@@ -21,6 +21,8 @@ export const InputField: React.FC<InputFieldProps> = ({
   required = false,
   inputStyles,
 }) => {
+  const registerOptions = type === "number" ? { valueAsNumber: true } : {};
+
   return (
     <div className="mb-4 w-full">
       <label
@@ -31,7 +33,7 @@ export const InputField: React.FC<InputFieldProps> = ({
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <input
-        {...register(name)}
+        {...register(name, registerOptions)}
         type={type}
         id={name}
         placeholder={placeholder}

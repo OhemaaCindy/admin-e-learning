@@ -19,7 +19,7 @@ export default function TrackCard({ track }: { track: Track }) {
           />
           <div className="absolute top-4 right-4 bg-white bg-opacity-90 backdrop-blur-sm rounded-3xl px-3 py-1">
             <span className="text-gray-800 font-semibold text-md">
-              {track?.price}
+              ${track?.price}
             </span>
           </div>
         </div>

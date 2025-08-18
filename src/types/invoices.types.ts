@@ -58,7 +58,7 @@ export interface InvoiceResponse {
     id: string;
     amount: number;
     dueDate: string;
-    status?: "pending" | "paid" | "failed";
+    status?: "pending" | "paid" | "unpaid";
     paymentDetails?: string;
     paystackPaymentUrl: string;
   };

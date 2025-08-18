@@ -33,6 +33,8 @@ import { useQuery } from "@tanstack/react-query";
 import type { Learner } from "@/types/learners.type";
 import ImageAndName from "@/components/learner-image-and-name";
 import { format } from "date-fns";
+// import InvoiceTableShimmer from "@/components/table-shimmer";
+import LearnerTableShimmer from "@/components/learner-shimmer";
 
 export const columns: ColumnDef<Learner>[] = [
   {
@@ -155,36 +157,38 @@ export function LearnersDataTable() {
               </TableRow>
             ))}
           </TableHeader>
-          {isloadingLearners && <span>Loading...</span>}
-
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+          {isloadingLearners ? (
+            <LearnerTableShimmer />
+          ) : (
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+              )}
+            </TableBody>
+          )}
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">

@@ -95,7 +95,7 @@ const Overview: React.FC = () => {
     queryKey: ["get-all-invoices"],
     queryFn: allInvoice,
   });
-  const info = invoiceDetails || [];
+  const info = invoiceDetails?.slice(0, 4) || [];
 
   return (
     <>

@@ -7,11 +7,11 @@ const RevenueChart: React.FC<{ data: RevenueData[] }> = ({ data }) => {
   const maxValue = Math.max(...data.map((item) => item.value));
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+    <div className="bg-white rounded-xl p-10 shadow-sm border border-gray-100">
       <h3 className="text-lg font-semibold text-gray-900 mb-6">
         Recent Revenue
       </h3>
-      <div className="flex items-end justify-between h-48 space-x-2">
+      <div className="flex items-end justify-between h-70 space-x-2 ">
         {data.map((item, index) => (
           <div key={index} className="flex flex-col items-center flex-1">
             <div className="w-full flex flex-col justify-end h-40">
