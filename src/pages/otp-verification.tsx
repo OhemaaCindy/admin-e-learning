@@ -1,31 +1,25 @@
-// import { useMutation } from "@tanstack/react-query";
 import { AuthFormWrapper } from "../components/authFormWrapper";
 import OtpForm from "../components/opt-form";
-// import { resendOtp } from "@/services/auth-services";
 import toast from "react-hot-toast";
-import { useNavigate, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 import { useResendOtpAdmin } from "@/hooks/register-admin.hook";
 
 export const Otpverification = () => {
   const [searchParams] = useSearchParams();
   const emailQuery = searchParams.get("email");
-  console.log("🚀 ~ Otpverification ~ emailQuery:", emailQuery);
-  const navigate = useNavigate();
-  const { mutate: handleOtpResend, isError, error } = useResendOtpAdmin();
+
+  const { mutate: handleOtpResend, isError, error, data } = useResendOtpAdmin();
 
   const handleResend = () => {
-    handleOtpResend(),
-      {
-        onSuccess: () => {
-          toast.success("Logout sucessfull");
-
-          navigate("/overview");
-        },
-        onError: (error: any) => {
-          toast.error(error.message);
-          console.log(error);
-        },
-      };
+    handleOtpResend(undefined, {
+      onSuccess: () => {
+        toast.success("OTP sent successfully. Please check your email");
+      },
+      onError: (error: any) => {
+        toast.error(error.message);
+        console.log(error);
+      },
+    });
   };
 
   return (
@@ -42,6 +36,9 @@ export const Otpverification = () => {
             ))}
           </ul>
         )}
+        {data && data.success && (
+          <p className="text-green-600 mt-2 ">{data.message}</p>
+        )}
         <AuthFormWrapper
           title="OTP verification"
           descriptionComponent={
@@ -52,7 +49,6 @@ export const Otpverification = () => {
               </p>
             </div>
           }
-          // description={`rrrrrEnter the verification code we sent to your email ${emailQuery}`}
           text="Didn't recieve the otp?"
           page="Resend Otp"
           href="#"
@@ -60,7 +56,7 @@ export const Otpverification = () => {
             <div className="flex justify-start items-center gap-4">
               <p className="font-semibold">Didn't recieve the otp?</p>
               <button
-                className="text-[#01589A] font-bold"
+                className="text-[#01589A] font-bold cursor-pointer"
                 onClick={handleResend}
               >
                 Resend Otp

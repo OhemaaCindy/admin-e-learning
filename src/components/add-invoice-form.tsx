@@ -10,14 +10,12 @@ import {
   type AddInvoiceFormData,
 } from "@/schemas/invoice-schema";
 import { cn } from "@/lib/utils";
-import toast from "react-hot-toast";
-// import { createInvoice } from "@/services/invoice-services";
 
-interface AddInvoiceFormProps {
-  closeModal: (state: boolean) => void;
-}
+// interface AddInvoiceFormProps {
+//   closeModal: (state: boolean) => void;
+// }
 
-const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
+const AddInvoiceForm = () => {
   const {
     register,
     handleSubmit,

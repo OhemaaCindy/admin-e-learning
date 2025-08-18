@@ -35,16 +35,22 @@ const TrackDetails = () => {
         </span>
       </div>
       <div className="flex justify-center w-full  px-40 py-20 ">
-        {isLoading && (
+        {/* {isLoading && (
           <div className="flex items-center text-[#15A3DD] ... px-6 py-2 gap-2 rounded-sm">
             <LoaderCircle className="animate-spin" />
             <button type="button" className="" disabled>
               Loading…
             </button>
           </div>
-        )}
+        )} */}
         {isLoading ? (
-          "loadin..."
+          // "loadin..."
+          <div className="flex items-center text-[#15A3DD] ... px-6 py-2 gap-2 rounded-sm">
+            <LoaderCircle className="animate-spin" />
+            {/* <button type="button" className="" disabled>
+              Loading…
+            </button> */}
+          </div>
         ) : (
           <TrackDetailsCard details={details as Track} />
         )}

@@ -4,6 +4,7 @@ import {
   loginAdmin,
   logout,
   registerAdmin,
+  resendOtp,
   resetAdminPassword,
   verifyEmailOtp,
   type ResetAdminPasswordProps,
@@ -60,7 +61,7 @@ export const useOtpVerifyAdmin = () =>
 
 export const useResendOtpAdmin = () =>
   useMutation<ResendOtpType, AuthErrorRes>({
-    mutationFn: logout,
+    mutationFn: resendOtp,
   });
 
 export const uselogoutAdmin = () =>

@@ -37,16 +37,14 @@ const AddTrackForm = ({ closeModal }: AddTrackFormProps) => {
   const { mutate: addTrack, isPending, error, isError } = useAddTrack();
 
   const onSubmit = async (data: AddTrackFormData) => {
-    // console.log("🚀 ~ onSubmit ~ data:", data),
     addTrack(data, {
-      onSuccess(res) {
-        console.log("🚀 ~ onSuccess ~ res:", res);
+      onSuccess() {
         reset();
         closeModal(false);
         toast.success("Track created successfully");
       },
-      onError() {
-        // console.log("error");
+      onError(err) {
+        console.log("🚀 ~ onError ~ err:", err);
         toast.error("Failed to create Track");
       },
     });
@@ -102,7 +100,6 @@ const AddTrackForm = ({ closeModal }: AddTrackFormProps) => {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Track Image
-            {errors.image && <span className="text-red-500">*</span>}
           </label>
           <ImageUpload
             value={selectedImage}

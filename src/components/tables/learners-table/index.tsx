@@ -125,7 +125,6 @@ export function LearnersDataTable() {
 
   return (
     <div className="w-full ">
-      {isloadingLearners && <span>Loading...</span>}
       <div className="py-4 ">
         <Input
           placeholder="Filter emails..."
@@ -156,6 +155,8 @@ export function LearnersDataTable() {
               </TableRow>
             ))}
           </TableHeader>
+          {isloadingLearners && <span>Loading...</span>}
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (

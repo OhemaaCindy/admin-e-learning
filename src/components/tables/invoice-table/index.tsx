@@ -147,10 +147,10 @@ export function InvoiceDataTable() {
     <div className="w-full ">
       <div className="items-center py-4 flex justify-between">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Search by name"
+          value={(table.getColumn("learner")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("learner")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

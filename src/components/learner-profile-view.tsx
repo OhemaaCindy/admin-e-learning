@@ -103,7 +103,10 @@ export default LearnerProfile;
 const LearnerSkeleton = () => {
   return (
     <>
-      <Skeleton className="   bg-amber-700" />
+      <Skeleton
+        className="  w-full
+  h-10 bg-blue-100 dark:bg-blue-200"
+      />
     </>
   );
 };

@@ -44,19 +44,11 @@ const AddCourseForm = ({ closeModal }: AddCourseFormProps) => {
 
   let trackList = data?.tracks || [];
 
-  const {
-    mutate: addCourse,
-    isPending,
-    error,
-    isError,
-    // data,
-  } = useAddCourse();
+  const { mutate: addCourse, isPending, error, isError } = useAddCourse();
 
   const onSubmit = async (data: AddCourseFormData) => {
-    // console.log("🚀 ~ onSubmit ~ data:", data),
     addCourse(data, {
       onSuccess() {
-        // console.log("🚀 ~ onSuccess ~ res:", res);
         reset();
         closeModal(false);
         toast.success("Course created successfully");
@@ -88,24 +80,6 @@ const AddCourseForm = ({ closeModal }: AddCourseFormProps) => {
           required
         />
 
-        {/* <select
-          {...register("track")}
-          className={cn(
-            "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
-            "border-gray-300",
-            // errors && "border-red-500 bg-red-50"
-            errors.track && "border-red-500 bg-red-50"
-          )}
-        >
-          <option value="">Select a track</option>
-          {trackList.map((track) =>
-            track.courses.map((item) => (
-              <option key={item._id} value={track._id}>
-                {item.title}
-              </option>
-            ))
-          )}
-        </select> */}
         <select
           {...register("track")}
           className={cn(
