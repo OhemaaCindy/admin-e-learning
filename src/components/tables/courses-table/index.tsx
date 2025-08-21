@@ -64,15 +64,19 @@ export const columns: ColumnDef<Course>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const [openState, toogleState] = React.useState(false);
+      const [openUpdateState, toogleUpdateState] = React.useState(false);
 
       return (
         <div className="flex items-center justify-end gap-3">
           <UpdateModal
             title="Update Course"
-            openState={openState}
-            toogleState={toogleState}
+            openState={openUpdateState}
+            toogleState={toogleUpdateState}
           >
-            <UpdateCourseForm id={row.original._id} closeModal={toogleState} />
+            <UpdateCourseForm
+              id={row.original._id}
+              closeModal={toogleUpdateState}
+            />
           </UpdateModal>
 
           <DeleteModal
