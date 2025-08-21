@@ -39,6 +39,7 @@ import { allInvoice } from "@/services/invoice-services";
 import type { Invoice, Learner } from "@/types/invoices.types";
 // import InvoiceTableShimmer from "@/components/table-shimmer"; // Import the new shimmer component
 import InvoiceTableShimmer from "@/components/invoice-table-shimmer";
+import { Search } from "lucide-react";
 
 export const columns: ColumnDef<Invoice>[] = [
   {
@@ -82,9 +83,10 @@ export const columns: ColumnDef<Invoice>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: () => {
+    cell: ({ row }) => {
       const [openState, toogleState] = React.useState(false);
-
+      const learnerDetail = row.original;
+      console.log("🚀 ~ learnerDetail:", learnerDetail);
       return (
         <div className="flex items-center justify-end gap-3">
           <UpdateModal
@@ -92,7 +94,10 @@ export const columns: ColumnDef<Invoice>[] = [
             openState={openState}
             toogleState={toogleState}
           >
-            <UpdateInvoiceForm closeModal={toogleState} />
+            <UpdateInvoiceForm
+              closeModal={toogleState}
+              learnerDetail={learnerDetail}
+            />
           </UpdateModal>
         </div>
       );
@@ -102,6 +107,7 @@ export const columns: ColumnDef<Invoice>[] = [
 
 export function InvoiceDataTable() {
   const [openState, toogleState] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -151,6 +157,17 @@ export function InvoiceDataTable() {
           }
           className="max-w-sm"
         />
+        {/* <div className="flex justify-start items-center  gap-2 p-2 rounded-md shadow-sm w-80">
+          <Search size={18} className="text-[#7F7E83]" />
+
+          <input
+            type="text"
+            placeholder="Search by name"
+            className="outline-0 w-full"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>  */}
 
         <div className="">
           <AddModal

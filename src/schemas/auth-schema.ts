@@ -74,3 +74,43 @@ export const otpVerifying = z.object({
   code: z.string().min(1, "Please enter a valid otp number"),
 });
 export type OtpFormData = z.infer<typeof otpVerifying>;
+
+const fileSchema = z
+  .instanceof(File, { message: "Please upload a file" })
+  .refine((file) => file.size <= 1 * 1024 * 1024, {
+    message: "File size must be less than 1MB",
+  })
+  .refine(
+    (file) =>
+      ["image/jpeg", "image/png", "image/gif", "image/webp"].includes(
+        file.type
+      ),
+    {
+      message: "Only JPEG, PNG, GIF, and WebP files are allowed",
+    }
+  );
+
+export const UpdateAdminTypeSchema = z.object({
+  profileImage: fileSchema.optional().or(z.literal(null)), // optional or null
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  location: z.string().optional(),
+  contact: z
+    .string()
+    // .regex(/^0?\d{9}$/, {
+    //   message: "Contact must be 10 digits",
+    // })
+    .transform((val) => {
+      console.log("🚀 ~ val:", val);
+      if (val.startsWith("+233")) {
+        return val;
+      } else if (val.startsWith("0")) {
+        return "+233" + val.slice(1);
+      }
+      return "+233" + val;
+    }),
+  disabled: z.enum(["true", "false"]).transform((val) => val === "true"),
+  description: z.string().min(1, "Please enter description").optional(),
+});
+
+export type UpdateLearnerFormData = z.infer<typeof UpdateAdminTypeSchema>;

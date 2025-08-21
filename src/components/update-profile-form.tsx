@@ -1,130 +1,195 @@
 import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "./button";
-import {
-  AddTrackTypeSchema,
-  type AddTrackFormData,
-} from "@/schemas/track-schema";
 import { ImageUpload } from "./image-upload";
-import { useAddTrack } from "@/hooks/add-track.hook";
 import toast from "react-hot-toast";
+import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
+import UpdatePasswordForm from "./update-password-form";
+import {
+  UpdateAdminTypeSchema,
+  type UpdateLearnerFormData,
+} from "@/schemas/auth-schema";
+import { useQuery } from "@tanstack/react-query";
+import type { CheckAuthResponse } from "@/types/types";
+import { checkAuthUser } from "@/services/auth-services";
+import Cookies from "js-cookie";
+import { useUpdateAdmin } from "@/hooks/update-admin-hook";
+import { InputShimmer, TextareaShimmer } from "./input-textarea-shimmer";
 
-interface AddProfileFormProps {
-  closeModal: (state: boolean) => void;
-}
+const UpdateProfileForm = () => {
+  const { data: userInfo, isLoading } = useQuery<CheckAuthResponse, Error>({
+    queryKey: ["get-info"],
+    queryFn: checkAuthUser,
+    enabled: !!Cookies.get("token"),
+  });
 
-const UpdateProfileForm = ({ closeModal }: AddProfileFormProps) => {
+  const info = userInfo?.user;
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
+    // reset,
     setValue,
     watch,
-  } = useForm<AddTrackFormData>({
-    resolver: zodResolver(AddTrackTypeSchema),
+  } = useForm<UpdateLearnerFormData>({
+    resolver: zodResolver(UpdateAdminTypeSchema),
     defaultValues: {
-      name: "",
-      price: "",
-      duration: "",
-      instructor: "",
-      // Add this to your defaultValues
-      description: "",
+      firstName: info?.firstName || "",
+      lastName: info?.lastName || "",
+      contact: info?.contact || "",
+      location: info?.location || "",
+      disabled: info?.disabled,
+      description: info?.description || "",
     },
   });
-  const selectedImage = watch("image");
+  const selectedImage = watch("profileImage");
+  const id = info?._id;
+  console.log("🚀 ~ SettingsTab ~ id:", id);
+  const { mutate: updateAdmin, isPending } = useUpdateAdmin();
 
-  const {
-    mutate: addTrack,
-    isPending,
-    // error,
-    // isError,
-    // data,
-  } = useAddTrack();
-
-  const onSubmit = async (data: AddTrackFormData) => {
-    // console.log("🚀 ~ onSubmit ~ data:", data),
-    addTrack(data, {
+  const onSubmit = async (data: UpdateLearnerFormData) => {
+    updateAdmin(data, {
       onSuccess(res) {
         console.log("🚀 ~ onSuccess ~ res:", res);
-        reset();
-        closeModal(false);
-        toast.success("Track created successfully");
+        toast.success("Profile updated successfully");
       },
       onError() {
-        // console.log("error");
-        toast.error("Failed to create Track");
+        toast.error("Failed to update profile");
       },
     });
   };
+
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          {/* <label className="block text-sm font-medium text-gray-700 mb-2">
-            Course Image
-            {errors.image && <span className="text-red-500">*</span>}
-          </label> */}
-          <ImageUpload
-            value={selectedImage}
-            onImageSelect={(file) => setValue("image", file)}
-            error={errors.image?.message}
-            maxSize={5}
-            // placeholder="Upload course image"
-            accept="image/*"
-            showPreview={true}
-            profile
-          />
-        </div>
-        <p className="font-semibold">Change Profile Picture</p>
-        <div className=" mt-8 w-sm">
-          {" "}
-          <InputField
-            label="First Name"
-            name="name"
-            type="text"
-            register={register}
-            error={errors.name?.message}
-            required
-          />
-          <InputField
-            label="Last Name"
-            name="price"
-            type="text"
-            register={register}
-            error={errors.price?.message}
-            required
-          />
-          <InputField
-            label="Change Password"
-            name="description"
-            type="text"
-            register={register}
-            error={errors.description?.message}
-            required
-          />
-          <InputField
-            label="Confirm Password"
-            name="description"
-            type="text"
-            register={register}
-            error={errors.description?.message}
-            required
-          />
-          <div className="pt-4">
-            <Button
-              type="submit"
-              disabled={isSubmitting || isPending}
-              className="mb-4 cursor-pointer"
-            >
-              {isSubmitting || isPending
-                ? "Update Profile..."
-                : "Update Profile"}
-            </Button>
+    <div className="min-h-screen py-4 px-4 sm:py-6 sm:px-6 lg:px-8 w-full">
+      <div className="min-h-screen py-4 px-2 sm:py-6 sm:px-4 lg:px-8 mt-4 sm:mt-8">
+        <div className="flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-8 max-w-7xl mx-auto">
+          {/* Image Upload Section */}
+          <div className="w-full lg:w-auto flex justify-center lg:justify-start">
+            <ImageUpload
+              value={selectedImage}
+              onImageSelect={(file) => setValue("profileImage", file)}
+              error={errors.profileImage?.message}
+              maxSize={5}
+              accept="image/*"
+              showPreview={true}
+              profile
+            />
+          </div>
+
+          {/* Form Section */}
+          <div className="w-full lg:w-4/6">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {/* Profile Form */}
+              <div className="bg-[#F5F5F5] rounded-sm shadow-sm p-4 sm:p-6 lg:p-8 mb-6 sm:mb-8">
+                {/* Profile Form Fields */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                  {isLoading ? (
+                    <>
+                      <InputShimmer />
+                      <InputShimmer />
+                      <InputShimmer />
+                      <InputShimmer />
+                      <InputShimmer />
+                      <TextareaShimmer />
+                    </>
+                  ) : (
+                    <>
+                      <InputField
+                        label="First Name"
+                        name="firstName"
+                        type="text"
+                        register={register}
+                        error={errors.firstName?.message}
+                      />
+                      <InputField
+                        label="Last Name"
+                        name="lastName"
+                        type="text"
+                        register={register}
+                        error={errors.lastName?.message}
+                      />
+                      <InputField
+                        label="Contact"
+                        name="contact"
+                        type="text"
+                        register={register}
+                        error={errors.contact?.message}
+                      />
+
+                      <InputField
+                        label="Location"
+                        name="location"
+                        type="text"
+                        register={register}
+                        error={errors.location?.message}
+                      />
+
+                      <div className="mb-4 w-full">
+                        <select
+                          {...register("disabled")}
+                          name="disabled"
+                          className={cn(
+                            "w-full h-10 px-3 border rounded-md shadow-sm overflow-y-auto",
+                            errors.disabled && "border-red-500 bg-red-50"
+                          )}
+                        >
+                          <option value="">Do you have disability?</option>
+                          <option value="true">true</option>
+                          <option value="false">false</option>
+                        </select>
+                        {errors.disabled && (
+                          <p className="text-red-500 text-sm mt-1">
+                            {errors.disabled.message}
+                          </p>
+                        )}
+                      </div>
+                      <div className="mb-4 w-full md:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Description
+                        </label>
+                        <textarea
+                          {...register("description")}
+                          name="description"
+                          rows={4}
+                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-transparent outline-none resize-none bg-gray-50"
+                          placeholder="Enter description..."
+                        />
+                        {errors.description && (
+                          <p className="mt-1 text-sm text-red-600">
+                            {errors.description.message}
+                          </p>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting || isPending || isLoading}
+                className="w-full sm:w-auto bg-[#01589A] hover:bg-blue-200 cursor-pointer text-white px-6 py-3 rounded-sm font-medium flex items-center justify-center gap-2 transition-colors order-2 sm:order-1 mb-6 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Loading...
+                  </div>
+                ) : isSubmitting || isPending ? (
+                  "Saving..."
+                ) : (
+                  "Save Profile Changes"
+                )}
+                {!isLoading && <Plus className="w-5 h-5" />}
+              </button>
+            </form>
+            {/* Change Password Form */}
+            <UpdatePasswordForm />
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

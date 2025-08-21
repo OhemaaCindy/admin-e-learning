@@ -1,8 +1,7 @@
 import { apiEndpoints } from "@/constants/api-endpoints";
 import { axiosClient } from "@/lib/axios";
 import type { AddInvoiceFormData } from "@/schemas/invoice-schema";
-// import type { AddCoursesResponse } from "@/types/courses.types";
-// import type { AddInvoiceFormData } from "@/schemas/invoice-schema";
+
 import type {
   AllTrackResponse,
   Invoice,
@@ -36,16 +35,10 @@ export const createInvoice = async (
 ): Promise<InvoiceResponse> => {
   console.log("🔥 ~ createInvoice ~ payload:", payload);
 
-  // for (const [key, value] of formData.entries()) {
-  //   console.log(`🔥 ${key}:`, value);
-  // }
   try {
     const response = await axiosClient.post<InvoiceResponse>(
       apiEndpoints.INVOICES.createInvoice,
       payload
-      // {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // }
     );
     console.log("🚀 ~ createInvoice ~ response.data:", response.data);
     return response.data;
@@ -60,3 +53,48 @@ export const createInvoice = async (
     } as AuthErrorRes;
   }
 };
+
+// export interface UpdateTrackProps {
+//   id: string;
+//   payload: UpdateTrackFormData;
+// }
+// export const upateTrack = async ({
+//   id,
+//   payload,
+// }: UpdateTrackProps): Promise<UpdateTrackResponse> => {
+//   console.log("🔥 ~ createTrack ~ payload:", payload);
+
+//   const formData = new FormData();
+
+//   // Append only non-empty string values
+//   if (payload.name) formData.append("name", payload.name);
+//   if (payload.price) formData.append("price", payload.price);
+//   if (payload.instructor) formData.append("instructor", payload.instructor);
+//   if (payload.duration) formData.append("duration", payload.duration);
+//   if (payload.description) formData.append("description", payload.description);
+
+//   // Append image only if it's a File instance
+//   if (payload.image instanceof File) {
+//     formData.append("image", payload.image);
+//   }
+
+//   try {
+//     const response = await axiosClient.put<UpdateTrackResponse>(
+//       apiEndpoints.TRACKS.updateTrack(id),
+//       formData,
+//       {
+//         headers: { "Content-Type": "multipart/form-data" },
+//       }
+//     );
+//     return response.data;
+//   } catch (error) {
+//     // console.log("🚀 ~ createTrack ~ error:", error);
+//     if (axios.isAxiosError(error) && error.response) {
+//       throw error.response.data as AuthErrorRes;
+//     }
+//     throw {
+//       success: false,
+//       errors: [{ message: "Something went wrong" }],
+//     } as AuthErrorRes;
+//   }
+// };

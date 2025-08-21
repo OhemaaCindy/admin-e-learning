@@ -153,7 +153,7 @@ const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
           type="text"
           register={register}
           error={errors.paymentDetails?.message}
-          required
+          // required
         />
 
         <div className="pt-4">

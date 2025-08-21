@@ -1,4 +1,3 @@
-import type { AddInvoiceFormData } from "@/schemas/invoice-schema";
 import {
   createInvoice,
   type CreateInvoiceProps,
@@ -16,3 +15,13 @@ export const useAddInvoice = () => {
     },
   });
 };
+
+// export const useUpdateInvoice = () => {
+//   const queryClient = useQueryClient();
+//   return useMutation<InvoiceResponse, AuthErrorRes, CreateInvoiceProps>({
+//     mutationFn: createInvoice,
+//     onSuccess() {
+//       queryClient.invalidateQueries({ queryKey: ["get-all-invoices"] });
+//     },
+//   });
+// };

@@ -4,18 +4,13 @@ import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   forgotPasswordSchema,
-  // registrationSchema,
   type ForgotPasswordFormData,
-  // type RegistrationFormData,
 } from "../schemas/auth-schema";
 import toast from "react-hot-toast";
-// import { useNavigate } from "react-router";
-// import { useMutation } from "@tanstack/react-query";
-// import { forgotPasswordAdmin } from "../services/auth-services";
+
 import { useForgotPasswordAdmin } from "../hooks/register-admin.hook";
 
 const RequestPasswordResetForm: React.FC = () => {
-  // const navigate = useNavigate();
   const {
     register,
     handleSubmit,

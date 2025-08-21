@@ -11,6 +11,8 @@ export const apiEndpoints = {
     resendVerificationToken: "/auth/resend-token",
     logout: "/admin/auth/logout",
     checkAuth: "auth/check-auth",
+    updateProfile: "/auth/update",
+
     // update-password:"/auth/change-password",
   },
   TRACKS: {
