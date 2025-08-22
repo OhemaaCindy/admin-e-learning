@@ -8,6 +8,7 @@ import { useState } from "react";
 
 function TrackDetailsCard({ details }: { details: Track }) {
   const [openState, toogleState] = useState(false);
+  const [openUpdateState, toogleUpdateState] = useState(false);
 
   const renderStars = (rating: number) => {
     const stars = [];
@@ -93,10 +94,10 @@ function TrackDetailsCard({ details }: { details: Track }) {
           <UpdateModal
             shadow
             title="Update Track"
-            openState={openState}
-            toogleState={toogleState}
+            openState={openUpdateState}
+            toogleState={toogleUpdateState}
           >
-            <UpdateTrackForm closeModal={toogleState} />
+            <UpdateTrackForm closeModal={toogleUpdateState} />
           </UpdateModal>
 
           <DeleteModal
