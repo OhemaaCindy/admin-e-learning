@@ -10,17 +10,17 @@ import {
 
 const LearnerTableShimmer = () => {
   // Create array for multiple skeleton rows
-  const skeletonRows = Array.from({ length: 5 }, (_, index) => index);
+  const skeletonRows = Array.from({ length: 6 }, (_, index) => index);
 
   return (
-    <Table>
+    <Table className=" w-full">
       <TableHeader>
         <TableRow>
           {/* Learners column */}
           <TableHead>
             <Skeleton className="h-4 w-20  dark:bg-blue-200 bg-blue-100" />
           </TableHead>
-          {/* Courses column */}
+          {/* Email Address column */}
           <TableHead>
             <Skeleton className="h-4 w-24 bg-blue-100 dark:bg-blue-200" />
           </TableHead>
@@ -32,13 +32,9 @@ const LearnerTableShimmer = () => {
           <TableHead>
             <Skeleton className="h-4 w-16 bg-blue-100 dark:bg-blue-200" />
           </TableHead>
-          {/* Gender */}
+          {/* Status column */}
           <TableHead className="">
             <Skeleton className="h-4 w-16 bg-blue-100 dark:bg-blue-200" />
-          </TableHead>
-          {/* Actions column */}
-          <TableHead>
-            <Skeleton className="h-4 w-20 bg-blue-100 dark:bg-blue-200" />
           </TableHead>
         </TableRow>
       </TableHeader>
@@ -70,7 +66,7 @@ const LearnerTableShimmer = () => {
             </TableCell>
             {/* Actions */}
             <TableCell>
-              <div className="flex items-center justify-end gap-3">
+              <div className="flex items-center justify-end gap-3 ">
                 {/* <Skeleton className="h-8 w-16 bg-blue-100 dark:bg-blue-200" /> */}
                 <Skeleton className="h-8 w-16 bg-blue-100 dark:bg-blue-200" />
               </div>
