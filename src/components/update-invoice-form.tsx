@@ -2,61 +2,90 @@ import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "./button";
+// import { useQuery } from "@tanstack/react-query";
+// import type { Learner } from "@/types/learners.type";
+// import { allLearners } from "@/services/learner-services";
 import {
-  AddTrackTypeSchema,
-  type AddTrackFormData,
-} from "@/schemas/track-schema";
-import { ImageUpload } from "./image-upload";
-import { useAddTrack } from "@/hooks/add-track.hook";
-import toast from "react-hot-toast";
+  AddInvoiceTypeSchema,
+  UpdateInvoiceTypeSchema,
+  type AddInvoiceFormData,
+  type UpdateInvoiceFormData,
+} from "@/schemas/invoice-schema";
+import { cn } from "@/lib/utils";
+// import { createInvoice } from '@/services/invoice-services';
+import { useAddInvoice } from "@/hooks/invoice-hook";
+import type { Invoice } from "@/types/invoices.types";
+// import toast from "react-hot-toast";
 
-interface AddTrackFormProps {
+interface AddInvoiceFormProps {
   closeModal: (state: boolean) => void;
+  learnerDetail: Invoice;
 }
 
-const UpdateInvoiceForm = ({ closeModal }: AddTrackFormProps) => {
+const UpdateInvoiceForm = ({
+  closeModal,
+  learnerDetail,
+}: AddInvoiceFormProps) => {
+  console.log("🚀 ~ UpdateInvoiceForm ~ learnerDetail:", learnerDetail);
+  // const fullName = learnerDetail.learner?.firstName + learnerDetail.learner?.lastName
+  const fullName = `${learnerDetail?.learner?.firstName ?? ""} ${
+    learnerDetail?.learner?.lastName ?? ""
+  }`.trim();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
+    // reset,
+    // control,
     // setValue,
     // watch,
-  } = useForm<AddTrackFormData>({
-    resolver: zodResolver(AddTrackTypeSchema),
+  } = useForm<UpdateInvoiceFormData>({
+    resolver: zodResolver(UpdateInvoiceTypeSchema),
     defaultValues: {
-      name: "",
-      price: "",
-      duration: "",
-      instructor: "",
-      // Add this to your defaultValues
-      description: "",
+      learner: fullName || "",
+      amount: learnerDetail.amount || 0,
+      dueDate: learnerDetail.dueDate,
+      status: learnerDetail.status || "",
+      paymentDetails: learnerDetail?.paymentDetails || "",
     },
   });
-  //   const selectedImage = watch("image");
+
+  // const {
+  //   data: learnerDetails,
+  //   isLoading: isloadingLearners,
+  //   // isError,
+  //   // error,
+  // } = useQuery<Learner[], Error>({
+  //   queryKey: ["get-all-learners"],
+  //   queryFn: allLearners,
+  // });
+  // const learners = learnerDetails || [];
 
   const {
-    mutate: addTrack,
+    mutate: updateInvoice,
     isPending,
     error,
     isError,
-    // data,
-  } = useAddTrack();
+    //  data,
+  } = useAddInvoice();
 
-  const onSubmit = async (data: AddTrackFormData) => {
-    // console.log("🚀 ~ onSubmit ~ data:", data),
-    addTrack(data, {
-      onSuccess(res) {
-        console.log("🚀 ~ onSuccess ~ res:", res);
-        reset();
-        closeModal(false);
-        toast.success("Track created successfully");
-      },
-      onError() {
-        // console.log("error");
-        toast.error("Failed to create Track");
-      },
-    });
+  const onSubmit = (data: AddInvoiceFormData) => {
+    console.log(data);
+    // updateInvoice(
+    //   { ...data },
+    //   {
+    //     onSuccess(res) {
+    //       console.log("🚀 ~ onSuccess ~ res:", res);
+    //       reset();
+    //       closeModal(false);
+    //       toast.success("Invoice created successfully");
+    //     },
+    //     onError() {
+    //       toast.error("Failed to create Invoice");
+    //     },
+    //   }
+    // );
   };
 
   return (
@@ -71,48 +100,54 @@ const UpdateInvoiceForm = ({ closeModal }: AddTrackFormProps) => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
-          label="Select Learner"
-          name="name"
+          label="Learner "
+          name="learner"
           type="text"
           register={register}
-          error={errors.name?.message}
-          required
+          error={errors.learner?.message}
+          // required
         />
 
         <InputField
-          label="Enter Amount"
-          name="price"
-          type="text"
+          label="Enter Amount ($)"
+          name="amount"
+          type="number"
           register={register}
-          error={errors.price?.message}
-          required
+          error={errors.amount?.message}
+          // required
         />
 
         <InputField
           label="Due date"
-          name="duration"
-          type="text"
+          name="dueDate"
+          type="date"
           register={register}
-          error={errors.duration?.message}
-          required
+          error={errors.dueDate?.message}
+          // required
         />
 
-        <InputField
-          label="Status"
-          name="instructor"
-          type="text"
-          register={register}
-          error={errors.instructor?.message}
-          required
-        />
+        <select
+          {...register("status")}
+          className={cn(
+            "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "border-gray-300",
+            errors.status && "border-red-500 bg-red-50"
+          )}
+        >
+          <option value="">Select status</option>
+
+          <option value={"pending"}>Pending</option>
+          <option value={"paid"}>Paid</option>
+          <option value={"unpaid"}>UnPaid</option>
+        </select>
 
         <InputField
           label="Payment Details"
-          name="description"
+          name="paymentDetails"
           type="text"
           register={register}
-          error={errors.description?.message}
-          required
+          error={errors.paymentDetails?.message}
+          // required
         />
 
         <div className="pt-4">
@@ -121,7 +156,9 @@ const UpdateInvoiceForm = ({ closeModal }: AddTrackFormProps) => {
             disabled={isSubmitting || isPending}
             className="mb-4 cursor-pointer"
           >
-            {isSubmitting || isPending ? "Update Invoice..." : "Update Invoice"}
+            {isSubmitting || isPending
+              ? "Updating Invoice..."
+              : "Update Invoice"}
           </Button>
         </div>
       </form>

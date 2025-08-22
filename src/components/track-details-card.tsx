@@ -8,7 +8,40 @@ import { useState } from "react";
 
 function TrackDetailsCard({ details }: { details: Track }) {
   const [openState, toogleState] = useState(false);
+  const [openUpdateState, toogleUpdateState] = useState(false);
 
+  const renderStars = (rating: number) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(
+        <span key={i} className="text-yellow-400">
+          ★
+        </span>
+      );
+    }
+
+    if (hasHalfStar) {
+      stars.push(
+        <span key="half" className="text-yellow-400">
+          ★
+        </span>
+      );
+    }
+
+    const emptyStars = 5 - Math.ceil(rating);
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(
+        <span key={`empty-${i}`} className="text-gray-300">
+          ☆
+        </span>
+      );
+    }
+
+    return stars;
+  };
   return (
     <div className=" rounded-2xl shadow-lg overflow-hidden  w-2xl ">
       <div className=" relative overflow-hidden "></div>
@@ -48,8 +81,12 @@ function TrackDetailsCard({ details }: { details: Track }) {
               ))}
             </span>
           </div>
-          <div className="bg-[#FFF4ED] text-[#B93815] px-4 py-1 rounded-full">
-            {details?.ratings}
+
+          <div className="flex items-center space-x-2">
+            <div className="flex">{renderStars(4.0)}</div>
+            <span className=" font-medium bg-[#FFF4ED] text-[#B93815] px-4 py-1 rounded-full">
+              4.9/5.0
+            </span>
           </div>
         </div>
         <p className="mb-5">{details?.description}</p>
@@ -57,10 +94,10 @@ function TrackDetailsCard({ details }: { details: Track }) {
           <UpdateModal
             shadow
             title="Update Track"
-            openState={openState}
-            toogleState={toogleState}
+            openState={openUpdateState}
+            toogleState={toogleUpdateState}
           >
-            <UpdateTrackForm closeModal={toogleState} />
+            <UpdateTrackForm closeModal={toogleUpdateState} />
           </UpdateModal>
 
           <DeleteModal

@@ -24,9 +24,9 @@ export function UpdateModal({
   toogleState,
 }: ModalProps) {
   return (
-    <AlertDialog>
+    <AlertDialog open={openState} onOpenChange={toogleState}>
       <AlertDialogTrigger asChild>
-        <div className={cn(shadow ? "bg-[#fbfbf8] p-3 shadow-md" : "")}>
+        <div className={cn(shadow && "bg-[#fbfbf8] p-3 shadow-md")}>
           <Pen
             size={20}
             className="text-[#01589A] cursor-pointer "

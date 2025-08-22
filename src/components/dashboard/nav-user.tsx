@@ -63,7 +63,7 @@ export function NavUser() {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              className="text-sidebar-primary-foreground data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-foreground"
+              className="text-sidebar-primary-foreground data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-foreground cursor-pointer "
             >
               <Avatar className="size-11">
                 <AvatarImage src="" alt="user name" />
@@ -92,11 +92,11 @@ export function NavUser() {
                   </>
                 )}
               </div>
-              <IconDotsVertical className="ml-auto size-4" />
+              <IconDotsVertical className="ml-auto size-4 " />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg "
             side={isMobile ? "bottom" : "right"}
             align="end"
             sideOffset={4}
@@ -104,13 +104,16 @@ export function NavUser() {
             <DropdownMenuLabel className="p-0 font-normal"></DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={handleNavigation}>
+              <DropdownMenuItem
+                onClick={handleNavigation}
+                className="cursor-pointer"
+              >
                 <IconUserCircle />
                 Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
+            <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
               <IconLogout />
               Log out
             </DropdownMenuItem>

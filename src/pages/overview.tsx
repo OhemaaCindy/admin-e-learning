@@ -95,7 +95,7 @@ const Overview: React.FC = () => {
     queryKey: ["get-all-invoices"],
     queryFn: allInvoice,
   });
-  const info = invoiceDetails || [];
+  const info = invoiceDetails?.slice(0, 4) || [];
 
   return (
     <>
@@ -104,7 +104,7 @@ const Overview: React.FC = () => {
         description="Track activity, trends, and popular destinations in real time"
       />
       <div className="min-h-screen  p-6 ">
-        <div className="max-w-7xl mx-auto">
+        <div className="">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 ">
             {stats.map((stat, index) => (
               <StatCard key={index} {...stat} />

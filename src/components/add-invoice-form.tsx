@@ -10,28 +10,31 @@ import {
   type AddInvoiceFormData,
 } from "@/schemas/invoice-schema";
 import { cn } from "@/lib/utils";
+// import { createInvoice } from '@/services/invoice-services';
+import { useAddInvoice } from "@/hooks/invoice-hook";
+import toast from "react-hot-toast";
 
-// interface AddInvoiceFormProps {
-//   closeModal: (state: boolean) => void;
-// }
+interface AddInvoiceFormProps {
+  closeModal: (state: boolean) => void;
+}
 
-const AddInvoiceForm = () => {
+const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    // reset,
+    reset,
+    // control,
     // setValue,
     watch,
   } = useForm<AddInvoiceFormData>({
     resolver: zodResolver(AddInvoiceTypeSchema),
     // defaultValues: {
-    //   name: "",
-    //   price: "",
-    //   duration: "",
-    //   instructor: "",
-    //   // Add this to your defaultValues
-    //   description: "",
+    //   learner: "",
+    //   amount: 0,
+    //   dueDate: "",
+    //   status: "",
+    //   paymentDetails: "",
     // },
   });
 
@@ -49,64 +52,70 @@ const AddInvoiceForm = () => {
   });
   const learners = learnerDetails || [];
 
+  const {
+    mutate: addInvoice,
+    isPending,
+    error,
+    isError,
+    //  data,
+  } = useAddInvoice();
+
   const onSubmit = (data: AddInvoiceFormData) => {
-    console.log("🚀 ~ onSubmit ~ data:", data);
+    // console.log(data);
+    addInvoice(
+      { ...data, paystackCallbackUrl: "http://localhost:5173/payment" },
+      {
+        onSuccess(res) {
+          console.log("🚀 ~ onSuccess ~ res:", res);
+          reset();
+          closeModal(false);
+          toast.success("Invoice created successfully");
+        },
+        onError() {
+          toast.error("Failed to create Invoice");
+        },
+      }
+    );
   };
-
-  // const {
-  //   mutate: addInvoice,
-
-  // } = createInvoice;
-
-  // const onSubmit = async (data: AddInvoiceFormData) => {
-  //   console.log("🚀 ~ onSubmit ~ data:", data),
-  //   addInvoice(data, {
-  //     onSuccess(res) {
-  //       console.log("🚀 ~ onSuccess ~ res:", res);
-  //       reset();
-  //       closeModal(false);
-  //       toast.success("Invoice created successfully");
-  //     },
-  //     onError() {
-  //       // console.log("error");
-  //       toast.error("Failed to create Invoice");
-  //     },
-  //   });
-  // };
 
   return (
     <div>
-      {/* {isError && error && (
+      {isError && error && (
         <ul className="text-rose-500 mt-2 bg-rose-100 border border-rose-500 rounded-lg px-8 py-2 list-disc">
           {error.errors.map((err, index) => (
             <li key={index}>{err.message}</li>
           ))}
         </ul>
-      )} */}
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        {isloadingLearners && <span>Loading.....</span>}
-
-        <select
-          {...register("learner")}
-          className={cn(
-            "w-full px-3 py-2 border rounded-md shadow-sm",
-            errors.learner && "border-red-500 bg-red-50"
-          )}
-        >
-          <option value="">Select a learner</option>
-          {learners?.map((learner) => (
-            <option key={learner._id} value={learner._id}>
-              {`${learner.firstName} ${learner.lastName}`}
-            </option>
-          ))}
-        </select>
-        {errors.learner && (
-          <p className="text-red-500 text-sm mt-1">{errors.learner.message}</p>
+        {isloadingLearners ? (
+          <Shimmer />
+        ) : (
+          <>
+            <select
+              {...register("learner")}
+              className={cn(
+                "w-full px-3 py-2 border rounded-md shadow-sm overflow-y-auto ",
+                errors.learner && "border-red-500 bg-red-50"
+              )}
+            >
+              <option value="">Select a learner</option>
+              {learners?.map((learner) => (
+                <option key={learner._id} value={learner._id}>
+                  {`${learner.firstName} ${learner.lastName}`}
+                </option>
+              ))}
+            </select>
+            {errors.learner && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.learner.message}
+              </p>
+            )}
+          </>
         )}
-
         <InputField
-          label="Enter Amount"
+          label="Enter Amount ($)"
           name="amount"
           type="number"
           register={register}
@@ -117,20 +126,26 @@ const AddInvoiceForm = () => {
         <InputField
           label="Due date"
           name="dueDate"
-          type="text"
+          type="date"
           register={register}
           error={errors.dueDate?.message}
           required
         />
 
-        {/* <InputField
-          label="Status"
-          name="status"
-          type="text"
-          register={register}
-          error={errors.status?.message}
-          required
-        /> */}
+        <select
+          {...register("status")}
+          className={cn(
+            "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "border-gray-300",
+            errors.status && "border-red-500 bg-red-50"
+          )}
+        >
+          <option value="">Select status</option>
+
+          <option value={"pending"}>Pending</option>
+          <option value={"paid"}>Paid</option>
+          <option value={"unpaid"}>UnPaid</option>
+        </select>
 
         <InputField
           label="Payment Details"
@@ -138,16 +153,18 @@ const AddInvoiceForm = () => {
           type="text"
           register={register}
           error={errors.paymentDetails?.message}
-          required
+          // required
         />
 
         <div className="pt-4">
           <Button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isPending}
             className="mb-4 cursor-pointer"
           >
-            {isSubmitting ? "Creating Invoice..." : "Create Invoice"}
+            {isSubmitting || isPending
+              ? "Creating Invoice..."
+              : "Create Invoice"}
           </Button>
         </div>
       </form>
@@ -156,3 +173,10 @@ const AddInvoiceForm = () => {
 };
 
 export default AddInvoiceForm;
+const Shimmer = () => (
+  <div className="animate-pulse">
+    <div className="w-full px-3 py-2 border rounded-md shadow-sm bg-blue-100 dark:bg-blue-200">
+      <div className="h-5 bg-blue-100 dark:bg-blue-200 rounded w-full"></div>
+    </div>
+  </div>
+);

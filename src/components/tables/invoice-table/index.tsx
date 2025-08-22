@@ -31,13 +31,11 @@ import InvoiceImage from "@/components/invoice-table-image";
 import { AddModal } from "@/components/add-modal";
 import AddInvoiceForm from "@/components/add-invoice-form";
 import { UpdateModal } from "@/components/update-modal";
-import { DeleteModal } from "@/components/delete-modal";
 import UpdateInvoiceForm from "@/components/update-invoice-form";
-import DeleteInvoiceForm from "@/components/delete-invoive-form";
 import { useQuery } from "@tanstack/react-query";
 import { allInvoice } from "@/services/invoice-services";
 import type { Invoice, Learner } from "@/types/invoices.types";
-import { Skeleton } from "@/components/ui/skeleton";
+import InvoiceTableShimmer from "@/components/invoice-table-shimmer";
 
 export const columns: ColumnDef<Invoice>[] = [
   {
@@ -81,9 +79,10 @@ export const columns: ColumnDef<Invoice>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: () => {
+    cell: ({ row }) => {
       const [openState, toogleState] = React.useState(false);
-
+      const learnerDetail = row.original;
+      console.log("🚀 ~ learnerDetail:", learnerDetail);
       return (
         <div className="flex items-center justify-end gap-3">
           <UpdateModal
@@ -91,12 +90,11 @@ export const columns: ColumnDef<Invoice>[] = [
             openState={openState}
             toogleState={toogleState}
           >
-            <UpdateInvoiceForm closeModal={toogleState} />
+            <UpdateInvoiceForm
+              closeModal={toogleState}
+              learnerDetail={learnerDetail}
+            />
           </UpdateModal>
-
-          {/* <DeleteModal title="Delete Invoice">
-            <DeleteInvoiceForm />
-          </DeleteModal> */}
         </div>
       );
     },
@@ -122,7 +120,6 @@ export function InvoiceDataTable() {
     queryFn: allInvoice,
   });
   const info = invoiceDetails || [];
-  // console.log("🚀 ~ Overview ~ info:", info);
 
   const table = useReactTable({
     data: info,
@@ -168,7 +165,7 @@ export function InvoiceDataTable() {
       </div>
       <div className="overflow-hidden rounded-md border">
         {isloadingInvoices ? (
-          <InvoiceTableSkeleton />
+          <InvoiceTableShimmer />
         ) : (
           <Table>
             <TableHeader>
@@ -247,11 +244,3 @@ export function InvoiceDataTable() {
     </div>
   );
 }
-
-const InvoiceTableSkeleton = () => {
-  return (
-    <>
-      <Skeleton className=" w-full  bg-blue-100 dark:bg-blue-200" />
-    </>
-  );
-};
