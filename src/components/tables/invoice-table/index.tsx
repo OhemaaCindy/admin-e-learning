@@ -31,15 +31,11 @@ import InvoiceImage from "@/components/invoice-table-image";
 import { AddModal } from "@/components/add-modal";
 import AddInvoiceForm from "@/components/add-invoice-form";
 import { UpdateModal } from "@/components/update-modal";
-// import { DeleteModal } from "@/components/delete-modal";
 import UpdateInvoiceForm from "@/components/update-invoice-form";
-// import DeleteInvoiceForm from "@/components/delete-invoive-form";
 import { useQuery } from "@tanstack/react-query";
 import { allInvoice } from "@/services/invoice-services";
 import type { Invoice, Learner } from "@/types/invoices.types";
-// import InvoiceTableShimmer from "@/components/table-shimmer"; // Import the new shimmer component
 import InvoiceTableShimmer from "@/components/invoice-table-shimmer";
-import { Search } from "lucide-react";
 
 export const columns: ColumnDef<Invoice>[] = [
   {
@@ -107,7 +103,6 @@ export const columns: ColumnDef<Invoice>[] = [
 
 export function InvoiceDataTable() {
   const [openState, toogleState] = React.useState(false);
-  const [searchTerm, setSearchTerm] = React.useState("");
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -125,7 +120,6 @@ export function InvoiceDataTable() {
     queryFn: allInvoice,
   });
   const info = invoiceDetails || [];
-  // console.log("🚀 ~ Overview ~ info:", info);
 
   const table = useReactTable({
     data: info,
@@ -157,17 +151,6 @@ export function InvoiceDataTable() {
           }
           className="max-w-sm"
         />
-        {/* <div className="flex justify-start items-center  gap-2 p-2 rounded-md shadow-sm w-80">
-          <Search size={18} className="text-[#7F7E83]" />
-
-          <input
-            type="text"
-            placeholder="Search by name"
-            className="outline-0 w-full"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>  */}
 
         <div className="">
           <AddModal

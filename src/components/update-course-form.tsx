@@ -216,7 +216,6 @@ const UpdateCourseForm = ({ closeModal, id }: AddTrackFormProps) => {
 
   const details = data?.course;
   const isStillLoading = isCourseLoading || isTracksLoading || !details?.title;
-  console.log("🚀 ~ UpdateCourseForm ~ isStillLoading:", isStillLoading);
   let trackList = tracks?.tracks || [];
 
   const {
@@ -231,10 +230,6 @@ const UpdateCourseForm = ({ closeModal, id }: AddTrackFormProps) => {
       title: details?.title || "",
       description: details?.description || "",
     },
-    // defaultValues: {
-    //   title: details?.title || "",
-    //   description: details?.description || "",
-    // },
   });
   const selectedImage = watch("image");
 
