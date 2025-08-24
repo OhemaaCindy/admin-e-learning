@@ -1,20 +1,18 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import {
-  type ColumnDef,
   type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type Row,
   type SortingState,
   useReactTable,
   type VisibilityState,
 } from "@tanstack/react-table";
-
-import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 
@@ -27,89 +25,90 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import InvoiceImage from "@/components/invoice-table-image";
 import { AddModal } from "@/components/add-modal";
 import AddInvoiceForm from "@/components/add-invoice-form";
 import { UpdateModal } from "@/components/update-modal";
 import UpdateInvoiceForm from "@/components/update-invoice-form";
 import { useQuery } from "@tanstack/react-query";
 import { allInvoice } from "@/services/invoice-services";
-import type { Invoice, Learner } from "@/types/invoices.types";
+import type { Invoice } from "@/types/invoices.types";
 import InvoiceTableShimmer from "@/components/invoice-table-shimmer";
+import { invoiceColumns } from "@/constants/table-columns/invoice";
 
-export const columns: ColumnDef<Invoice>[] = [
-  {
-    header: "Learners",
-    accessorKey: "profilePhoto",
-    cell: ({ row }) => {
-      const learner: Learner | null = row.original.learner;
+// export const columns: ColumnDef<Invoice>[] = [
+//   {
+//     header: "Learners",
+//     accessorKey: "profilePhoto",
+//     cell: ({ row }) => {
+//       const learner: Learner | null = row.original.learner;
 
-      return <InvoiceImage learner={learner} />;
-    },
-  },
+//       return <InvoiceImage learner={learner} />;
+//     },
+//   },
 
-  {
-    header: "Emal Address",
-    accessorKey: "learner",
-    cell: ({ row }) => {
-      const learner = row.original.learner;
-      return <p>{learner?.email}</p>;
-    },
-  },
-  {
-    header: "Date Joined",
-    accessorKey: "dateJoined",
-    cell: ({ row }) => {
-      const learner = row.original.createdAt;
-      return <p>{format(new Date(learner), "do MMMM, yyyy")}</p>;
-    },
-  },
+//   {
+//     header: "Emal Address",
+//     accessorKey: "learner",
+//     cell: ({ row }) => {
+//       const learner = row.original.learner;
+//       return <p>{learner?.email}</p>;
+//     },
+//   },
+//   {
+//     header: "Date Joined",
+//     accessorKey: "dateJoined",
+//     cell: ({ row }) => {
+//       const learner = row.original.createdAt;
+//       return <p>{format(new Date(learner), "do MMMM, yyyy")}</p>;
+//     },
+//   },
 
-  {
-    header: "Amount",
-    accessorKey: "amount",
-    cell: ({ row }) => {
-      return <div className="">${row.original?.amount || "0.0"}</div>;
-    },
-  },
-  {
-    header: "Status",
-    accessorKey: "status",
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const [openState, toogleState] = React.useState(false);
-      const learnerDetail = row.original;
-      return (
-        <div className="flex items-center justify-end gap-3">
-          <UpdateModal
-            title="Update Invoice"
-            openState={openState}
-            toogleState={toogleState}
-          >
-            <UpdateInvoiceForm
-              closeModal={toogleState}
-              learnerDetail={learnerDetail}
-            />
-          </UpdateModal>
-        </div>
-      );
-    },
-  },
-];
+//   {
+//     header: "Amount",
+//     accessorKey: "amount",
+//     cell: ({ row }) => {
+//       return <div className="">${row.original?.amount || "0.0"}</div>;
+//     },
+//   },
+//   {
+//     header: "Status",
+//     accessorKey: "status",
+//   },
+//   {
+//     id: "actions",
+//     enableHiding: false,
+//     cell: ({ row }) => {
+//       <InvoiceActions row={row} />;
+//     },
+//   },
+// ];
+
+export const InvoiceActions = ({ row }: { row: Row<Invoice> }) => {
+  const [openState, toogleState] = useState(false);
+  const learnerDetail = row.original;
+  return (
+    <div className="flex items-center justify-end gap-3">
+      <UpdateModal
+        title="Update Invoice"
+        openState={openState}
+        toogleState={toogleState}
+      >
+        <UpdateInvoiceForm
+          closeModal={toogleState}
+          learnerDetail={learnerDetail}
+        />
+      </UpdateModal>
+    </div>
+  );
+};
 
 export function InvoiceDataTable() {
-  const [openState, toogleState] = React.useState(false);
+  const [openState, toogleState] = useState(false);
 
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
 
   const { data: invoiceDetails, isLoading: isloadingInvoices } = useQuery<
     Invoice[],
@@ -122,7 +121,7 @@ export function InvoiceDataTable() {
 
   const table = useReactTable({
     data: info,
-    columns,
+    columns: invoiceColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -205,7 +204,7 @@ export function InvoiceDataTable() {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={columns.length}
+                    colSpan={invoiceColumns.length}
                     className="h-24 text-center"
                   >
                     No results.

@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import {
-  type ColumnDef,
   type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -26,66 +25,63 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { ViewProfileModal } from "@/components/view-profile-modal";
-import LearnerProfile from "@/components/learner-profile-view";
 import { allLearners } from "@/services/learner-services";
 import { useQuery } from "@tanstack/react-query";
 import type { Learner } from "@/types/learners.type";
-import ImageAndName from "@/components/learner-image-and-name";
-import { format } from "date-fns";
 import LearnerTableShimmer from "@/components/learner-shimmer";
+import { learnerColumns } from "@/constants/table-columns/learner";
 
-export const columns: ColumnDef<Learner>[] = [
-  {
-    header: "Learners",
-    accessorKey: "profilePhoto",
-    cell: ({ row }) => <ImageAndName learner={row.original} />,
-  },
+// export const learnerColumns: ColumnDef<Learner>[] = [
+//   {
+//     header: "Learners",
+//     accessorKey: "profilePhoto",
+//     cell: ({ row }) => <ImageAndName learner={row.original} />,
+//   },
 
-  {
-    header: "Courses",
-    accessorKey: "course",
-    cell: ({ row }) => {
-      const learner = row.original.course || "N/A";
-      return <p>{learner}</p>;
-    },
-  },
-  {
-    header: "Date Joined",
-    accessorKey: "dateJoined",
-    cell: ({ row }) => {
-      const learner = row.original.createdAt;
-      return <p>{format(new Date(learner), "do MMMM, yyyy")}</p>;
-    },
-  },
+//   {
+//     header: "Courses",
+//     accessorKey: "course",
+//     cell: ({ row }) => {
+//       const learner = row.original.course || "N/A";
+//       return <p>{learner}</p>;
+//     },
+//   },
+//   {
+//     header: "Date Joined",
+//     accessorKey: "dateJoined",
+//     cell: ({ row }) => {
+//       const learner = row.original.createdAt;
+//       return <p>{format(new Date(learner), "do MMMM, yyyy")}</p>;
+//     },
+//   },
 
-  {
-    header: "Amount",
-    accessorKey: "amount",
-    cell: ({ row }) => {
-      return <div className="">${row.original?.amount || "0.0"}</div>;
-    },
-  },
-  {
-    header: "Gender",
-    accessorKey: "learner",
-    cell: ({ row }) => {
-      const learner = row.original.gender || "N/A";
-      return <p>{learner}</p>;
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <ViewProfileModal>
-          <LearnerProfile id={row.original._id} />
-        </ViewProfileModal>
-      );
-    },
-  },
-];
+//   {
+//     header: "Amount",
+//     accessorKey: "amount",
+//     cell: ({ row }) => {
+//       return <div className="">${row.original?.amount || "0.0"}</div>;
+//     },
+//   },
+//   {
+//     header: "Gender",
+//     accessorKey: "learner",
+//     cell: ({ row }) => {
+//       const learner = row.original.gender || "N/A";
+//       return <p>{learner}</p>;
+//     },
+//   },
+//   {
+//     id: "actions",
+//     enableHiding: false,
+//     cell: ({ row }) => {
+//       return (
+//         <ViewProfileModal>
+//           <LearnerProfile id={row.original._id} />
+//         </ViewProfileModal>
+//       );
+//     },
+//   },
+// ];
 
 export function LearnersDataTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -107,7 +103,7 @@ export function LearnersDataTable() {
 
   const table = useReactTable({
     data: learners,
-    columns,
+    columns: learnerColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -179,7 +175,7 @@ export function LearnersDataTable() {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={columns.length}
+                    colSpan={learnerColumns.length}
                     className="h-24 text-center"
                   >
                     No results.

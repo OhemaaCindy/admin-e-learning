@@ -43,7 +43,7 @@ const UpdateCourseForm = ({ closeModal, id }: AddTrackFormProps) => {
 
   const details = data?.course;
   const isStillLoading = isCourseLoading || isTracksLoading || !details?.title;
-  let trackList = tracks?.tracks || [];
+  const trackList = tracks?.tracks || [];
 
   const {
     register,

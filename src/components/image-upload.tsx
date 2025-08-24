@@ -60,20 +60,23 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
       },
     }));
 
-    const validateFile = (file: File): string | null => {
-      // Check file type
-      if (!file.type.startsWith("image/")) {
-        return "Please select a valid image file";
-      }
+    const validateFile = useCallback(
+      (file: File): string | null => {
+        // Check file type
+        if (!file.type.startsWith("image/")) {
+          return "Please select a valid image file";
+        }
 
-      // Check file size
-      const fileSizeMB = file.size / (1024 * 1024);
-      if (fileSizeMB > maxSize) {
-        return `File size must be less than ${maxSize}MB`;
-      }
+        // Check file size
+        const fileSizeMB = file.size / (1024 * 1024);
+        if (fileSizeMB > maxSize) {
+          return `File size must be less than ${maxSize}MB`;
+        }
 
-      return null;
-    };
+        return null;
+      },
+      [maxSize]
+    );
 
     const handleFileSelect = useCallback(
       (file: File) => {
@@ -95,7 +98,7 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
 
         onImageSelect(file);
       },
-      [onImageSelect, maxSize]
+      [validateFile, onImageSelect]
     );
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

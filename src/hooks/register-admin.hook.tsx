@@ -62,7 +62,7 @@ export const useResendOtpAdmin = () =>
     mutationFn: resendOtp,
   });
 
-export const uselogoutAdmin = () =>
+export const useLogoutAdmin = () =>
   useMutation<LogoutResponse, AuthErrorRes>({
     mutationFn: logout,
   });

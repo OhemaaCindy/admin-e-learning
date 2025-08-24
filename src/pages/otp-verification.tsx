@@ -15,8 +15,8 @@ export const Otpverification = () => {
       onSuccess: () => {
         toast.success("OTP sent successfully. Please check your email");
       },
-      onError: (error: any) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error("Failed to verify OTP, please try again later.");
       },
     });
   };

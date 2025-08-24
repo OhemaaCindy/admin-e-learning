@@ -14,7 +14,11 @@ import { useQuery } from "@tanstack/react-query";
 import type { SingleTrackResponse } from "@/types/track.type";
 import { singleTrack } from "@/services/track-services";
 
-const UpdateTrackForm = () => {
+interface UpdateTrackFormProps {
+  closeModal: (state: boolean) => void;
+}
+
+const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
@@ -61,7 +65,7 @@ const UpdateTrackForm = () => {
       {
         onSuccess() {
           // reset();
-          // closeModal(false);
+          closeModal(false);
           navigate("/tracks");
           toast.success("Track updated successfully");
         },

@@ -43,8 +43,8 @@ const LearnerProfile = ({ id }: { id: string }) => {
         ) : (
           <>
             <p className="text-[#1F1F36] font-bold text-xl">
-              {`${learnerDetails?.firstName} ${learnerDetails?.lastName}` ||
-                "N/A"}
+              {learnerDetails?.firstName ?? "N/A"}{" "}
+              {learnerDetails?.lastName ?? ""}
             </p>
             <p className="text-[#1F1F36]">{learnerDetails?.email || "N/A"}</p>
           </>

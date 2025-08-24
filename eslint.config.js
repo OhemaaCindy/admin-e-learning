@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { globalIgnores } from 'eslint/config'
 
 export default tseslint.config([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'node_modules']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -20,10 +20,10 @@ export default tseslint.config([
       globals: globals.browser,
     },
     // ====YOU WERE SUPPOSE TO DO THIS==========
-        plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-    },
+    // plugins: {
+    //   'react-hooks': reactHooks,
+    //   'react-refresh': reactRefresh,
+    // },
     rules: {
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': [

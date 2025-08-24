@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface TrackResponse {
   success: boolean;
   count: number;

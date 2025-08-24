@@ -22,8 +22,8 @@ const DeleteInvoiceForm = ({ closeModal }: DeleteTrackFormProps) => {
 
         navigate("/tracks");
       },
-      onError: (error: any) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error("Failed to Delete Invoice, please try again later.");
       },
     });
   };

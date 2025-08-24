@@ -42,7 +42,7 @@ const AddCourseForm = ({ closeModal }: AddCourseFormProps) => {
     queryFn: allTracks,
   });
 
-  let trackList = data?.tracks || [];
+  const trackList = data?.tracks || [];
 
   const { mutate: addCourse, isPending, error, isError } = useAddCourse();
 

@@ -21,8 +21,8 @@ const Deletetrack = ({ closeModal }: DeleteTrackFormProps) => {
 
         navigate("/tracks");
       },
-      onError: (error: any) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error("Failed to delete Track, please try again later.");
       },
     });
   };

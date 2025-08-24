@@ -1,14 +1,14 @@
 "use client";
 
-import * as React from "react";
+import { useState } from "react";
 import {
-  type ColumnDef,
   type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type Row,
   type SortingState,
   useReactTable,
   type VisibilityState,
@@ -34,74 +34,75 @@ import DeleteCourseForm from "@/components/delete-course-form";
 import { allCourses } from "@/services/courses-services";
 import type { Course } from "@/types/courses.types";
 import { useQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
 import CourseTableShimmer from "@/components/course-table-shimmer";
+import { courseColumns } from "@/constants/table-columns/course";
 
-export const columns: ColumnDef<Course>[] = [
-  {
-    header: "Courses",
-    accessorKey: "title",
-  },
-  {
-    header: "Tracks",
-    accessorKey: "track",
-    cell: ({ row }) => {
-      const track = row.original.track;
-      return <p>{track.name}</p>;
-    },
-  },
+// export const columns: ColumnDef<Course>[] = [
+//   {
+//     header: "Courses",
+//     accessorKey: "title",
+//   },
+//   {
+//     header: "Tracks",
+//     accessorKey: "track",
+//     cell: ({ row }) => {
+//       const track = row.original.track;
+//       return <p>{track.name}</p>;
+//     },
+//   },
 
-  {
-    header: "Date Joined",
-    accessorKey: "admin",
-    cell: ({ row }) => {
-      const admin = row.original.createdAt;
-      return <p>{format(new Date(admin), "do MMMM, yyyy")}</p>;
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const [openState, toogleState] = React.useState(false);
-      const [openUpdateState, toogleUpdateState] = React.useState(false);
+//   {
+//     header: "Date Joined",
+//     accessorKey: "admin",
+//     cell: ({ row }) => {
+//       const admin = row.original.createdAt;
+//       return <p>{format(new Date(admin), "do MMMM, yyyy")}</p>;
+//     },
+//   },
+//   {
+//     id: "actions",
+//     enableHiding: false,
+//     cell: ({ row }) => {
+//       <CourseActions row={row} />;
+//     },
+//   },
+// ];
 
-      return (
-        <div className="flex items-center justify-end gap-3">
-          <UpdateModal
-            title="Update Course"
-            openState={openUpdateState}
-            toogleState={toogleUpdateState}
-          >
-            <UpdateCourseForm
-              id={row.original._id}
-              closeModal={toogleUpdateState}
-            />
-          </UpdateModal>
+export const CourseActions = ({ row }: { row: Row<Course> }) => {
+  const [openState, toogleState] = useState(false);
+  const [openUpdateState, toogleUpdateState] = useState(false);
 
-          <DeleteModal
-            title="Delete Course"
-            openState={openState}
-            toogleState={toogleState}
-          >
-            <DeleteCourseForm id={row.original._id} closeModal={toogleState} />
-          </DeleteModal>
-        </div>
-      );
-    },
-  },
-];
+  return (
+    <div className="flex items-center justify-end gap-3">
+      <UpdateModal
+        title="Update Course"
+        openState={openUpdateState}
+        toogleState={toogleUpdateState}
+      >
+        <UpdateCourseForm
+          id={row.original._id}
+          closeModal={toogleUpdateState}
+        />
+      </UpdateModal>
+
+      <DeleteModal
+        title="Delete Course"
+        openState={openState}
+        toogleState={toogleState}
+      >
+        <DeleteCourseForm id={row.original._id} closeModal={toogleState} />
+      </DeleteModal>
+    </div>
+  );
+};
 
 export function CoursesDataTable() {
-  const [openState, toogleState] = React.useState(false);
+  const [openState, toogleState] = useState(false);
 
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
 
   const { data: courseDetails, isLoading: isloadingCourseses } = useQuery<
     Course[],
@@ -114,7 +115,7 @@ export function CoursesDataTable() {
 
   const table = useReactTable({
     data: info,
-    columns,
+    columns: courseColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -197,7 +198,7 @@ export function CoursesDataTable() {
               ) : (
                 <TableRow>
                   <TableCell
-                    colSpan={columns.length}
+                    colSpan={courseColumns.length}
                     className="h-24 text-center"
                   >
                     No results.

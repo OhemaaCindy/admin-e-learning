@@ -14,8 +14,8 @@ const DeleteCourseForm = ({ closeModal, id }: DeleteCourseFormProps) => {
         closeModal(false);
         // navigate("/courses");
       },
-      onError: (error: any) => {
-        toast.error(error.message);
+      onError: () => {
+        toast.error("Failed to Delete Course. Please try again later.");
       },
     });
   };

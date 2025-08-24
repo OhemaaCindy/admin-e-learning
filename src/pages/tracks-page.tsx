@@ -21,9 +21,9 @@ const Track = () => {
     queryFn: allTracks,
   });
 
-  let trackOverview = data?.tracks || [];
+  const trackOverview = data?.tracks || [];
 
-  let filteredTracks = trackOverview.filter((trackname) => {
+  const filteredTracks = trackOverview.filter((trackname) => {
     return trackname.name.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
