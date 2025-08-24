@@ -22,14 +22,6 @@ const RegistrationForm: React.FC = () => {
     reset,
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
-    // defaultValues: {
-    //   firstName: "cindy",
-    //   lastName: "Essuman",
-    //   email: "cindyessuman05@gmail.com",
-    //   password: "Cindy@123",
-    //   confirmPassword: "Cindy@123",
-    //   contact: "+2330594809966",
-    // },
   });
 
   const {
@@ -41,7 +33,6 @@ const RegistrationForm: React.FC = () => {
   } = useRegisterAdmin();
 
   const onSubmit = async (data: RegistrationFormData) => {
-    // console.log("🚀 ~ onSubmit ~ data:", data);
     mutate(data, {
       onSuccess(res) {
         Cookies.set("token", res.token);

@@ -23,7 +23,6 @@ const RequestPasswordResetForm: React.FC = () => {
   const { mutate: requestReset, isPending } = useForgotPasswordAdmin();
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
-    console.log(data);
     requestReset(
       { ...data, baseResetURL: "http://localhost:5173/reset-password" },
       {

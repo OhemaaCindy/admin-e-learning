@@ -54,8 +54,6 @@ export const singleCourse = async (
 export const createCourse = async (
   payload: AddCourseFormData
 ): Promise<AddCoursesResponse> => {
-  console.log("🔥 ~ createTrack ~ payload:", payload);
-
   const { title, image, track, description } = payload;
 
   const formData = new FormData();
@@ -63,10 +61,6 @@ export const createCourse = async (
   formData.append("track", track);
   formData.append("description", description);
   formData.append("image", image);
-
-  // for (const [key, value] of formData.entries()) {
-  //   console.log(`🔥 ${key}:`, value);
-  // }
 
   try {
     const response = await axiosClient.post<AddCoursesResponse>(
@@ -76,10 +70,8 @@ export const createCourse = async (
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
-    console.log("🚀 ~ createCourse ~ response.data:", response.data);
     return response.data;
   } catch (error) {
-    // console.log("🚀 ~ createTrack ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }
@@ -98,10 +90,7 @@ export const upateCourse = async ({
   id,
   payload,
 }: UpdateCourseProps): Promise<UpdateCourseResponse> => {
-  console.log("🔥 ~ updateTrack ~ payload:", payload);
-
   const formData = new FormData();
-  // console.log("🚀 ~ upateCourse ~ formData:", formData);
 
   // Append only non-empty string values
   if (payload.track) formData.append("track", payload.track);
@@ -122,10 +111,8 @@ export const upateCourse = async ({
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
-    console.log("🚀 ~ upateCourse ~  response.data:", response.data);
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ upateCourse ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }

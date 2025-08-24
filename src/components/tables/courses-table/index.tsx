@@ -55,7 +55,6 @@ export const columns: ColumnDef<Course>[] = [
     header: "Date Joined",
     accessorKey: "admin",
     cell: ({ row }) => {
-      // console.log("🚀 ~ row:", row.original._id);
       const admin = row.original.createdAt;
       return <p>{format(new Date(admin), "do MMMM, yyyy")}</p>;
     },
@@ -112,7 +111,6 @@ export function CoursesDataTable() {
     queryFn: allCourses,
   });
   const info = courseDetails || [];
-  // console.log("🚀 ~ CoursesDataTable ~ info:", info);
 
   const table = useReactTable({
     data: info,

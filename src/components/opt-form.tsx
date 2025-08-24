@@ -33,7 +33,6 @@ const OtpForm: React.FC = () => {
   } = useOtpVerifyAdmin();
 
   const onSubmit = async (data: OtpFormData) => {
-    console.log(data);
     sendOtp(
       { token: data.code },
       {

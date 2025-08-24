@@ -54,7 +54,6 @@ const AddCourseForm = ({ closeModal }: AddCourseFormProps) => {
         toast.success("Course created successfully");
       },
       onError() {
-        console.log("error");
         toast.error("Failed to create Course");
       },
     });

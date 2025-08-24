@@ -17,7 +17,6 @@ export const Otpverification = () => {
       },
       onError: (error: any) => {
         toast.error(error.message);
-        console.log(error);
       },
     });
   };

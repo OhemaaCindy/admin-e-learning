@@ -48,7 +48,7 @@ export const useUpdateTrack = () => {
 
 export const useDeleteTrack = () => {
   const queryClient = useQueryClient();
-  return useMutation<DeleteTrackResponse, AuthErrorRes>({
+  return useMutation<DeleteTrackResponse, AuthErrorRes, string>({
     mutationFn: (id) => deleteTrack(id),
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ["get-all-tracks"] });

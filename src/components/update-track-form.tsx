@@ -13,15 +13,11 @@ import { useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import type { SingleTrackResponse } from "@/types/track.type";
 import { singleTrack } from "@/services/track-services";
-interface UpdateTrackFormProps {
-  closeModal: (state: boolean) => void;
-}
 
-const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
+const UpdateTrackForm = () => {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
-  // console.log("🚀 ~ UpdateTrackForm ~ id:", id);
 
   const { data } = useQuery<SingleTrackResponse, Error>({
     queryKey: ["get-single-track", id],
@@ -29,7 +25,6 @@ const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
   });
 
   const details = data?.track;
-  console.log("🚀 ~ UpdateTrackForm ~ details:", details);
 
   const {
     register,
@@ -63,10 +58,8 @@ const UpdateTrackForm = ({ closeModal }: UpdateTrackFormProps) => {
 
     updateTrack(
       { id, payload: data },
-      // { id: id as string, payload: data },
       {
-        onSuccess(res) {
-          console.log("🚀 ~ onSuccess ~ res:", res);
+        onSuccess() {
           // reset();
           // closeModal(false);
           navigate("/tracks");

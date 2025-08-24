@@ -12,7 +12,6 @@ const Deletetrack = ({ closeModal }: DeleteTrackFormProps) => {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
-  console.log("🚀 ~ Delete TrackForm ~ id:", id);
 
   const { mutate: handleDeleteTrack, isError, error } = useDeleteTrack();
   const handleDelete = (id: string) => {
@@ -24,7 +23,6 @@ const Deletetrack = ({ closeModal }: DeleteTrackFormProps) => {
       },
       onError: (error: any) => {
         toast.error(error.message);
-        console.log(error);
       },
     });
   };

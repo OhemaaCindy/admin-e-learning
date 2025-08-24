@@ -35,7 +35,6 @@ const UpdatePasswordForm = () => {
     console.log("🚀 ~ onSubmit ~ data:", data);
     // updatePassword(data, {
     //   onSuccess(res) {
-    //     console.log("🚀 ~ onSuccess ~ res:", res);
     //     toast.success("Profile updated successfully");
     //   },
     //   onError() {

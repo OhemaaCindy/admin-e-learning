@@ -33,17 +33,13 @@ export interface CreateInvoiceProps extends AddInvoiceFormData {
 export const createInvoice = async (
   payload: CreateInvoiceProps
 ): Promise<InvoiceResponse> => {
-  console.log("🔥 ~ createInvoice ~ payload:", payload);
-
   try {
     const response = await axiosClient.post<InvoiceResponse>(
       apiEndpoints.INVOICES.createInvoice,
       payload
     );
-    console.log("🚀 ~ createInvoice ~ response.data:", response.data);
     return response.data;
   } catch (error) {
-    // console.log("🚀 ~ createTrack ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }
@@ -62,7 +58,6 @@ export const createInvoice = async (
 //   id,
 //   payload,
 // }: UpdateTrackProps): Promise<UpdateTrackResponse> => {
-//   console.log("🔥 ~ createTrack ~ payload:", payload);
 
 //   const formData = new FormData();
 
@@ -88,7 +83,6 @@ export const createInvoice = async (
 //     );
 //     return response.data;
 //   } catch (error) {
-//     // console.log("🚀 ~ createTrack ~ error:", error);
 //     if (axios.isAxiosError(error) && error.response) {
 //       throw error.response.data as AuthErrorRes;
 //     }

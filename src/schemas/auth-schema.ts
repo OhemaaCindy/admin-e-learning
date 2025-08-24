@@ -97,11 +97,8 @@ export const UpdateAdminTypeSchema = z.object({
   location: z.string().optional(),
   contact: z
     .string()
-    // .regex(/^0?\d{9}$/, {
-    //   message: "Contact must be 10 digits",
-    // })
+
     .transform((val) => {
-      console.log("🚀 ~ val:", val);
       if (val.startsWith("+233")) {
         return val;
       } else if (val.startsWith("0")) {
@@ -109,8 +106,9 @@ export const UpdateAdminTypeSchema = z.object({
       }
       return "+233" + val;
     }),
-  disabled: z.enum(["true", "false"]).transform((val) => val === "true"),
+  disabled: z.boolean(),
+  // disabled: z.enum(["true", "false"]).transform((val) => val === "true"),
   description: z.string().min(1, "Please enter description").optional(),
 });
 
-export type UpdateLearnerFormData = z.infer<typeof UpdateAdminTypeSchema>;
+export type UpdateAdminFormData = z.infer<typeof UpdateAdminTypeSchema>;

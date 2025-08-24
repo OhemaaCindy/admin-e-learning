@@ -28,7 +28,6 @@ const PasswordResetForm = ({ userId }: { userId: string | undefined }) => {
   } = useResetPasswordAdmin();
 
   const onSubmit = async (data: ResetFormData) => {
-    // console.log(data);
     resetPassword(
       { payload: data, id: userId as string },
       {

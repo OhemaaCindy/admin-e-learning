@@ -5,7 +5,6 @@ import PasswordResetForm from "../components/passwordResetForm";
 export const ResetPassword = () => {
   const params = useParams();
   const userId = params.id;
-  // console.log("🚀 ~ userId:", userId);
 
   return (
     <div className="relative min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-cyan-500 to-blue-500">

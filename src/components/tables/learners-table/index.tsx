@@ -33,7 +33,6 @@ import { useQuery } from "@tanstack/react-query";
 import type { Learner } from "@/types/learners.type";
 import ImageAndName from "@/components/learner-image-and-name";
 import { format } from "date-fns";
-// import InvoiceTableShimmer from "@/components/table-shimmer";
 import LearnerTableShimmer from "@/components/learner-shimmer";
 
 export const columns: ColumnDef<Learner>[] = [

@@ -41,7 +41,6 @@ export const useForgotPasswordAdmin = () =>
     ForgotPasswordPayloadType
   >({
     mutationFn: (payload) => {
-      console.log(payload);
       return forgotPasswordAdmin(payload);
     },
   });
@@ -49,7 +48,6 @@ export const useForgotPasswordAdmin = () =>
 export const useResetPasswordAdmin = () =>
   useMutation<ResetPasswordResponseype, AuthErrorRes, ResetAdminPasswordProps>({
     mutationFn: ({ payload, id }: ResetAdminPasswordProps) => {
-      console.log(payload);
       return resetAdminPassword({ payload, id });
     },
   });

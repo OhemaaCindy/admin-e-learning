@@ -2,32 +2,21 @@ import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "./button";
-// import { useQuery } from "@tanstack/react-query";
-// import type { Learner } from "@/types/learners.type";
-// import { allLearners } from "@/services/learner-services";
 import {
-  AddInvoiceTypeSchema,
   UpdateInvoiceTypeSchema,
   type AddInvoiceFormData,
   type UpdateInvoiceFormData,
 } from "@/schemas/invoice-schema";
 import { cn } from "@/lib/utils";
-// import { createInvoice } from '@/services/invoice-services';
 import { useAddInvoice } from "@/hooks/invoice-hook";
 import type { Invoice } from "@/types/invoices.types";
-// import toast from "react-hot-toast";
 
 interface AddInvoiceFormProps {
   closeModal: (state: boolean) => void;
   learnerDetail: Invoice;
 }
 
-const UpdateInvoiceForm = ({
-  closeModal,
-  learnerDetail,
-}: AddInvoiceFormProps) => {
-  console.log("🚀 ~ UpdateInvoiceForm ~ learnerDetail:", learnerDetail);
-  // const fullName = learnerDetail.learner?.firstName + learnerDetail.learner?.lastName
+const UpdateInvoiceForm = ({ learnerDetail }: AddInvoiceFormProps) => {
   const fullName = `${learnerDetail?.learner?.firstName ?? ""} ${
     learnerDetail?.learner?.lastName ?? ""
   }`.trim();
@@ -45,9 +34,9 @@ const UpdateInvoiceForm = ({
     defaultValues: {
       learner: fullName || "",
       amount: learnerDetail.amount || 0,
-      dueDate: learnerDetail.dueDate,
+      dueDate: learnerDetail.dueDate.toString(),
       status: learnerDetail.status || "",
-      paymentDetails: learnerDetail?.paymentDetails || "",
+      // paymentDetails: learnerDetail?.paymentDetails || "",
     },
   });
 
@@ -63,7 +52,7 @@ const UpdateInvoiceForm = ({
   // const learners = learnerDetails || [];
 
   const {
-    mutate: updateInvoice,
+    // mutate: updateInvoice,
     isPending,
     error,
     isError,
@@ -76,7 +65,6 @@ const UpdateInvoiceForm = ({
     //   { ...data },
     //   {
     //     onSuccess(res) {
-    //       console.log("🚀 ~ onSuccess ~ res:", res);
     //       reset();
     //       closeModal(false);
     //       toast.success("Invoice created successfully");

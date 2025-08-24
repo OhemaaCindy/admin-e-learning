@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import UpdatePasswordForm from "./update-password-form";
 import {
   UpdateAdminTypeSchema,
-  type UpdateLearnerFormData,
+  type UpdateAdminFormData,
 } from "@/schemas/auth-schema";
 import { useQuery } from "@tanstack/react-query";
 import type { CheckAuthResponse } from "@/types/types";
@@ -33,7 +33,7 @@ const UpdateProfileForm = () => {
     // reset,
     setValue,
     watch,
-  } = useForm<UpdateLearnerFormData>({
+  } = useForm<UpdateAdminFormData>({
     resolver: zodResolver(UpdateAdminTypeSchema),
     defaultValues: {
       firstName: info?.firstName || "",
@@ -45,14 +45,12 @@ const UpdateProfileForm = () => {
     },
   });
   const selectedImage = watch("profileImage");
-  const id = info?._id;
-  console.log("🚀 ~ SettingsTab ~ id:", id);
+  // const id = info?._id;
   const { mutate: updateAdmin, isPending } = useUpdateAdmin();
 
-  const onSubmit = async (data: UpdateLearnerFormData) => {
+  const onSubmit = async (data: UpdateAdminFormData) => {
     updateAdmin(data, {
-      onSuccess(res) {
-        console.log("🚀 ~ onSuccess ~ res:", res);
+      onSuccess() {
         toast.success("Profile updated successfully");
       },
       onError() {

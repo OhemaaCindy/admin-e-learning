@@ -30,7 +30,6 @@ const LoginForm: React.FC = () => {
   } = useLoginAdmin();
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log(data);
     loginUser(data, {
       onSuccess(res) {
         Cookies.set("token", res.token);

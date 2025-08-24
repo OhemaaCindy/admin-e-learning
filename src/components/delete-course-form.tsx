@@ -16,7 +16,6 @@ const DeleteCourseForm = ({ closeModal, id }: DeleteCourseFormProps) => {
       },
       onError: (error: any) => {
         toast.error(error.message);
-        console.log(error);
       },
     });
   };

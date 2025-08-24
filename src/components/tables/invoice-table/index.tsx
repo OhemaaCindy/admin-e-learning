@@ -82,7 +82,6 @@ export const columns: ColumnDef<Invoice>[] = [
     cell: ({ row }) => {
       const [openState, toogleState] = React.useState(false);
       const learnerDetail = row.original;
-      console.log("🚀 ~ learnerDetail:", learnerDetail);
       return (
         <div className="flex items-center justify-end gap-3">
           <UpdateModal

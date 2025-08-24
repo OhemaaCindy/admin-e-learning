@@ -43,8 +43,7 @@ const AddTrackForm = ({ closeModal }: AddTrackFormProps) => {
         closeModal(false);
         toast.success("Track created successfully");
       },
-      onError(err) {
-        console.log("🚀 ~ onError ~ err:", err);
+      onError() {
         toast.error("Failed to create Track");
       },
     });

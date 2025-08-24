@@ -10,7 +10,6 @@ import {
   type AddInvoiceFormData,
 } from "@/schemas/invoice-schema";
 import { cn } from "@/lib/utils";
-// import { createInvoice } from '@/services/invoice-services';
 import { useAddInvoice } from "@/hooks/invoice-hook";
 import toast from "react-hot-toast";
 
@@ -24,49 +23,31 @@ const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    // control,
-    // setValue,
+
     watch,
   } = useForm<AddInvoiceFormData>({
     resolver: zodResolver(AddInvoiceTypeSchema),
-    // defaultValues: {
-    //   learner: "",
-    //   amount: 0,
-    //   dueDate: "",
-    //   status: "",
-    //   paymentDetails: "",
-    // },
   });
 
   const id = watch("learner");
   console.log("Selected ID:", id);
 
-  const {
-    data: learnerDetails,
-    isLoading: isloadingLearners,
-    // isError,
-    // error,
-  } = useQuery<Learner[], Error>({
+  const { data: learnerDetails, isLoading: isloadingLearners } = useQuery<
+    Learner[],
+    Error
+  >({
     queryKey: ["get-all-learners"],
     queryFn: allLearners,
   });
   const learners = learnerDetails || [];
 
-  const {
-    mutate: addInvoice,
-    isPending,
-    error,
-    isError,
-    //  data,
-  } = useAddInvoice();
+  const { mutate: addInvoice, isPending, error, isError } = useAddInvoice();
 
   const onSubmit = (data: AddInvoiceFormData) => {
-    // console.log(data);
     addInvoice(
       { ...data, paystackCallbackUrl: "http://localhost:5173/payment" },
       {
-        onSuccess(res) {
-          console.log("🚀 ~ onSuccess ~ res:", res);
+        onSuccess() {
           reset();
           closeModal(false);
           toast.success("Invoice created successfully");
@@ -153,7 +134,6 @@ const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
           type="text"
           register={register}
           error={errors.paymentDetails?.message}
-          // required
         />
 
         <div className="pt-4">

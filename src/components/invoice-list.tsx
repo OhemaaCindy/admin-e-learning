@@ -2,7 +2,6 @@ import type { Invoice } from "@/types/invoices.types";
 import { UserIcon } from "lucide-react";
 
 const InvoiceList = ({ info }: { info: Invoice[] }) => {
-  // console.log("🚀 ~ InvoiceList ~ info:", info);
   return (
     <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
       <h3 className="text-lg font-semibold text-gray-900 mb-6">

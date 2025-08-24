@@ -21,7 +21,6 @@ export const allTracks = async (): Promise<TrackResponse> => {
     );
     return response.data;
   } catch (error) {
-    console.log("🚀 ~ allTracks ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }
@@ -63,10 +62,6 @@ export const createTrack = async (
     formData.append("description", description);
     formData.append("image", image);
 
-    // for (const [key, value] of formData.entries()) {
-    //   console.log(`🔥 ${key}:`, value);
-    // }
-
     const response = await axiosClient.post<AddTrackResponse>(
       apiEndpoints.TRACKS.createTrack,
       formData,
@@ -79,7 +74,6 @@ export const createTrack = async (
     );
     return response.data;
   } catch (error) {
-    console.log("🔥 ~ createTrack:", error);
     // throw error;
 
     if (axios.isAxiosError(error) && error.response) {
@@ -103,8 +97,6 @@ export const upateTrack = async ({
   id,
   payload,
 }: UpdateTrackProps): Promise<UpdateTrackResponse> => {
-  console.log("🔥 ~ createTrack ~ payload:", payload);
-
   const formData = new FormData();
 
   // Append only non-empty string values
@@ -129,7 +121,6 @@ export const upateTrack = async ({
     );
     return response.data;
   } catch (error) {
-    // console.log("🚀 ~ createTrack ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }

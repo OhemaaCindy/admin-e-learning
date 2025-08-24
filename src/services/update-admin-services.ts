@@ -1,15 +1,12 @@
 import { apiEndpoints } from "@/constants/api-endpoints";
 import { axiosClient } from "@/lib/axios";
-import type { UpdateLearnerFormData } from "@/schemas/auth-schema";
+import type { UpdateAdminFormData } from "@/schemas/auth-schema";
 import type { AuthErrorRes, UpdateLearnerResponse } from "@/types/types";
 import axios from "axios";
 
 export const upateAdmin = async (
-  payload: UpdateLearnerFormData
+  payload: UpdateAdminFormData
 ): Promise<UpdateLearnerResponse> => {
-  console.log("🔥 ~ updateLearner ~ payload:", payload);
-  // const { firstName, lastName, contact, location, disabled, descripton } = payload;
-
   const formData = new FormData();
 
   // Append only non-empty string values
@@ -26,10 +23,8 @@ export const upateAdmin = async (
   if (payload.profileImage instanceof File) {
     formData.append("profileImage", payload.profileImage);
   }
-  console.log("🚀 ~ upateLearner ~ formData:", formData);
 
   try {
-    console.log("🚀 ~ upateLearner ~ formData:", formData);
     const response = await axiosClient.put<UpdateLearnerResponse>(
       apiEndpoints.AUTH.updateProfile,
       formData,
@@ -39,7 +34,6 @@ export const upateAdmin = async (
     );
     return response.data;
   } catch (error) {
-    // console.log("🚀 ~ createTrack ~ error:", error);
     if (axios.isAxiosError(error) && error.response) {
       throw error.response.data as AuthErrorRes;
     }

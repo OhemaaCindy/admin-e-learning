@@ -1,5 +1,4 @@
 import { useDeleteTrack } from "@/hooks/add-track.hook";
-import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
 
@@ -7,8 +6,6 @@ interface DeleteTrackFormProps {
   closeModal: (state: boolean) => void;
 }
 const DeleteInvoiceForm = ({ closeModal }: DeleteTrackFormProps) => {
-  // const [closeModal] = useState<null>(null);
-
   const handleCloseModal = () => {
     closeModal(true);
   };
@@ -16,7 +13,6 @@ const DeleteInvoiceForm = ({ closeModal }: DeleteTrackFormProps) => {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
-  console.log("🚀 ~ Delete TrackForm ~ id:", id);
 
   const { mutate: handleDeleteInvoice, isError, error } = useDeleteTrack();
   const handleDelete = (id: string) => {
@@ -28,7 +24,6 @@ const DeleteInvoiceForm = ({ closeModal }: DeleteTrackFormProps) => {
       },
       onError: (error: any) => {
         toast.error(error.message);
-        console.log(error);
       },
     });
   };

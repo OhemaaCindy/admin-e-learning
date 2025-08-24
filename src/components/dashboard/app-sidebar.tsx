@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { IconListDetails } from "@tabler/icons-react";
 
 import {
   Sidebar,
@@ -18,6 +17,7 @@ import {
   FileText,
   GraduationCap,
   LayoutDashboard,
+  UsersRound,
   type LucideIcon,
 } from "lucide-react";
 
@@ -40,7 +40,7 @@ const navMain: NavMainItems[] = [
   {
     title: "Learners",
     url: "/learners",
-    icon: IconListDetails,
+    icon: UsersRound,
   },
   {
     title: "Tracks",
