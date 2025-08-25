@@ -1,4 +1,5 @@
-export const BASEURL = "https://tmp-se-projectapi.azurewebsites.net/api";
+export const BASEURL = import.meta.env.VITE_SERVER_URL;
+// export const BASEURL = "https://tmp-se-projectapi.azurewebsites.net/api";
 
 export const apiEndpoints = {
   baseURL: BASEURL,

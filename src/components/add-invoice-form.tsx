@@ -29,6 +29,7 @@ const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
     resolver: zodResolver(AddInvoiceTypeSchema),
   });
 
+  console.log({ url: import.meta.env.BASE_URL });
   const id = watch("learner");
   console.log("Selected ID:", id);
 
@@ -45,7 +46,7 @@ const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
 
   const onSubmit = (data: AddInvoiceFormData) => {
     addInvoice(
-      { ...data, paystackCallbackUrl: "http://localhost:5173/payment" },
+      { ...data, paystackCallbackUrl: `${import.meta.env.BASE_URL}/payment` },
       {
         onSuccess() {
           reset();
