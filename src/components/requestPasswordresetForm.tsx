@@ -24,7 +24,10 @@ const RequestPasswordResetForm: React.FC = () => {
 
   const onSubmit = async (data: ForgotPasswordFormData) => {
     requestReset(
-      { ...data, baseResetURL: `${import.meta.env.BASE_URL}/reset-password` },
+      {
+        ...data,
+        baseResetURL: `${import.meta.env.VITE_CLIENT_URL}/reset-password`,
+      },
       {
         onSuccess() {
           reset();

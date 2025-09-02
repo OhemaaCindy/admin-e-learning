@@ -104,14 +104,12 @@ export function CoursesDataTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const { data: courseDetails, isLoading: isloadingCourseses } = useQuery<
-    Course[],
-    Error
-  >({
+  const { data, isLoading: isloadingCourseses } = useQuery<Course[], Error>({
     queryKey: ["get-all-courses"],
     queryFn: allCourses,
   });
-  const info = courseDetails || [];
+  const info = data || [];
+  console.log("🚀 ~ CoursesDataTable ~ info:", info);
 
   const table = useReactTable({
     data: info,

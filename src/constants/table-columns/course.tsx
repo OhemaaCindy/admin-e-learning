@@ -14,7 +14,7 @@ export const courseColumns: ColumnDef<Course>[] = [
     accessorKey: "track",
     cell: ({ row }) => {
       const track = row.original.track;
-      return <p>{track.name}</p>;
+      return <p>{track?.name}</p>;
     },
   },
 
