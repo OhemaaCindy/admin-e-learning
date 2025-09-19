@@ -143,9 +143,11 @@ export function InvoiceDataTable() {
       <div className="items-center py-4 flex justify-between">
         <Input
           placeholder="Search by name"
-          value={(table.getColumn("learner")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("learnerName")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("learner")?.setFilterValue(event.target.value)
+            table.getColumn("learnerName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

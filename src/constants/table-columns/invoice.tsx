@@ -7,12 +7,32 @@ import type { Invoice, Learner } from "@/types/invoices.types";
 import { InvoiceActions } from "@/components/tables/invoice-table";
 
 export const invoiceColumns: ColumnDef<Invoice>[] = [
+  // {
+  //   header: "Learners",
+  //   accessorKey: "learner.firstName",
+  //   cell: ({ row }) => {
+  //     const learner: Learner | null = row.original.learner;
+
+  //     return <InvoiceImage learner={learner} />;
+  //   },
+  // },
   {
+    id: "learnerName", // 👈 add this
     header: "Learners",
-    accessorKey: "profilePhoto",
+    accessorFn: (row) =>
+      `${row.learner?.firstName || ""} ${row.learner?.lastName || ""}`.trim(),
+    filterFn: (row, _, filterValue) => {
+      const learner = row.original.learner;
+      if (!learner || !filterValue) return true;
+
+      const searchValue = filterValue.toLowerCase();
+      const firstName = learner.firstName?.toLowerCase() || "";
+      const lastName = learner.lastName?.toLowerCase() || "";
+
+      return firstName.includes(searchValue) || lastName.includes(searchValue);
+    },
     cell: ({ row }) => {
       const learner: Learner | null = row.original.learner;
-
       return <InvoiceImage learner={learner} />;
     },
   },

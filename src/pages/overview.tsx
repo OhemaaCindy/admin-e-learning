@@ -23,30 +23,6 @@ interface RevenueData {
 export type TrackCardColors = { light?: string; deep?: string }[];
 
 const Overview: React.FC = () => {
-  // const stats = [
-  //   {
-  //     title: "Total Learners",
-  //     value: "12,450",
-  //     change: "12%",
-  //     changeType: "positive" as const,
-  //     iconPath: "/images/learners-img.png",
-  //   },
-  //   {
-  //     title: "Revenue",
-  //     value: "$12,450",
-  //     change: "12%",
-  //     changeType: "positive" as const,
-  //     iconPath: "/images/revenue-img.png",
-  //   },
-  //   {
-  //     title: "Invoice",
-  //     value: "100",
-  //     change: "2%",
-  //     changeType: "positive" as const,
-  //     iconPath: "/images/invoice-img.png",
-  //   },
-  // ];
-
   const revenueData: RevenueData[] = [
     { month: "Jan", value: 2200 },
     { month: "Feb", value: 1800 },
@@ -60,8 +36,6 @@ const Overview: React.FC = () => {
     queryFn: allLearners,
   });
   const learners = learnerDetails || [];
-  console.log("🚀 ~ Overview ~ learners:", learners);
-  // isLoading: isloadingLearners
 
   const { data, isLoading: isloadingTacks } = useQuery<TrackResponse, Error>({
     queryKey: ["get-all-tracks"],

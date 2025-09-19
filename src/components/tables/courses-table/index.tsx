@@ -109,7 +109,7 @@ export function CoursesDataTable() {
     queryFn: allCourses,
   });
   const info = data || [];
-  console.log("🚀 ~ CoursesDataTable ~ info:", info);
+  // console.log("🚀 ~ CoursesDataTable ~ info:", info);
 
   const table = useReactTable({
     data: info,
