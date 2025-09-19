@@ -107,7 +107,6 @@ export const UpdateAdminTypeSchema = z.object({
       return "+233" + val;
     }),
   disabled: z.boolean(),
-  // disabled: z.enum(["true", "false"]).transform((val) => val === "true"),
   description: z.string().min(1, "Please enter description").optional(),
 });
 

@@ -49,6 +49,7 @@ const UpdateProfileForm = () => {
   const { mutate: updateAdmin, isPending } = useUpdateAdmin();
 
   const onSubmit = async (data: UpdateAdminFormData) => {
+    // console.log("Disabled value (boolean):", data.disabled);
     updateAdmin(data, {
       onSuccess() {
         toast.success("Profile updated successfully");
@@ -126,16 +127,18 @@ const UpdateProfileForm = () => {
 
                       <div className="mb-4 w-full">
                         <select
-                          {...register("disabled")}
-                          name="disabled"
+                          {...register("disabled", {
+                            setValueAs: (val) => val === "true", // convert "true"/"false" string -> boolean
+                          })}
+                          // defaultValue={info?.disabled ? "true" : "false"}
                           className={cn(
                             "w-full h-10 px-3 border rounded-md shadow-sm overflow-y-auto",
                             errors.disabled && "border-red-500 bg-red-50"
                           )}
                         >
-                          <option value="">Do you have disability?</option>
-                          <option value="true">true</option>
+                          {/* <option value="">Do you have disability?</option> */}
                           <option value="false">false</option>
+                          <option value="true">true</option>
                         </select>
                         {errors.disabled && (
                           <p className="text-red-500 text-sm mt-1">
