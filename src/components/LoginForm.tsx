@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 
 import Cookies from "js-cookie";
-import { useLoginAdmin } from "../hooks/register-admin.hook";
+import { useLoginAdmin } from "../hooks/auth.hook";
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();

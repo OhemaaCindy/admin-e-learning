@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "./button";
 import { ImageUpload } from "./image-upload";
-import { useUpdateTrack } from "@/hooks/add-track.hook";
+import { useUpdateTrack } from "@/hooks/track.hook";
 import {
   UpdateTrackTypeSchema,
   type UpdateTrackFormData,

@@ -12,6 +12,8 @@ import { allInvoice } from "@/services/invoice-services";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router";
 import { Skeleton } from "@/components/ui/skeleton";
+import { allLearners } from "@/services/learner-services";
+import { Learner } from "@/types/learners.type";
 
 interface RevenueData {
   month: string;
@@ -21,29 +23,29 @@ interface RevenueData {
 export type TrackCardColors = { light?: string; deep?: string }[];
 
 const Overview: React.FC = () => {
-  const stats = [
-    {
-      title: "Total Learners",
-      value: "12,450",
-      change: "12%",
-      changeType: "positive" as const,
-      iconPath: "/images/learners-img.png",
-    },
-    {
-      title: "Revenue",
-      value: "$12,450",
-      change: "12%",
-      changeType: "positive" as const,
-      iconPath: "/images/revenue-img.png",
-    },
-    {
-      title: "Invoice",
-      value: "100",
-      change: "2%",
-      changeType: "positive" as const,
-      iconPath: "/images/invoice-img.png",
-    },
-  ];
+  // const stats = [
+  //   {
+  //     title: "Total Learners",
+  //     value: "12,450",
+  //     change: "12%",
+  //     changeType: "positive" as const,
+  //     iconPath: "/images/learners-img.png",
+  //   },
+  //   {
+  //     title: "Revenue",
+  //     value: "$12,450",
+  //     change: "12%",
+  //     changeType: "positive" as const,
+  //     iconPath: "/images/revenue-img.png",
+  //   },
+  //   {
+  //     title: "Invoice",
+  //     value: "100",
+  //     change: "2%",
+  //     changeType: "positive" as const,
+  //     iconPath: "/images/invoice-img.png",
+  //   },
+  // ];
 
   const revenueData: RevenueData[] = [
     { month: "Jan", value: 2200 },
@@ -53,6 +55,13 @@ const Overview: React.FC = () => {
     { month: "May", value: 2900 },
     { month: "Jun", value: 2600 },
   ];
+  const { data: learnerDetails } = useQuery<Learner[], Error>({
+    queryKey: ["get-all-learners"],
+    queryFn: allLearners,
+  });
+  const learners = learnerDetails || [];
+  console.log("🚀 ~ Overview ~ learners:", learners);
+  // isLoading: isloadingLearners
 
   const { data, isLoading: isloadingTacks } = useQuery<TrackResponse, Error>({
     queryKey: ["get-all-tracks"],
@@ -106,9 +115,7 @@ const Overview: React.FC = () => {
       <div className="min-h-screen  p-6 ">
         <div className="">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 ">
-            {stats.map((stat, index) => (
-              <StatCard key={index} {...stat} />
-            ))}
+            <StatCard learners={learners} />
           </div>
 
           {/* Tracks Section */}

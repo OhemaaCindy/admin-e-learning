@@ -1,4 +1,4 @@
-import { useDeleteTrack } from "@/hooks/add-track.hook";
+import { useDeleteTrack } from "@/hooks/track.hook";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
 

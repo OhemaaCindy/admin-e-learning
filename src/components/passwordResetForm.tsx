@@ -4,7 +4,7 @@ import { InputField } from "./inputs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { resetSchema, type ResetFormData } from "../schemas/auth-schema";
 import toast from "react-hot-toast";
-import { useResetPasswordAdmin } from "../hooks/register-admin.hook";
+import { useResetPasswordAdmin } from "../hooks/auth.hook";
 import { useNavigate } from "react-router";
 
 const PasswordResetForm = ({ userId }: { userId: string | undefined }) => {

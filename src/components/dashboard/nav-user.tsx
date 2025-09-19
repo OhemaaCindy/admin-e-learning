@@ -24,7 +24,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { useLogoutAdmin } from "@/hooks/register-admin.hook";
+import { useLogoutAdmin } from "@/hooks/auth.hook";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";

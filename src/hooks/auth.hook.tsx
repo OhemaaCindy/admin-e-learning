@@ -26,7 +26,7 @@ import type {
 
 export const useRegisterAdmin = () =>
   useMutation<RegisterResponse, AuthErrorRes, RegisterType>({
-    mutationFn: (payload) => registerAdmin(payload),
+    mutationFn: registerAdmin,
   });
 
 export const useLoginAdmin = () =>

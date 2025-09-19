@@ -6,7 +6,7 @@ import {
   registrationSchema,
   type RegistrationFormData,
 } from "../schemas/auth-schema";
-import { useRegisterAdmin } from "../hooks/register-admin.hook";
+import { useRegisterAdmin } from "../hooks/auth.hook";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
@@ -36,8 +36,8 @@ const RegistrationForm: React.FC = () => {
     mutate(data, {
       onSuccess(res) {
         Cookies.set("token", res.token);
-        reset();
         toast.success("Admin created successfully");
+        reset();
 
         navigate(`/otp-verification?email=${data.email}`);
       },

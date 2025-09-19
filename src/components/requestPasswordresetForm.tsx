@@ -8,7 +8,7 @@ import {
 } from "../schemas/auth-schema";
 import toast from "react-hot-toast";
 
-import { useForgotPasswordAdmin } from "../hooks/register-admin.hook";
+import { useForgotPasswordAdmin } from "../hooks/auth.hook";
 
 const RequestPasswordResetForm: React.FC = () => {
   const {

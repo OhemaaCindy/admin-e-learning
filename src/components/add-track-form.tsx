@@ -7,7 +7,7 @@ import {
   type AddTrackFormData,
 } from "@/schemas/track-schema";
 import { ImageUpload } from "./image-upload";
-import { useAddTrack } from "@/hooks/add-track.hook";
+import { useAddTrack } from "@/hooks/track.hook";
 import toast from "react-hot-toast";
 
 interface AddTrackFormProps {

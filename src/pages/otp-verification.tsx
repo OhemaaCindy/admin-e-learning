@@ -2,7 +2,7 @@ import { AuthFormWrapper } from "../components/authFormWrapper";
 import OtpForm from "../components/opt-form";
 import toast from "react-hot-toast";
 import { useSearchParams } from "react-router";
-import { useResendOtpAdmin } from "@/hooks/register-admin.hook";
+import { useResendOtpAdmin } from "@/hooks/auth.hook";
 
 export const Otpverification = () => {
   const [searchParams] = useSearchParams();
