@@ -100,6 +100,7 @@ export function LearnersDataTable() {
     queryFn: allLearners,
   });
   const learners = learnerDetails || [];
+  console.log("🚀 ~ LearnersDataTable ~ learners:", learners);
 
   const table = useReactTable({
     data: learners,
@@ -125,9 +126,11 @@ export function LearnersDataTable() {
       <div className="py-4 ">
         <Input
           placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("learnerName")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("learnerName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

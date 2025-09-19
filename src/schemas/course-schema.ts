@@ -2,8 +2,8 @@ import z from "zod";
 
 const fileSchema = z
   .instanceof(File, { message: "Please upload a file" })
-  .refine((file) => file.size <= 5 * 1024 * 1024, {
-    message: "File size must be less than 5MB",
+  .refine((file) => file.size <= 1 * 1024 * 1024, {
+    message: "File size must be less than 1MB",
   })
   .refine(
     (file) =>

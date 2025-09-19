@@ -70,7 +70,7 @@ const AddTrackForm = ({ closeModal }: AddTrackFormProps) => {
         />
 
         <InputField
-          label="Price"
+          label="Price$"
           name="price"
           type="text"
           register={register}

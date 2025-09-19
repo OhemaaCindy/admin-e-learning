@@ -7,15 +7,6 @@ import type { Invoice, Learner } from "@/types/invoices.types";
 import { InvoiceActions } from "@/components/tables/invoice-table";
 
 export const invoiceColumns: ColumnDef<Invoice>[] = [
-  // {
-  //   header: "Learners",
-  //   accessorKey: "learner.firstName",
-  //   cell: ({ row }) => {
-  //     const learner: Learner | null = row.original.learner;
-
-  //     return <InvoiceImage learner={learner} />;
-  //   },
-  // },
   {
     id: "learnerName", // 👈 add this
     header: "Learners",

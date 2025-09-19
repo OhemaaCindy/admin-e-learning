@@ -7,12 +7,31 @@ import ImageAndName from "@/components/learner-image-and-name";
 import { format } from "date-fns";
 
 export const learnerColumns: ColumnDef<Learner>[] = [
+  // {
+  //   header: "Learners",
+  //   accessorKey: "profilePhoto",
+  //   cell: ({ row }) => <ImageAndName learner={row.original} />,
+  // },
   {
+    id: "learnerName", // 👈 add this
     header: "Learners",
-    accessorKey: "profilePhoto",
-    cell: ({ row }) => <ImageAndName learner={row.original} />,
-  },
+    accessorFn: (row) =>
+      `${row?.firstName || ""} ${row?.lastName || ""}`.trim(),
+    filterFn: (row, _, filterValue) => {
+      const learner = row.original;
+      if (!learner || !filterValue) return true;
 
+      const searchValue = filterValue.toLowerCase();
+      const firstName = learner.firstName?.toLowerCase() || "";
+      const lastName = learner.lastName?.toLowerCase() || "";
+
+      return firstName.includes(searchValue) || lastName.includes(searchValue);
+    },
+    cell: ({ row }) => {
+      const learner: Learner | null = row.original;
+      return <ImageAndName learner={learner} />;
+    },
+  },
   {
     header: "Courses",
     accessorKey: "course",
