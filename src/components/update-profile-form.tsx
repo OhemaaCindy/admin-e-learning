@@ -16,6 +16,7 @@ import { checkAuthUser } from "@/services/auth-services";
 import Cookies from "js-cookie";
 import { useUpdateAdmin } from "@/hooks/update-admin-hook";
 import { InputShimmer, TextareaShimmer } from "./input-textarea-shimmer";
+import { useEffect } from "react";
 
 const UpdateProfileForm = () => {
   const { data: userInfo, isLoading } = useQuery<CheckAuthResponse, Error>({
@@ -30,7 +31,7 @@ const UpdateProfileForm = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    // reset,
+    reset,
     setValue,
     watch,
   } = useForm<UpdateAdminFormData>({
@@ -42,8 +43,25 @@ const UpdateProfileForm = () => {
       location: info?.location || "",
       disabled: info?.disabled,
       description: info?.description || "",
+      
     },
   });
+
+  
+useEffect(() => {
+  if (info) {
+    reset({
+      firstName: info.firstName ?? "",
+      lastName: info.lastName ?? "",
+      contact: info.contact ?? "",
+      location: info.location ?? "",
+      disabled: info.disabled ?? false,
+      description: info.description ?? "",
+    });
+  }
+}, [info, reset]);
+
+
   const selectedImage = watch("profileImage");
   // const id = info?._id;
   const { mutate: updateAdmin, isPending } = useUpdateAdmin();
@@ -67,9 +85,10 @@ const UpdateProfileForm = () => {
           {/* Image Upload Section */}
           <div className="w-full lg:w-auto flex justify-center lg:justify-start">
             <ImageUpload
-              value={selectedImage}
+              value={selectedImage }
               onImageSelect={(file) => setValue("profileImage", file)}
               error={errors.profileImage?.message}
+               tempPreviewUrl="https://images.pexels.com/photos/20624891/pexels-photo-20624891.jpeg"
               maxSize={5}
               accept="image/*"
               showPreview={true}
@@ -125,27 +144,19 @@ const UpdateProfileForm = () => {
                         error={errors.location?.message}
                       />
 
-                      <div className="mb-4 w-full">
-                        <select
-                          {...register("disabled", {
-                            setValueAs: (val) => val === "true", // convert "true"/"false" string -> boolean
-                          })}
-                          // defaultValue={info?.disabled ? "true" : "false"}
-                          className={cn(
-                            "w-full h-10 px-3 border rounded-md shadow-sm overflow-y-auto",
-                            errors.disabled && "border-red-500 bg-red-50"
-                          )}
-                        >
-                          {/* <option value="">Do you have disability?</option> */}
-                          <option value="false">false</option>
-                          <option value="true">true</option>
-                        </select>
-                        {errors.disabled && (
-                          <p className="text-red-500 text-sm mt-1">
-                            {errors.disabled.message}
-                          </p>
-                        )}
-                      </div>
+                      <select
+  {...register("disabled", {
+    setValueAs: (val) => val === "true",
+  })}
+  className={cn(
+    "w-full h-10 px-3 border rounded-md shadow-sm",
+    errors.disabled && "border-red-500 bg-red-50"
+  )}
+>
+  <option value="false">false</option>
+  <option value="true">true</option>
+</select>
+
                       <div className="mb-4 w-full md:col-span-2">
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Description

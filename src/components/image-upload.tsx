@@ -41,10 +41,10 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
       value,
       profile = false,
     },
-    ref
+    ref,
   ) => {
     const [preview, setPreview] = useState<string | null>(
-      tempPreviewUrl || null
+      tempPreviewUrl || null,
     );
     const [isDragging, setIsDragging] = useState(false);
     const [uploadError, setUploadError] = useState<string>("");
@@ -75,7 +75,7 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
 
         return null;
       },
-      [maxSize]
+      [maxSize],
     );
 
     const handleFileSelect = useCallback(
@@ -98,7 +98,7 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
 
         onImageSelect(file);
       },
-      [validateFile, onImageSelect]
+      [validateFile, onImageSelect],
     );
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -148,7 +148,6 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
 
     const displayError = error || uploadError;
 
-    // Use preview from state or create one from value prop
     React.useEffect(() => {
       if (value && value instanceof File) {
         const reader = new FileReader();
@@ -156,10 +155,10 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
           setPreview(e.target?.result as string);
         };
         reader.readAsDataURL(value);
-      } else if (!value) {
-        setPreview(null);
+      } else if (tempPreviewUrl) {
+        setPreview(tempPreviewUrl);
       }
-    }, [value]);
+    }, [value, tempPreviewUrl]);
 
     // Profile image component
     if (profile) {
@@ -175,11 +174,11 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
               isDragging && !disabled
                 ? "border-blue-400 bg-blue-50"
                 : displayError
-                ? "border-red-300 bg-red-50"
-                : "border-gray-300 hover:border-gray-400 bg-gray-50",
+                  ? "border-red-300 bg-red-50"
+                  : "border-gray-300 hover:border-gray-400 bg-gray-50",
               disabled
                 ? "opacity-50 cursor-not-allowed"
-                : "hover:border-gray-400"
+                : "hover:border-gray-400",
             )}
           >
             <input
@@ -258,9 +257,9 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
             isDragging && !disabled
               ? "border-blue-400 bg-blue-50"
               : displayError
-              ? "border-red-300 bg-red-50"
-              : "border-gray-300 hover:border-gray-400 bg-gray-50",
-            disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100"
+                ? "border-red-300 bg-red-50"
+                : "border-gray-300 hover:border-gray-400 bg-gray-50",
+            disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100",
           )}
         >
           <input
@@ -319,7 +318,7 @@ export const ImageUpload = forwardRef<ImageUploadRef, ImageUploadProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 ImageUpload.displayName = "ImageUpload";
