@@ -6,6 +6,9 @@ import InvoiceImage from "@/components/invoice-table-image";
 import type { Invoice, Learner } from "@/types/invoices.types";
 import { InvoiceActions } from "@/components/tables/invoice-table";
 
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+
 export const invoiceColumns: ColumnDef<Invoice>[] = [
   {
     id: "learnerName", // 👈 add this
@@ -52,10 +55,26 @@ export const invoiceColumns: ColumnDef<Invoice>[] = [
       return <div className="">${row.original?.amount || "0.0"}</div>;
     },
   },
-  {
-    header: "Status",
-    accessorKey: "status",
+ {
+  header: "Status",
+  accessorKey: "status",
+  cell: ({ row }) => {
+    const status = row.original.status;
+
+    return (
+      <Badge
+        className={cn(
+          "capitalize",
+          status === "paid" && "bg-green-100 text-green-700",
+          status === "pending" && "bg-yellow-100 text-yellow-700"
+        )}
+      >
+        {status}
+      </Badge>
+    );
   },
+},
+
   {
     id: "actions",
     enableHiding: false,

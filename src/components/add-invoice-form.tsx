@@ -41,15 +41,19 @@ const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
     queryFn: allLearners,
   });
   const learners = learnerDetails || [];
+  
 
   const { mutate: addInvoice, isPending, error, isError } = useAddInvoice();
 
   const onSubmit = (data: AddInvoiceFormData) => {
-    addInvoice(
-      {
-        ...data,
+    const payload =  {
+       ...data,
         paystackCallbackUrl: `${import.meta.env.VITE_CLIENT_URL}/payment`,
-      },
+       
+    }
+   
+    addInvoice(
+     payload,
       {
         onSuccess() {
           reset();
@@ -117,7 +121,7 @@ const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
           required
         />
 
-        <select
+         <select
           {...register("status")}
           className={cn(
             "w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500",
@@ -138,7 +142,7 @@ const AddInvoiceForm = ({ closeModal }: AddInvoiceFormProps) => {
           type="text"
           register={register}
           error={errors.paymentDetails?.message}
-        />
+        /> 
 
         <div className="pt-4">
           <Button
