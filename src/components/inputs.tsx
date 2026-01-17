@@ -10,6 +10,7 @@ interface InputFieldProps {
   error?: string;
   required?: boolean;
   inputStyles?: string;
+  disabled?: boolean;
 }
 
 export const InputField: React.FC<InputFieldProps> = ({
@@ -21,6 +22,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   error,
   required = false,
   inputStyles,
+  disabled = false,
 }) => {
   const registerOptions = type === "number" ? { valueAsNumber: true } : {};
 
@@ -35,6 +37,7 @@ export const InputField: React.FC<InputFieldProps> = ({
       </label>
       <input
         {...register(name, registerOptions)}
+         disabled={disabled}
         type={type}
         id={name}
         placeholder={placeholder}
